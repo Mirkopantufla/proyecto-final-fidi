@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Formulario from './componentes/Formulario';
+import Chat from './componentes/Chat'
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css'; // CSS
+import 'bootstrap/dist/js/bootstrap.bundle'; // JS
 import logoImage from "./logo1.png";
 import logoImage2 from "./logo2rosa.png";
 
@@ -67,6 +69,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/formulario" element={<Formulario />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
 
         <footer className="text-center py-4">

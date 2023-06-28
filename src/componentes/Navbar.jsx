@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logoImage from "../logo1.png";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-ligth">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
-          Logo Fidi
+      <Link className="navbar-brand" to="/">
+          <img src={logoImage}   alt="Logo"
+                        width="150"
+                        height="150"
+                        className="logo"/>
         </Link>
         <button
           className="navbar-toggler"
@@ -44,7 +48,7 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Dropdown
+                Herramientas
               </a>
               <ul className="dropdown-menu">
                 <li>

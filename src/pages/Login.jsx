@@ -7,18 +7,7 @@ const Login = () => {
 
     return (
         <>
-            <nav className="navbar navbar-light">
-                <a className="navbar-brand" href="/">
-                    <img
-                        src={logoImage}
-                        alt="Logo"
-                        width="150"
-                        height="150"
-                        className="logo"
-                    />
-                </a>
-            </nav>
-
+            
             <div className="container main-container custom-bg rounded">
                 <div className="row">
                     <div className="col-sm-6">

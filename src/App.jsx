@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from './componentes/Navbar';
 import Chat from './pages/Chat';
+import Formulario from './componentes/Formulario';
 import Explore from './pages/Explore';
 import Login from './pages/Login';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
-import Formulario from './componentes/Formulario';
 
 const App = () => {
   return (
@@ -25,3 +25,4 @@ const App = () => {
 };
 
 export default App;
+

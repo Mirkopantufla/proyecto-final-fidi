@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Formulario.css'; // Importa tu archivo de estilos CSS personalizado para el formulario
+import "../estilos/Formulario.css" // Importa tu archivo de estilos CSS personalizado para el formulario
 
 function Formulario() {
   const [intereses, setIntereses] = useState('');

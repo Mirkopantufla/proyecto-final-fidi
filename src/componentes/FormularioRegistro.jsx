@@ -83,15 +83,14 @@ function Registro() {
         </div>
         <div className="text-center">
           <p>O regístrate con:</p>
-          <div>
-             <button className="btn btn-info" onClick={registrarConTwitter}>
-              <FontAwesomeIcon icon={faTwitter} /> Twitter
-            </button>
-            <button className="btn btn-danger" onClick={registrarConLinkedIn}>
-              <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
-            </button>
-           
-          </div>
+          <div className="btn-group">
+  <button className="btn btn-info" onClick={registrarConTwitter}>
+    <FontAwesomeIcon icon={faTwitter} /> Twitter
+  </button>
+  <button className="btn btn-danger" onClick={registrarConLinkedIn}>
+    <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+  </button>
+</div>
         </div>
       </form>
     </div>

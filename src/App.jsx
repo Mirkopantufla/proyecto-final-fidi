@@ -4,6 +4,7 @@ import "./App.css";
 import Chat from './pages/Chat.jsx';
 import Login from './pages/Login.jsx';
 import Formulario from './componentes/Formulario';
+import Dashboardv from './pages/Dashboardv';
 
 
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/formulario' element={<Formulario />} />
         <Route path='/chat' element={<Chat />} />
+        <Route path='/dashboard' element={<Dashboardv />} />
       </Routes>
     </Router>
   );

@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../estilos/Chat.css"
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { MdInsertEmoticon } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
 import ListaUsuariosChat from '../componentes/ListaUsuariosChat'
 import MensajesUsuarioChat from '../componentes/MensajesUsuarioChat'
+import FichaContactoChat from '../componentes/FichaContactoChat'
 import logoFidi from '../imagenes/logo1.png'
 
 //---------------------------------------------------------------------------------------------------
 //Lista de prueba para mapear Mensajes en el chat
 //El chat se almacenara en la base de datos y debera ser traido desde allí
-const simulacionDatosChat = [
+const simulacionDatosChat1 = [
     {
         idUsuarioRemitente: 2,
         horaEnvio: "11:25 AM",
@@ -49,7 +50,7 @@ const simulacionDatosChat = [
 //El chat se almacenara en la base de datos y debera ser traido desde allí
 const simulacionDatosUsuarios = [
     {
-        usuario: "Mirko Pasten",
+        usuario: "Alejandro Miranda",
         estado: false,
         ultimoMsjRecibido: "ola mundo",
         srcFotografia: "https://picsum.photos/id/237/120/120"
@@ -65,11 +66,27 @@ const simulacionDatosUsuarios = [
         estado: false,
         ultimoMsjRecibido: "paralelepipedo",
         srcFotografia: "https://picsum.photos/id/239/120/120"
+    },
+    {
+        usuario: "Matias Pasten",
+        estado: true,
+        ultimoMsjRecibido: "mirko ql deja de pakearme",
+        srcFotografia: "https://picsum.photos/id/240/120/120"
     }
 ];
 
 //---------------------------------------------------------------------------------------------------
 const Chat = () => {
+    const [nombreContacto, setNombreContacto] = useState("Eduardo");
+    const [fotoContacto, setFotoContacto] = useState("");
+    const [chat, setChat] = useState([]);
+
+    const handleClickUsuario = (indicador) => {
+        setNombreContacto(simulacionDatosUsuarios[indicador].usuario)
+        setFotoContacto(simulacionDatosUsuarios[indicador].srcFotografia)
+        setChat(simulacionDatosChat1)
+    }
+
     return (
         <div className='container-fluid'>
             <div className="row">
@@ -78,18 +95,7 @@ const Chat = () => {
                 </div>
                 <div className="col-9">
                     <div className="row">
-                        <div className="col-lg-3 col-md-3 my-3">
-                            <img className='border rounded-5' src="https://picsum.photos/id/237/150/150" alt="" />
-                        </div>
-                        <div className="col-lg-5 col-md-7 d-flex flex-column justify-content-center">
-                            <h4>Nombre Contacto</h4>
-                            <div className='d-flex'>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                            </div>
-                        </div>
+                        <FichaContactoChat nombreContacto={nombreContacto} fotoContacto={fotoContacto} />
                         <div className="col-lg-4 col-md-2 mt-2 d-flex justify-content-end mt-5">
                             <div className="dropdown">
                                 <button className="btn btn-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -119,6 +125,7 @@ const Chat = () => {
                                     estado={usuario.estado}
                                     ultimoMsjRecibido={usuario.ultimoMsjRecibido}
                                     srcFotografia={usuario.srcFotografia}
+                                    funcionClick={() => handleClickUsuario(index)}
                                 />
                             );
                         })
@@ -128,7 +135,7 @@ const Chat = () => {
                     {
                         //Mapeo de los objetos contenidos en el array simulacionDatosChat
                         //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
-                        simulacionDatosChat.map((mensaje, index) => {
+                        chat.map((mensaje, index) => {
                             return (
                                 <MensajesUsuarioChat
                                     key={index}
@@ -140,7 +147,6 @@ const Chat = () => {
                             );
                         })
                     }
-
                 </div>
             </div>
             <div className="row">

@@ -33,6 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     username,
                     password
                 }
+
                 const data = {
                     apiURL: `${apiURL}/api/login`,
                     options: {

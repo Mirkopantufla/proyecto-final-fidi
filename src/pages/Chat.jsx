@@ -5,34 +5,49 @@ import { MdInsertEmoticon } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
 import ListaUsuariosChat from '../componentes/ListaUsuariosChat'
 import MensajesUsuarioChat from '../componentes/MensajesUsuarioChat'
+import logoFidi from '../imagenes/logo1.png'
 
+//---------------------------------------------------------------------------------------------------
+//Lista de prueba para mapear Mensajes en el chat
+//El chat se almacenara en la base de datos y debera ser traido desde allí
 const simulacionDatosChat = [
     {
+        idUsuarioRemitente: 2,
         horaEnvio: "11:25 AM",
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "Hola mundo"
     },
     {
+        idUsuarioRemitente: 2,
         horaEnvio: "11:28 AM",
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "K pedo wey"
     },
     {
+        idUsuarioRemitente: 1,
         horaEnvio: "11:32 AM",
-        nombrePropMensaje: "Alejandro Miranda",
+        nombrePropMensaje: "Yo",
         mensaje: "Nada manito"
     },
     {
+        idUsuarioRemitente: 2,
         horaEnvio: "11:50 AM",
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "ya merito llegamos? ya merito llegamos? ya merito llegamos? ya merito llegamos?"
+    },
+    {
+        idUsuarioRemitente: 1,
+        horaEnvio: "11:56 AM",
+        nombrePropMensaje: "Yo",
+        mensaje: "calla burro"
     }
 ]
 
+//---------------------------------------------------------------------------------------------------
 //Lista de prueba para mapear Usuarios en el chat
 //Deberan ser las personas que han hecho match las que se habilitaran para hablar
 //El chat se almacenara en la base de datos y debera ser traido desde allí
-const listaPruebaUsuarios = [
+const simulacionDatosUsuarios = [
     {
         usuario: "Mirko Pasten",
         estado: false,
@@ -53,6 +68,7 @@ const listaPruebaUsuarios = [
     }
 ];
 
+//---------------------------------------------------------------------------------------------------
 const Chat = () => {
     return (
         <div className='container-fluid'>
@@ -65,15 +81,14 @@ const Chat = () => {
                         <div className="col-lg-3 col-md-3 my-3">
                             <img className='border rounded-5' src="https://picsum.photos/id/237/150/150" alt="" />
                         </div>
-                        <div className="col-lg-5 col-md-7 my-auto d-flex flex-column justify-content-left">
+                        <div className="col-lg-5 col-md-7 d-flex flex-column justify-content-center">
                             <h4>Nombre Contacto</h4>
-                            <div className=''>
+                            <div className='d-flex'>
                                 <button className='btn btn-dark'>interes</button>
                                 <button className='btn btn-dark'>interes</button>
                                 <button className='btn btn-dark'>interes</button>
                                 <button className='btn btn-dark'>interes</button>
                             </div>
-
                         </div>
                         <div className="col-lg-4 col-md-2 mt-2 d-flex justify-content-end mt-5">
                             <div className="dropdown">
@@ -96,7 +111,7 @@ const Chat = () => {
                     {
                         //Mapeo de los objetos contenidos en el array listaPruebaUsuarios
                         //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
-                        listaPruebaUsuarios.map((usuario, index) => {
+                        simulacionDatosUsuarios.map((usuario, index) => {
                             return (
                                 <ListaUsuariosChat
                                     key={index}
@@ -109,12 +124,15 @@ const Chat = () => {
                         })
                     }
                 </div>
-                <div className="col-9 bg-light rounded-4" style={{ height: "72vh" }}>
+                <div className="col-9 bg-light rounded-4 estilo-chat">
                     {
+                        //Mapeo de los objetos contenidos en el array simulacionDatosChat
+                        //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
                         simulacionDatosChat.map((mensaje, index) => {
                             return (
                                 <MensajesUsuarioChat
                                     key={index}
+                                    idUsuarioRemitente={mensaje.idUsuarioRemitente}
                                     horaEnvio={mensaje.horaEnvio}
                                     nombrePropMensaje={mensaje.nombrePropMensaje}
                                     mensaje={mensaje.mensaje}
@@ -127,7 +145,7 @@ const Chat = () => {
             </div>
             <div className="row">
                 <div className="col-3 text-center">
-                    Algo
+                    <img src={logoFidi} alt="logo Fidi" style={{ height: "40px" }} />
                 </div>
                 <div className="col-9 d-flex mt-lg-3" style={{ margin: "-15px" }}>
                     <MdInsertEmoticon className='fs-1 me-1' />

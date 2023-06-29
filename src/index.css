@@ -1,6 +1,7 @@
 body{
     background-color:#F7BA0D;
 }
+
 .custom-bg {
     background-color: rgba(255, 255, 255, 0.6); /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
   }

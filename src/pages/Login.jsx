@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Registro from '../componentes/FormularioRegistro';
-import logoImage from "../logo1.png";
 import logoImage2 from "../logo2rosa.png";
 
 const Login = () => {

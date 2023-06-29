@@ -8,8 +8,8 @@ const Navbar = () => {
       <div className="container-fluid">
       <Link className="navbar-brand" to="/">
           <img src={logoImage}   alt="Logo"
-                        width="150"
-                        height="150"
+                        width="90"
+                        height="30"
                         className="logo"/>
         </Link>
         <button

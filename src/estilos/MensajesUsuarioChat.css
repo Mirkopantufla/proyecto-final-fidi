@@ -1,0 +1,9 @@
+.mensaje-chat {
+    background-color: #f7b90d4c;
+    border-radius: 15px;
+}
+
+.mensaje-propio {
+    background-color: #f7b90db3;
+    border-radius: 15px;
+}

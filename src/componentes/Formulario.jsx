@@ -95,7 +95,7 @@ const Formulario = () => {
                   <label htmlFor="habilidades" className="text-light">
                     Selecciona lo que puedes enseñar:
                   </label>
-                  <div className="d-flex flex-wrap">
+                  <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                     {habilidadesPrincipales.map((principal) => (
                       <div key={principal} className="m-1">
                         <button
@@ -146,7 +146,7 @@ const Formulario = () => {
                   <label htmlFor="intereses" className="text-light">
                     Selecciona lo que te gustaría aprender:
                   </label>
-                  <div className="d-flex flex-wrap">
+                  <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                     {habilidadesPrincipales.map((principal) => (
                       <div key={principal} className="m-1">
                         <button
@@ -242,4 +242,3 @@ const Formulario = () => {
 };
 
 export default Formulario;
-

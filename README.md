@@ -3,11 +3,12 @@
 ```shell
 $ npm create vite .
 ```
-iconos biblioteca
 
-//npm install @fortawesome/fontawesome-svg-core
-npm install @fortawesome/free-brands-svg-icons
-npm install @fortawesome/react-fontawesome//
+## Dependencias Instaladas
+# iconos biblioteca
+- @fortawesome/fontawesome-svg-core
+- @fortawesome/free-brands-svg-icons
+- @fortawesome/react-fontawesome//
 
 #11100F
 #0CD5A9

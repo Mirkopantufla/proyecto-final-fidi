@@ -5,14 +5,22 @@ $ npm create vite .
 ```
 
 ## Dependencias Instaladas
-# iconos biblioteca
-- @fortawesome/fontawesome-svg-core
-- @fortawesome/free-brands-svg-icons
-- @fortawesome/react-fontawesome//
+- @fortawesome/fontawesome-free": "^6.4.0"*
+- @fortawesome/fontawesome-svg-core *"^6.4.0"*
+- @fortawesome/free-brands-svg-icons *"^6.4.0"*
+- @fortawesome/react-fontawesome *0.2.0*
+- react-icons *4.10.1*
+- react *18.2.0*
+- react-bootstrap *2.8.0*
+- bootstrap *5.3.0*
+- react-router-dom *6.14.0*
 
+### Colores Mayormente Utilizados
+```
 #11100F
 #0CD5A9
 #F7BA0D
 #F745AE
 #EAEAF0
 #ffffff
+```

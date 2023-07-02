@@ -70,7 +70,7 @@ const Formulario = () => {
       setInteresesError(false);
     }
 
-    // Esto se puede modificar para guardar los datos en una base de datos
+    // Esto se puede modificar para guardar los datos en una base de datos mas adelante
     console.log('Habilidades:', habilidades);
     console.log('Intereses:', intereses);
     console.log('Aprendizaje:', aprendizaje);
@@ -232,7 +232,7 @@ const Formulario = () => {
               />
             </div>
             <button type="submit" className="btn btn-primary mt-4">
-              Enviar
+              Registrarme
             </button>
           </form>
         </div>

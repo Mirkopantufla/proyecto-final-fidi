@@ -1,4 +1,5 @@
-import { serviceLogin } from "../services/auth.services";
+import { toast } from "react-toastify";
+import { serviceLogin } from "../services/auth.services"
 
 /**
  * { getStore, getActions, setStore }
@@ -15,7 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         store: {
             apiURL: 'http://127.0.0.1:5000',
             currentUser: null,
-            username: '',
+            correo: '',
             password: ''
         },
         actions: {
@@ -27,10 +28,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             login: (e, navigate) => {
                 e.preventDefault();
-                const { username, password, apiURL } = getStore();
+                const { correo, password, apiURL } = getStore();
 
                 const credentials = {
-                    username,
+                    correo,
                     password
                 }
 
@@ -45,16 +46,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 }
 
-                /* serviceLogin(data).then(respJson => {
-                    console.log(respJson);
-                    if (respJson.message) {
-                        toast(respJson.message, { type: toast.TYPE.ERROR });
-                        setStore({ password: '' });
-                    } else {
-                        setStore({ username: '', password: '' });
-                        navigate('/dashboard')
-                    }
-                }); */
+                // serviceLogin(data).then(respJson => {
+                //     console.log(respJson);
+                //     if (respJson.message) {
+                //         toast(respJson.message, { type: toast.TYPE.ERROR });
+                //         setStore({ password: '' });
+                //     } else {
+                //         setStore({ correo: '', password: '' });
+                //         navigate('/formulario')
+                //     }
+                // });
 
                 fetch(data.apiURL, data.options)
                     .then(response => response.json())
@@ -63,14 +64,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                         if (respJson.message) {
                             toast(respJson.message, { type: toast.TYPE.ERROR });
                             setStore({ password: '' });
-                        } else if (respJson.username) {
-                            toast(respJson.username, { type: toast.TYPE.WARNING });
+                        } else if (respJson.correo) {
+                            toast(respJson.correo, { type: toast.TYPE.WARNING });
                             setStore({ password: '' });
                         } else if (respJson.password) {
                             toast(respJson.password, { type: toast.TYPE.WARNING });
                             setStore({ password: '' });
                         } else {
-                            setStore({ username: '', password: '', currentUser: respJson });
+                            setStore({ correo: '', password: '', currentUser: respJson });
                             sessionStorage.setItem('currentUser', JSON.stringify(respJson));
                             navigate('/dashboard')
                         }

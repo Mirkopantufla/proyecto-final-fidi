@@ -11,36 +11,43 @@ import logoFidi from '../imagenes/logo1.png'
 //---------------------------------------------------------------------------------------------------
 //Lista de prueba para mapear Mensajes en el chat
 //El chat se almacenara en la base de datos y debera ser traido desde allí
-const simulacionDatosChat1 = [
+//Lo puse como Date por que de la DB vendra con formato timestamp (?)
+const simulacionDatosChat = [
     {
         idUsuarioRemitente: 2,
-        horaEnvio: "11:25 AM",
+        horaEnvio: new Date("08/05/2023 11:28:15 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "Hola mundo"
     },
     {
         idUsuarioRemitente: 2,
-        horaEnvio: "11:28 AM",
+        horaEnvio: new Date("08/05/2023 11:29:17 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "K pedo wey"
     },
     {
         idUsuarioRemitente: 1,
-        horaEnvio: "11:32 AM",
+        horaEnvio: new Date("08/05/2023 11:32:23 AM"),
         nombrePropMensaje: "Yo",
         mensaje: "Nada manito"
     },
     {
         idUsuarioRemitente: 2,
-        horaEnvio: "11:50 AM",
+        horaEnvio: new Date("08/05/2023 11:34:54 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "ya merito llegamos? ya merito llegamos? ya merito llegamos? ya merito llegamos?"
     },
     {
         idUsuarioRemitente: 1,
-        horaEnvio: "11:56 AM",
+        horaEnvio: new Date("08/05/2023 11:40:34 AM"),
         nombrePropMensaje: "Yo",
         mensaje: "calla burro"
+    },
+    {
+        idUsuarioRemitente: 1,
+        horaEnvio: new Date("08/05/2023 11:33:34 AM"),
+        nombrePropMensaje: "Yo",
+        mensaje: "ultima posicion de los mensajes a las 11:33, probando el ultimo mensaje por fecha en la lista de Contactos"
     }
 ]
 
@@ -53,25 +60,25 @@ const simulacionDatosUsuarios = [
         usuario: "Alejandro Miranda",
         estado: false,
         ultimoMsjRecibido: "ola mundo",
-        srcFotografia: "https://picsum.photos/id/237/120/120"
+        srcFotografia: "https://picsum.photos/id/237/200/200"
     },
     {
         usuario: "Rosa Deltransito",
         estado: false,
         ultimoMsjRecibido: "enseña bien oe",
-        srcFotografia: "https://picsum.photos/id/238/120/120"
+        srcFotografia: "https://picsum.photos/id/238/200/200"
     },
     {
         usuario: "Armando Losas",
         estado: false,
         ultimoMsjRecibido: "paralelepipedo",
-        srcFotografia: "https://picsum.photos/id/239/120/120"
+        srcFotografia: "https://picsum.photos/id/239/200/200"
     },
     {
         usuario: "Matias Pasten",
         estado: true,
-        ultimoMsjRecibido: "mirko ql deja de pakearme",
-        srcFotografia: "https://picsum.photos/id/240/120/120"
+        ultimoMsjRecibido: "tengo gatos",
+        srcFotografia: "https://picsum.photos/id/240/200/200"
     }
 ];
 
@@ -84,7 +91,19 @@ const Chat = () => {
     const handleClickUsuario = (indicador) => {
         setNombreContacto(simulacionDatosUsuarios[indicador].usuario)
         setFotoContacto(simulacionDatosUsuarios[indicador].srcFotografia)
-        setChat(simulacionDatosChat1)
+        setChat(simulacionDatosChat)
+    }
+
+    const ultimoMensaje = () => {
+        let date = new Date("01/01/2000 00:00:01 AM");
+        let ultimoMsj = "";
+        simulacionDatosChat.forEach(element => {
+            if (date < element.horaEnvio) {
+                date = element.horaEnvio;
+                ultimoMsj = element.mensaje;
+            }
+        });
+        return ultimoMsj;
     }
 
     return (
@@ -123,7 +142,7 @@ const Chat = () => {
                                     key={index}
                                     usuario={usuario.usuario}
                                     estado={usuario.estado}
-                                    ultimoMsjRecibido={usuario.ultimoMsjRecibido}
+                                    ultimoMsjRecibido={ultimoMensaje()}
                                     srcFotografia={usuario.srcFotografia}
                                     funcionClick={() => handleClickUsuario(index)}
                                 />
@@ -140,7 +159,7 @@ const Chat = () => {
                                 <MensajesUsuarioChat
                                     key={index}
                                     idUsuarioRemitente={mensaje.idUsuarioRemitente}
-                                    horaEnvio={mensaje.horaEnvio}
+                                    horaEnvio={mensaje.horaEnvio.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
                                     nombrePropMensaje={mensaje.nombrePropMensaje}
                                     mensaje={mensaje.mensaje}
                                 />

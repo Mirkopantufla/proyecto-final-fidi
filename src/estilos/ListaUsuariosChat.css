@@ -9,3 +9,9 @@
 .adorno::before {
     content: "↸ ";
 }
+
+.tamanoFoto {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}

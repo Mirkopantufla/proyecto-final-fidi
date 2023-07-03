@@ -1,0 +1,12 @@
+.botonNoticia {
+    text-decoration: none;
+    color: black;
+}
+
+.botonNoticia:hover {
+    background-color: rgba(0, 0, 0, 0.069);
+}
+
+.botonNoticia:active {
+    background-color: rgba(0, 0, 0, 0.149);
+}

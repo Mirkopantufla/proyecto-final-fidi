@@ -1,48 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Interests = () => {
-  const [selectedInterests, setSelectedInterests] = useState([]);
-
-  const handleInterestsChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map((option) => option.value);
-    setSelectedInterests(selectedOptions);
+  const habilidadesDisponibles = {
+    Programación: [
+      "JavaScript",
+      "Python",
+      "Java",
+      "C++",
+      "Ruby",
+      "Swift",
+      "PHP",
+    ],
+    Marketing: [
+      "SEO",
+      "SEM",
+      "Marketing de contenidos",
+      "Analítica web",
+      "Email marketing",
+    ],
+    Idiomas: ["Inglés", "Español", "Francés", "Alemán", "Chino", "Japonés"],
+    "Habilidades blandas": [
+      "Comunicación efectiva",
+      "Trabajo en equipo",
+      "Liderazgo",
+      "Resolución de problemas",
+    ],
+    Startups: [
+      "Emprendimiento",
+      "Validación de ideas",
+      "Finanzas para startups",
+      "Modelos de negocio",
+    ],
+    "Diseño UX": [
+      "Wireframing",
+      "Prototipado",
+      "Investigación de usuarios",
+      "Arquitectura de información",
+    ],
+    Negocios: [
+      "Planificación estratégica",
+      "Gestión de proyectos",
+      "Análisis de mercado",
+      "Ventas",
+    ],
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const interesesDisponibles = {
+    Programación: [
+      "JavaScript",
+      "Python",
+      "Java",
+      "C++",
+      "Ruby",
+      "Swift",
+      "PHP",
+    ],
+    Marketing: [
+      "SEO",
+      "SEM",
+      "Marketing de contenidos",
+      "Analítica web",
+      "Email marketing",
+    ],
+    Idiomas: ["Inglés", "Español", "Francés", "Alemán", "Chino", "Japonés"],
+    "Habilidades blandas": [
+      "Comunicación efectiva",
+      "Trabajo en equipo",
+      "Liderazgo",
+      "Resolución de problemas",
+    ],
+    Startups: [
+      "Emprendimiento",
+      "Validación de ideas",
+      "Finanzas para startups",
+      "Modelos de negocio",
+    ],
+    "Diseño UX": [
+      "Wireframing",
+      "Prototipado",
+      "Investigación de usuarios",
+      "Arquitectura de información",
+    ],
+    Negocios: [
+      "Planificación estratégica",
+      "Gestión de proyectos",
+      "Análisis de mercado",
+      "Ventas",
+    ],
+  };
 
-    // Lógica para guardar los intereses seleccionados
-    // ...
+  const [selectedHabilidades, setSelectedHabilidades] = useState([]);
+  const [selectedIntereses, setSelectedIntereses] = useState([]);
 
-    setSelectedInterests([]);
+  const handleHabilidadesChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+    setSelectedHabilidades(selectedOptions);
+    // Si un interés seleccionado ya está en las habilidades seleccionadas, lo eliminamos
+    setSelectedIntereses((prevSelectedIntereses) =>
+      prevSelectedIntereses.filter((interes) => !selectedOptions.includes(interes))
+    );
+  };
+
+  const handleInteresesChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+    setSelectedIntereses(selectedOptions);
+    // Si una habilidad seleccionada ya está en los intereses seleccionados, lo eliminamos
+    setSelectedHabilidades((prevSelectedHabilidades) =>
+      prevSelectedHabilidades.filter((habilidad) => !selectedOptions.includes(habilidad))
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Intereses y aprendizaje:</label>
+    <div>
+      <label>
+       
         <select
           multiple
-          className="form-control"
-          value={selectedInterests}
-          onChange={handleInterestsChange}
+          value={selectedHabilidades}
+          onChange={handleHabilidadesChange}
         >
-          <option value="interes1">Interés 1</option>
-          <option value="interes2">Interés 2</option>
-          <option value="interes3">Interés 3</option>
-          <option value="interes4">Interés 4</option>
-          <option value="interes5">Interés 5</option>
-          <option value="interes6">Interés 6</option>
-          <option value="interes7">Interés 7</option>
-          <option value="interes8">Interés 8</option>
-          <option value="interes9">Interés 9</option>
-          <option value="interes10">Interés 10</option>
+          {Object.entries(habilidadesDisponibles).map(([categoria, habilidades]) => (
+            <optgroup key={categoria} label={categoria}>
+              {habilidades.map((habilidad) => (
+                <option key={habilidad} value={habilidad}>
+                  {habilidad}
+                </option>
+              ))}
+            </optgroup>
+          ))}
         </select>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Guardar intereses y aprendizaje
-      </button>
-    </form>
+      </label>
+
+      <label>
+       
+        <select
+          multiple
+          value={selectedIntereses}
+          onChange={handleInteresesChange}
+        >
+          {Object.entries(interesesDisponibles).map(([categoria, intereses]) => (
+            <optgroup key={categoria} label={categoria}>
+              {intereses.map((interes) => (
+                <option key={interes} value={interes}>
+                  {interes}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </label>
+    </div>
   );
 };
 

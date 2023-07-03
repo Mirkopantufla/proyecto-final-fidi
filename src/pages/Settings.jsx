@@ -6,7 +6,6 @@ import ProfilePhoto from './configu/ProfilePhoto.jsx';
 import Email from './configu/Email.jsx';
 import Interest from './configu/Interest.jsx';
 import Notification from './configu/Notification.jsx';
-import ProfileType from './configu/ProfileType.jsx';
 
 const Settings = () => {
   return (
@@ -45,12 +44,7 @@ const Settings = () => {
         <Routes>
         <Route path="Notification" element={<Notification />} />
         </Routes>
-        <Link to="ProfileType" className="btn btn-dark custom-button">
-          Modificación de Tipo de Perfil
-        </Link>
-        <Routes>
-        <Route path="ProfileType" element={<ProfileType />} />
-        </Routes>
+       
       </div>
     
     </div>

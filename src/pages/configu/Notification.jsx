@@ -16,7 +16,7 @@ const Notification = () => {
     e.preventDefault();
 
     // Lógica para guardar las configuraciones de notificación
-    // ...
+    // Aquí puedes implementar el código para guardar las configuraciones en tu base de datos o en el lugar adecuado
 
     setEmailNotifications(false);
     setAppNotifications(false);
@@ -24,24 +24,36 @@ const Notification = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Notificaciones por correo electrónico:</label>
+      <h2>Forma de notificacion</h2>
+      <div className="form-check form-switch">
         <input
+          className="form-check-input"
           type="checkbox"
+          role="switch"
+          id="emailNotificationsSwitch"
           checked={emailNotifications}
           onChange={handleEmailNotificationsChange}
         />
+        <label className="form-check-label" htmlFor="emailNotificationsSwitch">
+          Notificaciones por correo electrónico
+        </label>
       </div>
-      <div className="form-group">
-        <label>Notificaciones en la aplicación:</label>
+      <div className="form-check form-switch">
         <input
+          className="form-check-input"
           type="checkbox"
+          role="switch"
+          id="appNotificationsSwitch"
           checked={appNotifications}
           onChange={handleAppNotificationsChange}
         />
+        <label className="form-check-label" htmlFor="appNotificationsSwitch">
+          Notificaciones en la aplicación
+        </label>
       </div>
-      <button type="submit" className="btn btn-primary">
-        Guardar configuración de notificación
+      <br />
+      <button type="submit" className="btn btn-dark custom-button ">
+        Guardar 
       </button>
     </form>
   );

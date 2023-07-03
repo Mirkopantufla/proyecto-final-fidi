@@ -7,6 +7,7 @@ import Explore from './pages/Explore';
 import Login from './pages/Login';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/matches" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/settings/*" element={<Settings />} />
       </Routes>
     </Router>
   );

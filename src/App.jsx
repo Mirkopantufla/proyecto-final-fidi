@@ -14,6 +14,7 @@ import AgregarNoticia from './pages/AgregarNoticia';
 import ModificarNoticia from './pages/ModificarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
 import PrivateRoute from './utils/PrivateRoute';
+import Settings from './pages/Settings';
 
 const App = () => {
 
@@ -29,13 +30,6 @@ const App = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/matches" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path='*' element={<NotFound />} />
-        <Route path="/administrar" element={<PrivateRoute user={store.currentUser} />}>
-          <Route index element={<GestionarNoticia />} />
-          <Route path="/administrar/agregar" element={<AgregarNoticia />} />
-          <Route path="/administrar/modificar" element={<ModificarNoticia />} />
-          <Route path="/administrar/eliminar" element={<EliminarNoticia />} />
-        </Route>
       </Routes>
     </Router>
   );

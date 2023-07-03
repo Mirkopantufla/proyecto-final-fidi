@@ -24,9 +24,7 @@ function Registro() {
     // Luego puedes redirigir al usuario a otra página o mostrar un mensaje de éxito, según tus necesidades
   };
 
-  const registrarConFacebook = () => {
-    // Lógica para registrar con Facebook
-  };
+
 
   const registrarConTwitter = () => {
     // Lógica para registrar con Twitter
@@ -36,9 +34,7 @@ function Registro() {
     // Lógica para registrar con LinkedIn
   };
 
-  const registrarConGitHub = () => {
-    // Lógica para registrar con GitHub
-  };
+ 
 
   return (
     <div className="registro-container p-4">

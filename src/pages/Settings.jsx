@@ -6,6 +6,8 @@ import ProfilePhoto from './configu/ProfilePhoto.jsx';
 import Email from './configu/Email.jsx';
 import Interest from './configu/Interest.jsx';
 import Notification from './configu/Notification.jsx';
+import logoImage from "../logo1.png";
+
 
 const Settings = () => {
   return (
@@ -45,6 +47,18 @@ const Settings = () => {
         <Route path="Notification" element={<Notification />} />
         </Routes>
        
+<br />
+<br />
+<div className="logo-container">
+
+<img
+        src={logoImage}
+        alt="Logo"
+        width="140"
+        height="60"
+        className="logo"
+      />
+      </div>
       </div>
     
     </div>

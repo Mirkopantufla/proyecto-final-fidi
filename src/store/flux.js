@@ -26,6 +26,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                     [name]: value
                 })
             },
+            fetchData: (url, options = {}) => {
+
+                return fetch(url, options);
+
+            },
             login: (e, navigate) => {
                 e.preventDefault();
                 const { correo, password, apiURL } = getStore();
@@ -73,7 +78,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         } else {
                             setStore({ correo: '', password: '', currentUser: respJson });
                             sessionStorage.setItem('currentUser', JSON.stringify(respJson));
-                            navigate('/dashboard')
+                            navigate('/formulario')
                         }
                     });
 

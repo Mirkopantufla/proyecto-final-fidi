@@ -10,11 +10,11 @@ const FichaContactoChat = ({ nombreContacto, fotoContacto }) => {
             <div className="col-lg-5 col-md-7 d-flex flex-column justify-content-center">
                 <h4 id='tituloNombreContacto'>{nombreContacto}</h4>
                 <div className='d-flex'>
-                    <button className='btn btn-dark me-1'>interes1</button>
-                    <button className='btn btn-dark me-1'>interes2</button>
-                    <button className='btn btn-dark me-1'>interes3</button>
-                    <button className='btn btn-dark me-1'>interes4</button>
-                    <button className='btn btn-dark me-1'>interes5</button>
+                    <button className='btn btn-dark me-1'>Habilidad1</button>
+                    <button className='btn btn-dark me-1'>Habilidad2</button>
+                    <button className='btn btn-dark me-1'>Habilidad3</button>
+                    <button className='btn btn-dark me-1'>Habilidad4</button>
+                    <button className='btn btn-dark me-1'>Habilidad5</button>
                 </div>
             </div>
         </>

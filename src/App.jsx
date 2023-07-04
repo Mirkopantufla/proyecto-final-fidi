@@ -30,10 +30,17 @@ const App = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/matches" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/settings/*" element={<Settings />} />
+        <Route path="/administrar" element={<PrivateRoute user={store.currentUser} />}>
+          <Route index element={<GestionarNoticia />} />
+          <Route path="/administrar/agregar" element={<AgregarNoticia />} />
+          <Route path="/administrar/modificar" element={<ModificarNoticia />} />
+          <Route path="/administrar/eliminar" element={<EliminarNoticia />} />
+        </Route>
+        <Route path='' element={<NotFound />} />
       </Routes>
     </Router>
   );
 };
 
 export default injectContext(App);
-

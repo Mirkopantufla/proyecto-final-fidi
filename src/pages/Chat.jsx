@@ -3,7 +3,31 @@ import "../estilos/Chat.css"
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { MdInsertEmoticon } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
-import ListaUsuarios from '../componentes/ListaUsuariosChat'
+import ListaUsuariosChat from '../componentes/ListaUsuariosChat'
+import MensajesUsuarioChat from '../componentes/MensajesUsuarioChat'
+
+const simulacionDatosChat = [
+    {
+        horaEnvio: "11:25 AM",
+        nombrePropMensaje: "Alejandro Miranda",
+        mensaje: "Hola mundo"
+    },
+    {
+        horaEnvio: "11:28 AM",
+        nombrePropMensaje: "Alejandro Miranda",
+        mensaje: "K pedo wey"
+    },
+    {
+        horaEnvio: "11:32 AM",
+        nombrePropMensaje: "Alejandro Miranda",
+        mensaje: "Nada manito"
+    },
+    {
+        horaEnvio: "11:50 AM",
+        nombrePropMensaje: "Alejandro Miranda",
+        mensaje: "ya merito llegamos? ya merito llegamos? ya merito llegamos? ya merito llegamos?"
+    }
+]
 
 //Lista de prueba para mapear Usuarios en el chat
 //Deberan ser las personas que han hecho match las que se habilitaran para hablar
@@ -67,14 +91,14 @@ const Chat = () => {
                 </div>
             </div>
             {/* Ocupo clase custom 'chat' para mantener la  altura del cuadro de mensaje*/}
-            <div className="row chat px-3">
+            <div className="row px-3">
                 <div className="col-3 text-center">
                     {
                         //Mapeo de los objetos contenidos en el array listaPruebaUsuarios
                         //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
                         listaPruebaUsuarios.map((usuario, index) => {
                             return (
-                                <ListaUsuarios
+                                <ListaUsuariosChat
                                     key={index}
                                     usuario={usuario.usuario}
                                     estado={usuario.estado}
@@ -85,8 +109,20 @@ const Chat = () => {
                         })
                     }
                 </div>
-                <div className="col-9 text-center bg-light rounded-4" style={{ height: "72vh" }}>
-                    Hola prros
+                <div className="col-9 bg-light rounded-4" style={{ height: "72vh" }}>
+                    {
+                        simulacionDatosChat.map((mensaje, index) => {
+                            return (
+                                <MensajesUsuarioChat
+                                    key={index}
+                                    horaEnvio={mensaje.horaEnvio}
+                                    nombrePropMensaje={mensaje.nombrePropMensaje}
+                                    mensaje={mensaje.mensaje}
+                                />
+                            );
+                        })
+                    }
+
                 </div>
             </div>
             <div className="row">

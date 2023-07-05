@@ -1,0 +1,7 @@
+.chatHover:hover {
+    background-color: #f9c228
+}
+
+.chatHover:active {
+    background-color: #e3b024
+}

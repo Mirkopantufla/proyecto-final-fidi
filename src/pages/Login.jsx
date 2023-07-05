@@ -1,24 +1,12 @@
 import React, { useState } from 'react'
 import Registro from '../componentes/FormularioRegistro';
-import logoImage from "../logo1.png";
 import logoImage2 from "../logo2rosa.png";
 
 const Login = () => {
 
     return (
         <>
-            <nav className="navbar navbar-light">
-                <a className="navbar-brand" href="/">
-                    <img
-                        src={logoImage}
-                        alt="Logo"
-                        width="150"
-                        height="150"
-                        className="logo"
-                    />
-                </a>
-            </nav>
-
+            
             <div className="container main-container custom-bg rounded">
                 <div className="row">
                     <div className="col-sm-6">

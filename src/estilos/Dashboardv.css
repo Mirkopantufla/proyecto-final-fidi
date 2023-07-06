@@ -24,7 +24,7 @@
   
   .btn:hover {
     color: hsl(195, 85%, 77%);
-    background-color: #ff69b4;
+    background-color: #F745AE;
     transform: scale(1.00);
   }
 
@@ -41,8 +41,8 @@
   }
 
   .profile-first:hover {
-    color: hsl(0, 0%, 1%);
-    background-color: #f8aad13d;
+    color: #11100F;
+    background-color: #f745ad5f;
     transform: scale(1.03);
   }
 
@@ -68,7 +68,15 @@
     transform: scale(1.01);
 
   }
-  
+.h {
+
+  color:  #11100F
+    #0CD5A9
+    #F7BA0D
+    #F745AE
+    #EAEAF0
+    #ffffff
+ } 
   .user-item {
     display: flex;
     align-items: center;

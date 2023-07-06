@@ -1,5 +1,5 @@
 # Link de la base de datos FIDI
-https://github.com/Mirkopantufla/proyecto-final-fidi-db
+-https://github.com/Pazdesarrolladora/Proyecto-final-FiDi-bd
 
 ## Crear proyecto react usando create-react-app (reactjs):
 

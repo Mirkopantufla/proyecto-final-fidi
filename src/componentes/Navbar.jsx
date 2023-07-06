@@ -6,11 +6,11 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-ligth">
       <div className="container-fluid">
-      <Link className="navbar-brand" to="/">
-          <img src={logoImage}   alt="Logo"
-                        width="90"
-                        height="30"
-                        className="logo"/>
+        <Link className="navbar-brand" to="/">
+          <img src={logoImage} alt="Logo"
+            width="90"
+            height="30"
+            className="logo" />
         </Link>
         <button
           className="navbar-toggler"

@@ -14,11 +14,13 @@ const AgregarNoticia = () => {
   const handleNuevaNoticia = (e) => {
     e.preventDefault();
 
+    // Aqui, creamos el formulario que se enviara por metodo POST en un fetch
     const form = new FormData();
     form.append('titulo', titulo)
     form.append('descripcion', descripcion)
     form.append('image', image);
 
+    //Defino las opciones con las cuales enviare el formulario definido por el body
     const options = {
       method: 'POST',
       body: form
@@ -82,7 +84,7 @@ const AgregarNoticia = () => {
               />
             </div>
             <div className='text-center'>
-              <button type="submit" className="btn btn-primary">Agregar</button>
+              <button type="submit" className="btn btn-primary ">Agregar</button>
             </div>
           </form>
         </div>

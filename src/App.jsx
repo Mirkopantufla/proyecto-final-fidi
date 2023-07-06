@@ -12,8 +12,8 @@ import GestionarNoticia from './pages/GestionarNoticia';
 import AgregarNoticia from './pages/AgregarNoticia';
 import ModificarNoticia from './pages/ModificarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
-// import NotFound from './pages/NotFound';
-// import PrivateRoute from './utils/PrivateRoute';
+import NotFound from './pages/NotFound';
+import PrivateRoute from './utils/PrivateRoute';
 import Settings from './pages/Settings';
 
 const App = () => {
@@ -36,9 +36,8 @@ const App = () => {
           <Route path="/administrar/agregar" element={<AgregarNoticia />} />
           <Route path="/administrar/modificar" element={<ModificarNoticia />} />
           <Route path="/administrar/eliminar" element={<EliminarNoticia />} />
-        </Route> 
+        </Route> */}
         <Route path='' element={<NotFound />} />
-        */}
         <Route path='/administrar' element={<GestionarNoticia />} />
         <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
         <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />

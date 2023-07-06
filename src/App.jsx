@@ -25,7 +25,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar />
+      <Navbar esAdministrador={store.esAdministrador} />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
@@ -42,15 +42,14 @@ const App = () => {
           <Route path="/administrar/agregar" element={<AgregarNoticia />} />
           <Route path="/administrar/modificar" element={<ModificarNoticia />} />
           <Route path="/administrar/eliminar" element={<EliminarNoticia />} />
-        </Route> 
-        <Route path='' element={<NotFound />} />
-        */}
+        </Route> */}
+        {/* <Route path='' element={<NotFound />} /> */}
         <Route path='/administrar' element={<GestionarNoticia />} />
         <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
         <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />
         <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} />
-      </Routes>
-    </Router>
+      </Routes >
+    </Router >
   );
 };
 

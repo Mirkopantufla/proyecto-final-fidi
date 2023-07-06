@@ -71,19 +71,19 @@ const Profile = ({ profileId }) => {
                   </div>
                 </div>
                 <div className="profile-actions d-flex align-items-center">
-  <button className="btn btn-like" onClick={handleLike}>
-    <span className="like-icon">
-      <FaHeart />
-    </span>
-  </button>
-  <button className="btn btn-reject" onClick={handleReject}>
-    <span className="reject-icon">
-      <FaTimes />
-    </span>
-  </button>
-</div>
-{liked && <p>¡Has dado like a este perfil!</p>}
-{rejected && <p>Has rechazado este perfil.</p>}
+                  <button className="btn btn-like" onClick={handleLike}>
+                    <span className="like-icon">
+                      <FaHeart />
+                    </span>
+                  </button>
+                  <button className="btn btn-reject" onClick={handleReject}>
+                    <span className="reject-icon">
+                      <FaTimes />
+                    </span>
+                  </button>
+                </div>
+                {liked && <p>¡Has dado like a este perfil!</p>}
+                {rejected && <p>Has rechazado este perfil.</p>}
 
               </div>
             </div>

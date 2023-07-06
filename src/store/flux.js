@@ -17,7 +17,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             apiURL: 'http://127.0.0.1:5000',
             currentUser: null,
             correo: '',
-            password: ''
+            nombre: '',
+            password: '',
+            esAdministrador: true,
+            color: {
+
+            }
         },
         actions: {
             handleChange: e => {
@@ -26,6 +31,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                     [name]: value
                 })
             },
+            cleanContext: () => {
+                setStore({ password: '' });
+            },
+            // Esta funcion la cree para poder recortar unas cuantas lineas
             fetchData: (url, options = {}) => {
 
                 return fetch(url, options);
@@ -41,7 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 
                 const data = {
-                    apiURL: `${apiURL}/api/login`,
+                    apiURL: `${apiURL}/api/formulario`,
                     options: {
                         method: 'POST',
                         headers: {
@@ -78,7 +87,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                         } else {
                             setStore({ correo: '', password: '', currentUser: respJson });
                             sessionStorage.setItem('currentUser', JSON.stringify(respJson));
-                            navigate('/formulario')
+                            navigate('/dashboard')
                         }
                     });
 

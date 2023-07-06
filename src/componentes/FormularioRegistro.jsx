@@ -18,10 +18,13 @@ gapi.load("client:auth2", () => {
 });
 
 function Registro() {
+  const { store, actions } = useContext(Context);
+
   const clientId = '887454848030-hcrspiurrepmmojkcv1spvfh8607h1g9.apps.googleusercontent.com';
   const navigate = useNavigate();
 
-  const handleJoinNow = () => {
+  const handleJoinNow = (e) => {
+    e.preventDefault();
     navigate('./formulario');
   };
 
@@ -50,18 +53,32 @@ function Registro() {
   };
 
   return (
-    
+
     <div className="container">
-    
+
       <div className="row justify-content-center p-4">
         <div className="col-md-6 text-center">
           <form>
+            <h3 className="titulos"> ¡Hagamos intercambio de conocimiento, registrate en Fidi!
+            </h3>
+            <br />
             <div className="form-group">
-              <h5 className="email">Email:</h5>
-              <input type="email" className="form-control" id="email" name="email" />
+              <h5 className="email">Email</h5>
+              {/* Con el Onchange mando los cambios inmediatamente al context mediante una funcion dentro de flux */}
+              <input type="email" className="form-control" id="correo" name="correo" onChange={actions.handleChange} />
+            </div>
+            <br />
+            <div className="form-group">
+              <h5 className="email">Nombre</h5>
+              <input type="text" className="form-control" id="nombre" name="nombre" onChange={actions.handleChange} />
+            </div>
+            <br />
+            <div className="form-group">
+              <h5 className="email">Contraseña</h5>
+              <input type="password" className="form-control" id="password" name="password" onChange={actions.handleChange} />
             </div>
           </form>
-           <br />
+          <br />
           <button className="btn btn-dark custom-button text-center" onClick={handleJoinNow}>
             Únete ya
           </button>
@@ -71,8 +88,8 @@ function Registro() {
               clientId={clientId}
               onSuccess={handleGoogleSuccess}
               onFailure={handleGoogleFailure}
-              buttonText="Iniciar sesión con Google"
-              className="btn btn-danger"
+              buttonText="Registrate con Google"
+              className="btn btn-dark"
             />
           </div>
 
@@ -83,13 +100,13 @@ function Registro() {
       </div>
       <div className="logo-container">
 
-      <img
-        src={logoImage}
-        alt="Logo"
-        width="140"
-        height="60"
-        className="logo"
-      />
+        <img
+          src={logoImage}
+          alt="Logo"
+          width="140"
+          height="60"
+          className="logo"
+        />
       </div>
     </div>
   );

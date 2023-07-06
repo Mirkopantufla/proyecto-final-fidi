@@ -27,3 +27,9 @@ $ npm create vite .
 #EAEAF0
 #ffffff
 ```
+
+
+##fuentes
+font-family: 'Bagel Fat One', cursive;
+font-family: 'Modak', cursive;
+font-family: 'Shrikhand', cursive; 

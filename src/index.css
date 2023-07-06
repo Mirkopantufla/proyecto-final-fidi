@@ -1,5 +1,6 @@
 body{
-    background-color:#F7BA0D;
+    background-image:url("fondo1.png");
+    background-size:auto;
 }
 
 .custom-bg {
@@ -14,5 +15,11 @@ body{
     bottom: 0;
     right: 0;
   }
-  
+  .titulos {
+    color:#11100F
+
+    ;
+   
+font-family: 'Staatliches', cursive; 
+  }
   

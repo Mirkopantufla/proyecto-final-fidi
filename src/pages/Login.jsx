@@ -6,14 +6,14 @@ const Login = () => {
 
     return (
         <>
-            
+
             <div className="container main-container custom-bg rounded">
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="explore-container p-4">
-                        <Registro />                          
+                            <Registro />
                         </div>
-                    </div>                   
+                    </div>
                 </div>
             </div>
 

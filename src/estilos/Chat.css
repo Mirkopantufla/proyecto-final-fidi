@@ -1,4 +1,12 @@
 .estilo-chat {
-    height: 68vh;
+    height: 70vh;
     overflow-y: scroll;
+}
+
+.estilo-chat::-webkit-scrollbar {
+    width: 5px;
+}
+
+.estilo-chat::-webkit-scrollbar-thumb {
+    background: #0b0b0b;
 }

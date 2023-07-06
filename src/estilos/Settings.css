@@ -1,3 +1,12 @@
-body{
-    background-color: #0CD5A9;
-}
+.custom-button {
+    background-color: #11100F;
+      }
+.custom-button:hover {
+        background-color: #F745AE;
+      }
+      .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      

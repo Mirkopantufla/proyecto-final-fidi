@@ -12,36 +12,36 @@
   }
   
   .bg-light-yellow {
-    background-color: #f5f9e9;
+    background-color: #ffffff41;
   }
   
   .button-container {
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
     margin-bottom: 10px;
+    
   }
   
-  .btn-fucsia {
-    background-color: #ff00ff;
-    margin: 3px;
+  .btn:hover {
     color: #ffffff;
-    transition: all 0.3s;
-    width: 50px;
-    height: 50px;
-  }
-  
-  .btn-fucsia:hover {
     background-color: #ff69b4;
     transform: scale(1.05);
   }
+
+  .btn {
+    color: #ffffff;
+  }
+
   
   .profile-section {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   
   .profile {
+    padding: 10px 20px 40px 20px;
     text-align: center;
     margin-bottom: 20px;
   }
@@ -63,6 +63,7 @@
   }
   
   .user-item img {
+    margin-bottom: 15px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -70,8 +71,10 @@
   
   .user-details {
     margin-left: 10px;
+    
   }
   
   .card {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    width: 340px;
   }

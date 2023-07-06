@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Formulario = () => {
+const Interests = () => {  
   const habilidadesPrincipales = ['Programación', 'Marketing', 'Idiomas', 'Habilidades blandas', 'Startups', 'Diseño UX', 'Negocios'];
   const habilidadesIntereses = {
     Programación: ['JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP'],
@@ -88,6 +88,9 @@ const Formulario = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-sm-6 mx-auto">
+        <label  className="text-light text-center">
+                     <h1>Actualiza tu perfil</h1>
+                  </label>
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-sm-6">
@@ -232,7 +235,7 @@ const Formulario = () => {
               />
             </div>
             <button type="submit" className="btn btn-primary mt-4">
-              Registrarme
+              Aceptar Modificaciones
             </button>
           </form>
         </div>
@@ -241,4 +244,5 @@ const Formulario = () => {
   );
 };
 
-export default Formulario;
+
+export default Interests;

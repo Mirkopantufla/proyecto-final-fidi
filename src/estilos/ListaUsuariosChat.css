@@ -5,3 +5,13 @@
 .chatHover:active {
     background-color: #e3b024
 }
+
+.adorno::before {
+    content: "↸ ";
+}
+
+.tamanoFoto {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}

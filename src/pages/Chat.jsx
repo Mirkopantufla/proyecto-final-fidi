@@ -1,59 +1,111 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../estilos/Chat.css"
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { MdInsertEmoticon } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
 import ListaUsuariosChat from '../componentes/ListaUsuariosChat'
 import MensajesUsuarioChat from '../componentes/MensajesUsuarioChat'
+import FichaContactoChat from '../componentes/FichaContactoChat'
+import logoFidi from '../imagenes/logo1.png'
 
+//---------------------------------------------------------------------------------------------------
+//Lista de prueba para mapear Mensajes en el chat
+//El chat se almacenara en la base de datos y debera ser traido desde allí
+//Lo puse como Date por que de la DB vendra con formato timestamp (?)
 const simulacionDatosChat = [
     {
-        horaEnvio: "11:25 AM",
+        idUsuarioRemitente: 2,
+        horaEnvio: new Date("08/05/2023 11:28:15 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "Hola mundo"
     },
     {
-        horaEnvio: "11:28 AM",
+        idUsuarioRemitente: 2,
+        horaEnvio: new Date("08/05/2023 11:29:17 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "K pedo wey"
     },
     {
-        horaEnvio: "11:32 AM",
-        nombrePropMensaje: "Alejandro Miranda",
+        idUsuarioRemitente: 1,
+        horaEnvio: new Date("08/05/2023 11:32:23 AM"),
+        nombrePropMensaje: "Yo",
         mensaje: "Nada manito"
     },
     {
-        horaEnvio: "11:50 AM",
+        idUsuarioRemitente: 2,
+        horaEnvio: new Date("08/05/2023 11:34:54 AM"),
         nombrePropMensaje: "Alejandro Miranda",
         mensaje: "ya merito llegamos? ya merito llegamos? ya merito llegamos? ya merito llegamos?"
+    },
+    {
+        idUsuarioRemitente: 1,
+        horaEnvio: new Date("08/05/2023 11:40:34 AM"),
+        nombrePropMensaje: "Yo",
+        mensaje: "calla burro"
+    },
+    {
+        idUsuarioRemitente: 1,
+        horaEnvio: new Date("08/05/2023 11:33:34 AM"),
+        nombrePropMensaje: "Yo",
+        mensaje: "ultima posicion de los mensajes a las 11:33, probando el ultimo mensaje por fecha en la lista de Contactos"
     }
 ]
 
+//---------------------------------------------------------------------------------------------------
 //Lista de prueba para mapear Usuarios en el chat
 //Deberan ser las personas que han hecho match las que se habilitaran para hablar
 //El chat se almacenara en la base de datos y debera ser traido desde allí
-const listaPruebaUsuarios = [
+const simulacionDatosUsuarios = [
     {
-        usuario: "Mirko Pasten",
+        usuario: "Alejandro Miranda",
         estado: false,
         ultimoMsjRecibido: "ola mundo",
-        srcFotografia: "https://picsum.photos/id/237/120/120"
+        srcFotografia: "https://picsum.photos/id/237/200/200"
     },
     {
         usuario: "Rosa Deltransito",
         estado: false,
         ultimoMsjRecibido: "enseña bien oe",
-        srcFotografia: "https://picsum.photos/id/238/120/120"
+        srcFotografia: "https://picsum.photos/id/238/200/200"
     },
     {
         usuario: "Armando Losas",
         estado: false,
         ultimoMsjRecibido: "paralelepipedo",
-        srcFotografia: "https://picsum.photos/id/239/120/120"
+        srcFotografia: "https://picsum.photos/id/239/200/200"
+    },
+    {
+        usuario: "Matias Pasten",
+        estado: true,
+        ultimoMsjRecibido: "tengo gatos",
+        srcFotografia: "https://picsum.photos/id/240/200/200"
     }
 ];
 
+//---------------------------------------------------------------------------------------------------
 const Chat = () => {
+    const [nombreContacto, setNombreContacto] = useState("Eduardo");
+    const [fotoContacto, setFotoContacto] = useState("");
+    const [chat, setChat] = useState([]);
+
+    const handleClickUsuario = (indicador) => {
+        setNombreContacto(simulacionDatosUsuarios[indicador].usuario)
+        setFotoContacto(simulacionDatosUsuarios[indicador].srcFotografia)
+        setChat(simulacionDatosChat)
+    }
+
+    const ultimoMensaje = () => {
+        let date = new Date("01/01/2000 00:00:01 AM");
+        let ultimoMsj = "";
+        simulacionDatosChat.forEach(element => {
+            if (date < element.horaEnvio) {
+                date = element.horaEnvio;
+                ultimoMsj = element.mensaje;
+            }
+        });
+        return ultimoMsj;
+    }
+
     return (
         <div className='container-fluid'>
             <div className="row">
@@ -62,19 +114,7 @@ const Chat = () => {
                 </div>
                 <div className="col-9">
                     <div className="row">
-                        <div className="col-lg-3 col-md-3 my-3">
-                            <img className='border rounded-5' src="https://picsum.photos/id/237/150/150" alt="" />
-                        </div>
-                        <div className="col-lg-5 col-md-7 my-auto d-flex flex-column justify-content-left">
-                            <h4>Nombre Contacto</h4>
-                            <div className=''>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                                <button className='btn btn-dark'>interes</button>
-                            </div>
-
-                        </div>
+                        <FichaContactoChat nombreContacto={nombreContacto} fotoContacto={fotoContacto} />
                         <div className="col-lg-4 col-md-2 mt-2 d-flex justify-content-end mt-5">
                             <div className="dropdown">
                                 <button className="btn btn-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -96,38 +136,41 @@ const Chat = () => {
                     {
                         //Mapeo de los objetos contenidos en el array listaPruebaUsuarios
                         //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
-                        listaPruebaUsuarios.map((usuario, index) => {
+                        simulacionDatosUsuarios.map((usuario, index) => {
                             return (
                                 <ListaUsuariosChat
                                     key={index}
                                     usuario={usuario.usuario}
                                     estado={usuario.estado}
-                                    ultimoMsjRecibido={usuario.ultimoMsjRecibido}
+                                    ultimoMsjRecibido={ultimoMensaje()}
                                     srcFotografia={usuario.srcFotografia}
+                                    funcionClick={() => handleClickUsuario(index)}
                                 />
                             );
                         })
                     }
                 </div>
-                <div className="col-9 bg-light rounded-4" style={{ height: "72vh" }}>
+                <div className="col-9 bg-light rounded-4 estilo-chat">
                     {
-                        simulacionDatosChat.map((mensaje, index) => {
+                        //Mapeo de los objetos contenidos en el array simulacionDatosChat
+                        //Extraigo cada usuario y lo muestro en el chat, suponiendo que son los match 
+                        chat.map((mensaje, index) => {
                             return (
                                 <MensajesUsuarioChat
                                     key={index}
-                                    horaEnvio={mensaje.horaEnvio}
+                                    idUsuarioRemitente={mensaje.idUsuarioRemitente}
+                                    horaEnvio={mensaje.horaEnvio.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
                                     nombrePropMensaje={mensaje.nombrePropMensaje}
                                     mensaje={mensaje.mensaje}
                                 />
                             );
                         })
                     }
-
                 </div>
             </div>
             <div className="row">
                 <div className="col-3 text-center">
-                    Algo
+                    <img src={logoFidi} alt="logo Fidi" style={{ height: "40px" }} />
                 </div>
                 <div className="col-9 d-flex mt-lg-3" style={{ margin: "-15px" }}>
                     <MdInsertEmoticon className='fs-1 me-1' />

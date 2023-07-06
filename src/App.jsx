@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import injectContext, { Context } from './store/AppContext'
 import Navbar from './componentes/Navbar';
 import Chat from './pages/Chat';
+import Auth from './componentes/Auth';
 import Formulario from './componentes/Formulario';
 import Explore from './pages/Explore';
 import Login from './pages/Login';
@@ -13,6 +14,7 @@ import AgregarNoticia from './pages/AgregarNoticia';
 import ModificarNoticia from './pages/ModificarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
 import Dashboardv from './pages/Dashboardv';
+import LoginForm from './componentes/LoginForm';
 // import NotFound from './pages/NotFound';
 // import PrivateRoute from './utils/PrivateRoute';
 import Settings from './pages/Settings';
@@ -26,13 +28,15 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/formulario" element={<Formulario />} />
+        <Route path="/formulario/*" element={<Formulario />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/auth" component={Auth} />
         <Route path="/matches" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings/*" element={<Settings />} />
         <Route path='/dashboard' element={<Dashboardv />} />
+        <Route path="loginform" element={<LoginForm/>} />
         {/* <Route path="/administrar" element={<PrivateRoute user={store.currentUser} />}>
           <Route index element={<GestionarNoticia />} />
           <Route path="/administrar/agregar" element={<AgregarNoticia />} />

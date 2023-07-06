@@ -11,10 +11,14 @@ import logoImage from "../logo1.png";
 
 const Settings = () => {
   return (
+
     <div className="container">
-      <h1>¿Qué quieres hacer hoy?</h1>
-      <br />
+      <div className="row justify-content-center p-4 custom-bg rounded-2">
+      <div className="col-md-6 text-center">
+      <h1 className='titulos text-center'>¿Qué quieres hacer hoy?</h1>
+          
       <div className="d-grid gap-2">
+        <br />
         <Link to="Password" className="btn btn-dark custom-button">
           Modificación de Contraseña
         </Link>
@@ -61,6 +65,8 @@ const Settings = () => {
       </div>
       </div>
     
+    </div>
+    </div>
     </div>
   );
 };

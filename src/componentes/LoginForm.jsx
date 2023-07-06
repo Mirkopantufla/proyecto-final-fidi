@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import logoImage2 from "../logo2rosa.png";
 
 
+
 function LoginForm() {
   const clientId = '887454848030-hcrspiurrepmmojkcv1spvfh8607h1g9.apps.googleusercontent.com';
   const navigate = useNavigate();
@@ -39,9 +40,10 @@ function LoginForm() {
 
   return (
     <div className="container">
-      <div className="row justify-content-center align-items-center vh-100 ">
-        <div className="col-md-6 ">
-          <div className="card p-4 custom-bg rounded">
+    
+    <div className="row justify-content-center p-4 custom-bg rounded-2">
+      <div className="col-md-6 text-center">
+        
             <form onSubmit={handleFormSubmit}>
               <br />
               <div className="form-group">
@@ -74,6 +76,9 @@ function LoginForm() {
                 <button type="submit" className="btn btn-dark">Iniciar sesión</button>
               </div>
               <br />
+              <h4 className="password text-center">o</h4>
+
+              <br />
               <div className="form-group d-flex justify-content-center">
                 <GoogleLogin
                   clientId={clientId}
@@ -82,7 +87,7 @@ function LoginForm() {
                   buttonText="Iniciar sesión con Google"
                   className="btn btn-danger"
                 />
-              </div>
+               </div> 
               <br />
             </form>
             <div className="logo-container">
@@ -98,7 +103,6 @@ function LoginForm() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

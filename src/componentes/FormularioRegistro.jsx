@@ -56,9 +56,22 @@ function Registro() {
       <div className="row justify-content-center p-4">
         <div className="col-md-6 text-center">
           <form>
+          <h3 className="titulos"> ¡Hagamos intercambio de conocimiento, registrate en Fidi!
+          </h3>
+<br />
             <div className="form-group">
-              <h5 className="email">Email:</h5>
+              <h5 className="email">Email</h5>
               <input type="email" className="form-control" id="email" name="email" />
+            </div>
+            <br />
+            <div className="form-group">
+              <h5 className="email">Nombre</h5>
+              <input type="text" className="form-control" id="nombre" name="nombre" />
+            </div>
+            <br />
+            <div className="form-group">
+              <h5 className="email">Contraseña</h5>
+              <input type="password" className="form-control" id="contraseña" name="contraseña" />
             </div>
           </form>
            <br />
@@ -71,8 +84,8 @@ function Registro() {
               clientId={clientId}
               onSuccess={handleGoogleSuccess}
               onFailure={handleGoogleFailure}
-              buttonText="Iniciar sesión con Google"
-              className="btn btn-danger"
+              buttonText="Registrate con Google"
+              className="btn btn-dark"
             />
           </div>
 

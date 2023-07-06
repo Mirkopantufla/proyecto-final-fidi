@@ -87,8 +87,10 @@ const Formulario = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-6 mx-auto">
+      <div className="row justify-content-center p-4 custom-bg rounded-2">
+      <div className="col-md-6 text-center">
+      <h3 className='titulos '>!Completa el siguiente formulario para encontrar el Match ideal!</h3>
+
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-sm-6">
@@ -232,7 +234,7 @@ const Formulario = () => {
                 onChange={(e) => setFotoPerfil(e.target.files[0])}
               />
             </div>
-            <button type="submit" className="btn btn-primary mt-4">
+            <button type="submit" className="btn btn-dark mt-4">
               Registrarme
             </button>
           </form>
@@ -249,6 +251,7 @@ const Formulario = () => {
 />
 </div>
     </div>
+    
   );
 };
 

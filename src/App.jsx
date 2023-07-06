@@ -13,6 +13,7 @@ import GestionarNoticia from './pages/GestionarNoticia';
 import AgregarNoticia from './pages/AgregarNoticia';
 import ModificarNoticia from './pages/ModificarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
+import LoginForm from './componentes/LoginForm';
 // import NotFound from './pages/NotFound';
 // import PrivateRoute from './utils/PrivateRoute';
 import Settings from './pages/Settings';
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/matches" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings/*" element={<Settings />} />
+        <Route path="loginform" element={<LoginForm/>} />
         {/* <Route path="/administrar" element={<PrivateRoute user={store.currentUser} />}>
           <Route index element={<GestionarNoticia />} />
           <Route path="/administrar/agregar" element={<AgregarNoticia />} />

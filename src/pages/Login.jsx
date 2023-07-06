@@ -9,15 +9,11 @@ const Login = () => {
             
             <div className="container main-container custom-bg rounded">
                 <div className="row">
-                    <div className="col-sm-6">
+                    <div className="col-sm-12">
                         <div className="explore-container p-4">
-                            <h2>Explora personas que quieran intercambiar conocimiento</h2>
-                            <button className="btn btn-dark">Explorar</button>
+                        <Registro />                          
                         </div>
-                    </div>
-                    <div className="col-sm-6">
-                        <Registro />
-                    </div>
+                    </div>                   
                 </div>
             </div>
 

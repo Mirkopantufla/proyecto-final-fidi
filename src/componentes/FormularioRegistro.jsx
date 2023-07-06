@@ -1,67 +1,98 @@
 import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle} from '@fortawesome/free-brands-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../store/AppContext';
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from "gapi-script";
+import logoImage from "../logo1.png";
+import logoImage2 from "../logo2rosa.png";
+
+
 
 gapi.load("client:auth2", () => {
   gapi.client.init({
-    clientId:
-      "*****.apps.googleusercontent.com",
+    clientId: "*****.apps.googleusercontent.com",
     plugin_name: "chat",
   });
 });
 
 function Registro() {
-
   const clientId = '887454848030-hcrspiurrepmmojkcv1spvfh8607h1g9.apps.googleusercontent.com';
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const handleJoinNow = () => {
-    navigate ('./Formulario.jsx')
-  }
-  const handleLogin =() => {
-    navigate ('./LoginForm.jsx')
-  }
-  
-  const handleGoogleSuccess = (response) => {
-    navigate ('./Formulario.jsx')
+    navigate('./formulario');
+  };
 
-    console.log("entre bien")
+  const handleLogin = () => {
+    navigate('./LoginForm');
+  };
+
+  const handleGoogleSuccess = (response) => {
+    navigate('./formulario');
+
+    console.log("entre bien");
     // Aquí puedes obtener los datos de perfil del usuario autenticado con Google
     const { googleId, name, email } = response.profileObj;
 
-    console.log(googleId)
-    
-    console.log(name)
-    
-    console.log(email)
+    console.log(googleId);
+    console.log(name);
+    console.log(email);
     // Envía estos datos al backend para realizar la autenticación o el registro del usuario
     // ...
   };
 
   const handleGoogleFailure = (error) => {
-    console.log(clientId)
-    console.log("entre mal")
+    console.log(clientId);
+    console.log("entre mal");
     console.log('Error en la autenticación de Google:', error);
   };
- 
+
   return (
-   
-     
-    <div>
-      {/* Agrega el botón de inicio de sesión con Google */}
-      <GoogleLogin
-        clientId={clientId}
-        onSuccess={handleGoogleSuccess}
-        onFailure={handleGoogleFailure}
-        buttonText="Iniciar sesión con Google"
+    
+    <div className="container">
+    
+      <div className="row justify-content-center p-4">
+        <div className="col-md-6 text-center">
+          <form>
+            <div className="form-group">
+              <h5 className="email">Email:</h5>
+              <input type="email" className="form-control" id="email" name="email" />
+            </div>
+          </form>
+           <br />
+          <button className="btn btn-dark custom-button text-center" onClick={handleJoinNow}>
+            Únete ya
+          </button>
+
+          <div className="mt-4 mb-4">
+            <GoogleLogin
+              clientId={clientId}
+              onSuccess={handleGoogleSuccess}
+              onFailure={handleGoogleFailure}
+              buttonText="Iniciar sesión con Google"
+              className="btn btn-danger"
+            />
+          </div>
+
+          <button className="btn btn-dark text-center" onClick={handleLogin}>
+            ¿Ya tienes cuenta?
+          </button>
+        </div>
+      </div>
+      <div className="logo-container">
+
+      <img
+        src={logoImage}
+        alt="Logo"
+        width="140"
+        height="60"
+        className="logo"
       />
+      </div>
     </div>
   );
 }
-  
 
 export default Registro;

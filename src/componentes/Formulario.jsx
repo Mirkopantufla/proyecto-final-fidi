@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logoImage from "../logo1.png";
 
 const Formulario = () => {
   const habilidadesPrincipales = ['Programación', 'Marketing', 'Idiomas', 'Habilidades blandas', 'Startups', 'Diseño UX', 'Negocios'];
@@ -237,6 +238,16 @@ const Formulario = () => {
           </form>
         </div>
       </div>
+      <div className="logo-container">
+
+<img
+  src={logoImage}
+  alt="Logo"
+  width="140"
+  height="60"
+  className="logo"
+/>
+</div>
     </div>
   );
 };

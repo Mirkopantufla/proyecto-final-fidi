@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import logoImage from "../logo1.png";
+import { Context } from '../store/AppContext';
+import { toast } from 'react-toastify';
 
 const Formulario = () => {
   const habilidadesPrincipales = ['Programación', 'Marketing', 'Idiomas', 'Habilidades blandas', 'Startups', 'Diseño UX', 'Negocios'];
   const habilidadesIntereses = {
     Programación: ['JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP'],
-    Marketing: ['SEO', 'SEM', 'Marketing de contenidos', 'Analítica web', 'Email marketing'],
+    Marketing: ['SEO', 'SEM', 'Marketing de contenidos', 'Analítica Web', 'Email Marketing'],
     Idiomas: ['Inglés', 'Español', 'Francés', 'Alemán', 'Chino', 'Japonés'],
-    'Habilidades blandas': ['Comunicación efectiva', 'Trabajo en equipo', 'Liderazgo', 'Resolución de problemas'],
-    Startups: ['Emprendimiento', 'Validación de ideas', 'Finanzas para startups', 'Modelos de negocio'],
+    'Habilidades blandas': ['Comunicación Efectiva', 'Trabajo en Equipo', 'Liderazgo', 'Resolución de Problemas'],
+    Startups: ['Emprendimiento', 'Validación de Ideas', 'Finanzas para Startups', 'Modelos de negocio'],
     'Diseño UX': ['Wireframing', 'Prototipado', 'Investigación de usuarios', 'Arquitectura de información'],
-    Negocios: ['Planificación estratégica', 'Gestión de proyectos', 'Análisis de mercado', 'Ventas'],
+    Negocios: ['Planificación estratégica', 'Gestión de Proyectos', 'Análisis de Mercado', 'Ventas'],
   };
 
   const [habilidades, setHabilidades] = useState([]);
@@ -19,6 +22,30 @@ const Formulario = () => {
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [habilidadesError, setHabilidadesError] = useState(false);
   const [interesesError, setInteresesError] = useState(false);
+  const { store, actions } = useContext(Context);
+  const [habilidadesDB, setHabilidadesDB] = useState([]);
+
+  //Use effect para traer la data apenas se cargue el componente
+  useEffect(() => {
+
+    //Al dejarlo en el return la data la entrega cuando termina de cargar el componente
+    return () => {
+      obtenerHabilidades()
+    }
+  }, [])
+
+  //--------------------------------------------------------------------------------------------------------
+  //Funcion para traer la habilidades en la base de datos, se conecta con la API y extrae cada una de ellas
+  //estas las almaceno en el estado habilidadesDB para poder manipularlas en el front
+  const obtenerHabilidades = () => {
+    actions.fetchData(`${store.apiURL}/api/habilidades`, {})
+      .then((response) => response.json())
+      .then((data) => {
+        setHabilidadesDB(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }
 
   const handleHabilidadClick = (habilidad) => {
     if (habilidades.includes(habilidad)) {
@@ -76,6 +103,48 @@ const Formulario = () => {
     console.log('Aprendizaje:', aprendizaje);
     console.log('Biografía:', biografia);
     console.log('Foto de perfil:', fotoPerfil);
+
+    //--------------------------------------------------------------------------------------------------------
+    // const ordenarInformacion = (estado, setEstado) => {
+    //   aux = [];
+    //   for (let i = 0; i < estado.length; i++) {
+    //     for (let j = 0; j < habilidadesDB.length; j++) {
+    //       estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
+    //     }
+    //   };
+
+    //   function comparar(a, b) { return a - b; }
+    //   setEstado(aux.sort(comparar).join())
+    // }
+
+    //--------------------------------------------------------------------------------------------------------
+    //Creo un formulario para enviar la informacion al back, rescatada de los campos y del context
+    const form = new FormData();
+    form.append('correo', store.correo)
+    form.append('nombre', store.nombre)
+    form.append('password', store.password);
+    form.append('habilidades', habilidades)
+    form.append('imagen', fotoPerfil)
+
+    //--------------------------------------------------------------------------------------------------------
+    //Defino las opciones con las cuales enviare el formulario definido por el body
+    const options = {
+      method: 'POST',
+      body: form
+    }
+
+    //--------------------------------------------------------------------------------------------------------
+    //Hago el fetch a la api/formulario con el metodo POST para subir el usuario a la base de datos, apretando el boton
+    //de registrarse, de momento pasamos email, nombre, password y foto.
+    actions.fetchData(`${store.apiURL}/api/formulario`, options)
+      .then(response => response.json())
+      .then(data => {
+        toast.success(data.message);
+
+        e.target.reset();
+      })
+      .catch((error) => console.log(error));
+
   };
 
   const hayHabilidadesRepetidas = () => {
@@ -86,8 +155,11 @@ const Formulario = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-6 mx-auto">
+      <div className="row justify-content-center p-4 custom-bg rounded-2">
+        <div className="col-md-6 text-center">
+
+          <h3 className='titulos '>!Completa el siguiente formulario para encontrar el Match ideal!</h3>
+
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-sm-6">
@@ -110,9 +182,8 @@ const Formulario = () => {
                           <button
                             key={habilidad}
                             type="button"
-                            className={`btn btn-sm m-1 ${
-                              habilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
-                            }`}
+                            className={`btn btn-sm m-1 ${habilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
+                              }`}
                             style={{ backgroundColor: habilidades.includes(habilidad) ? '#F745AE' : '#0CD5A9' }}
                             onClick={() => handleHabilidadClick(habilidad)}
                           >
@@ -161,9 +232,8 @@ const Formulario = () => {
                           <button
                             key={interes}
                             type="button"
-                            className={`btn btn-sm m-1 ${
-                              intereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
-                            }`}
+                            className={`btn btn-sm m-1 ${intereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
+                              }`}
                             style={{ backgroundColor: intereses.includes(interes) ? '#F745AE' : '#0CD5A9' }}
                             onClick={() => handleInteresClick(interes)}
                           >
@@ -231,13 +301,24 @@ const Formulario = () => {
                 onChange={(e) => setFotoPerfil(e.target.files[0])}
               />
             </div>
-            <button type="submit" className="btn btn-primary mt-4">
+            <button type="submit" className="btn btn-dark mt-4">
               Registrarme
             </button>
           </form>
         </div>
       </div>
+      <div className="logo-container">
+
+        <img
+          src={logoImage}
+          alt="Logo"
+          width="140"
+          height="60"
+          className="logo"
+        />
+      </div>
     </div>
+
   );
 };
 

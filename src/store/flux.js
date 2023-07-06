@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             apiURL: 'http://127.0.0.1:5000',
             currentUser: null,
             correo: '',
+            nombre: '',
             password: '',
             esAdministrador: true,
             color: {
@@ -30,19 +31,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                     [name]: value
                 })
             },
+            cleanContext: () => {
+                setStore({ password: '' });
+            },
             // Esta funcion la cree para poder recortar unas cuantas lineas
             fetchData: (url, options = {}) => {
 
                 return fetch(url, options);
 
-            },
-            capitalize: (textoNormal) => {
-                let nombre = textoNormal;
-                let primeraLetra = nombre.charAt(0)
-                let primeraLetraMayus = primeraLetra.toUpperCase()
-                let letrasRestantes = nombre.slice(1)
-                let textoCapitalizado = primeraLetraMayus + letrasRestantes
-                return textoCapitalizado;
             },
             login: (e, navigate) => {
                 e.preventDefault();
@@ -54,7 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 
                 const data = {
-                    apiURL: `${apiURL}/api/login`,
+                    apiURL: `${apiURL}/api/formulario`,
                     options: {
                         method: 'POST',
                         headers: {

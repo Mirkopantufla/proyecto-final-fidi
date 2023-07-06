@@ -31,11 +31,13 @@ const ModificarNoticia = () => {
         arrayNoticias = noticias.filter((dato) => dato.titulo.includes(capitalize(buscar)));
         if (arrayNoticias != "" && buscar != "") {
           setMensajeAdvertencia("")
+          setTituloNoticia(arrayNoticias.titulo)
+          setDescripcion(arrayNoticias.titulo)
+          setTituloNoticia(arrayNoticias.titulo)
           console.log(arrayNoticias)
         } else {
           setMensajeAdvertencia("No encontrado");
         }
-
       })
       .catch((error) => console.log(error));
   }

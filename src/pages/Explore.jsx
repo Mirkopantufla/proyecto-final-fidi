@@ -40,6 +40,7 @@ const Explore = () => {
   return (
     <div className="container">
       <h1>Explorar</h1>
+
       {currentProfile && (
         <div className="card">
           {/* Contenido del perfil */}

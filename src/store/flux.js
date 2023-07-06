@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             currentUser: null,
             correo: '',
             password: '',
+            esAdministrador: true,
             color: {
 
             }
@@ -34,6 +35,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                 return fetch(url, options);
 
+            },
+            capitalize: (textoNormal) => {
+                let nombre = textoNormal;
+                let primeraLetra = nombre.charAt(0)
+                let primeraLetraMayus = primeraLetra.toUpperCase()
+                let letrasRestantes = nombre.slice(1)
+                let textoCapitalizado = primeraLetraMayus + letrasRestantes
+                return textoCapitalizado;
             },
             login: (e, navigate) => {
                 e.preventDefault();

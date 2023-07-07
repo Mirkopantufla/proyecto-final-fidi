@@ -24,14 +24,11 @@ const Formulario = () => {
   const [interesesError, setInteresesError] = useState(false);
   const { store, actions } = useContext(Context);
   const [habilidadesDB, setHabilidadesDB] = useState([]);
+  let aux = [];
 
   //Use effect para traer la data apenas se cargue el componente
   useEffect(() => {
-
-    //Al dejarlo en el return la data la entrega cuando termina de cargar el componente
-    return () => {
-      obtenerHabilidades()
-    }
+    obtenerHabilidades()
   }, [])
 
   //--------------------------------------------------------------------------------------------------------
@@ -42,7 +39,6 @@ const Formulario = () => {
       .then((response) => response.json())
       .then((data) => {
         setHabilidadesDB(data);
-        console.log(data);
       })
       .catch((error) => console.log(error));
   }
@@ -70,6 +66,19 @@ const Formulario = () => {
   const handleEliminarInteres = (interes) => {
     setIntereses(intereses.filter((item) => item !== interes));
   };
+
+  //--------------------------------------------------------------------------------------------------------
+  const ordenarInformacion = (estado, setEstado) => {
+    aux = [];
+    for (let i = 0; i < estado.length; i++) {
+      for (let j = 0; j < habilidadesDB.length; j++) {
+        estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
+      }
+    };
+
+    function comparar(a, b) { return a - b; }
+    setEstado(aux.sort(comparar))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,25 +114,17 @@ const Formulario = () => {
     console.log('Foto de perfil:', fotoPerfil);
 
     //--------------------------------------------------------------------------------------------------------
-    // const ordenarInformacion = (estado, setEstado) => {
-    //   aux = [];
-    //   for (let i = 0; i < estado.length; i++) {
-    //     for (let j = 0; j < habilidadesDB.length; j++) {
-    //       estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
-    //     }
-    //   };
-
-    //   function comparar(a, b) { return a - b; }
-    //   setEstado(aux.sort(comparar).join())
-    // }
-
-    //--------------------------------------------------------------------------------------------------------
     //Creo un formulario para enviar la informacion al back, rescatada de los campos y del context
+
+    ordenarInformacion(habilidades, setHabilidades)
+    ordenarInformacion(intereses, setIntereses)
+
     const form = new FormData();
     form.append('correo', store.correo)
     form.append('nombre', store.nombre)
-    form.append('password', store.password);
-    form.append('habilidades', habilidades)
+    form.append('password', store.password)
+    // form.append('habilidades', habilidades)
+    // form.append('intereses', habilidades)
     form.append('imagen', fotoPerfil)
 
     //--------------------------------------------------------------------------------------------------------
@@ -140,13 +141,10 @@ const Formulario = () => {
       .then(response => response.json())
       .then(data => {
         toast.success(data.message);
-
         e.target.reset();
       })
       .catch((error) => console.log(error));
 
-    setHabilidades([])
-    setIntereses([])
   };
 
   const hayHabilidadesRepetidas = () => {

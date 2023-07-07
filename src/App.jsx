@@ -13,6 +13,7 @@ import GestionarNoticia from './pages/GestionarNoticia';
 import AgregarNoticia from './pages/AgregarNoticia';
 import ModificarNoticia from './pages/ModificarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
+import Dashboardv from './pages/Dashboardv';
 import LoginForm from './componentes/LoginForm';
 // import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';

@@ -2,6 +2,8 @@ import logoImage from "../logo1.png";
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from "../store/AppContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRadiation } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
 
@@ -51,7 +53,7 @@ const Navbar = () => {
               store.role == 1 ?
                 <li className="nav-item">
                   <Link className="nav-link fs-5" to="/administrar">
-                    <b>ADMIN</b>
+                    <FontAwesomeIcon icon={faRadiation} />
                   </Link>
                 </li>
                 :

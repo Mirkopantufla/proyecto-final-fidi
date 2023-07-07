@@ -7,43 +7,14 @@ const Profile = ({ profileId }) => {
   const [liked, setLiked] = useState(false);
   const [rejected, setRejected] = useState(false);
   const { store, actions } = useContext(Context);
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [imagenUsuario, setImagenUsuario] = useState('');
 
   useEffect(() => {
 
     obtenerDatosUsuario(store.access_token)
 
   }, [])
-
-
-  const handleLike = () => {
-    setLiked(true);
-    // Enviar solicitud al servidor para registrar el like
-    fetch(`/api/profiles/${profileId}/like`, {
-      method: "POST",
-      // Puedes incluir encabezados o datos adicionales si es necesario
-    })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
-  };
-
-  const handleReject = () => {
-    setRejected(true);
-    // Enviar solicitud al servidor para registrar el rechazo
-    fetch(`/api/profiles/${profileId}/reject`, {
-      method: "POST",
-      // Puedes incluir encabezados o datos adicionales si es necesario
-    })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
-  };
 
   // Datos de ejemplo para la foto de perfil, intereses y lo que el usuario quiere aprender
   const profileData = {
@@ -59,7 +30,6 @@ const Profile = ({ profileId }) => {
   //estas las almaceno en el estado habilidadesDB para poder manipularlas en el front
   const obtenerDatosUsuario = (token) => {
 
-    console.log(token)
     const options = {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -67,24 +37,29 @@ const Profile = ({ profileId }) => {
     }
     actions.fetchData(`${store.apiURL}/api/profile`, options)
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        setNombreUsuario(data.usuario.nombre)
+        setImagenUsuario(data.usuario.src_imagen)
+      })
       .catch((error) => console.log(error));
+
+
   }
 
   return (
-    <div className="container main-container custom-bg rounded">
-      <div className="row">
-        <div className="col-sm-">
-          <div className="explore-container p-4">
-            <div className="background">
-              <div>
+    <div className="container">
+      <div className="container-fluid">
+        <div className="row justify-content-center p-4 custom-bg rounded-2">
+          <div className="col-md-6 text-center">
+            <div className="row">
+              <div className="offset-md-2 col-md-8">
                 <h1>¡a conocer!</h1>
                 <div className="profile-container">
-                  <div className="profile-image">
-                    <img src={profileData.profileImage} alt="Foto de perfil" />
+                  <div className="profile-image d-flex justify-content-center">
+                    <img src={imagenUsuario} alt="Foto de perfil" style={{ width: '400px' }} />
                   </div>
                   <div className="profile-info">
-                    <h2>{profileData.name}</h2>
+                    <h2>{nombreUsuario != '' ? nombreUsuario : null}</h2>
                     <p>Edad: {profileData.age} años</p>
                     <h3>Intereses</h3>
 
@@ -96,21 +71,6 @@ const Profile = ({ profileId }) => {
                     <p>{profileData.wantsToLearn}</p>
                   </div>
                 </div>
-                <div className="profile-actions d-flex align-items-center">
-                  <button className="btn btn-like" onClick={handleLike}>
-                    <span className="like-icon">
-                      <FaHeart />
-                    </span>
-                  </button>
-                  <button className="btn btn-reject" onClick={handleReject}>
-                    <span className="reject-icon">
-                      <FaTimes />
-                    </span>
-                  </button>
-                </div>
-                {liked && <p>¡Has dado like a este perfil!</p>}
-                {rejected && <p>Has rechazado este perfil.</p>}
-
               </div>
             </div>
           </div>

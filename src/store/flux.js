@@ -59,7 +59,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 fetch(data.apiURL, data.options)
                     .then(response => response.json())
                     .then(respJson => {
-                        console.log(respJson.data.access_token);
                         if (respJson.message) {
                             toast(respJson.message, { type: toast.TYPE.ERROR });
                             setStore({ password: '' });

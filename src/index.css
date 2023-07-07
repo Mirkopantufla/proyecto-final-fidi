@@ -1,7 +1,6 @@
 body{
-    background-color:#F745AE
-
-    ;
+    background-image:url("fondo1.png");
+    background-size:auto;
 }
 
 .custom-bg {

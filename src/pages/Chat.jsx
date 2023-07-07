@@ -59,24 +59,28 @@ const simulacionDatosChat = [
 //El chat se almacenara en la base de datos y debera ser traido desde allí
 const simulacionDatosUsuarios = [
     {
+        id: 1,
         usuario: "Alejandro Miranda",
         estado: false,
         ultimoMsjRecibido: "ola mundo",
         srcFotografia: "https://picsum.photos/id/237/200/200"
     },
     {
+        id: 2,
         usuario: "Rosa Deltransito",
         estado: false,
         ultimoMsjRecibido: "enseña bien oe",
         srcFotografia: "https://picsum.photos/id/238/200/200"
     },
     {
+        id: 3,
         usuario: "Armando Losas",
         estado: false,
         ultimoMsjRecibido: "paralelepipedo",
         srcFotografia: "https://picsum.photos/id/239/200/200"
     },
     {
+        id: 4,
         usuario: "Matias Pasten",
         estado: true,
         ultimoMsjRecibido: "tengo gatos",
@@ -110,6 +114,21 @@ const Chat = () => {
         });
         return ultimoMsj;
     }
+
+    //Funcion para traer datos del chat
+    const traerHistorialChat = () => {
+
+
+        const options = {
+            methods: {
+
+            }
+        }
+
+        actions.fetchData()
+    }
+
+
 
     return (
         <div className='container-fluid'>

@@ -15,6 +15,21 @@
     background-color: #ffffff41;
   }
   
+.onClick {
+  color: #332805;
+  background-color: #eaeaf0ae;
+  margin-bottom: 6px;
+  margin-top: -5px;
+  border-radius: 15px;
+  border-color: #F7BA0D;
+}
+
+.onClick:hover {
+  color: #332805;
+  background-color: #f745ad74;
+  transform: scale(1.00);
+}
+
   .button-container {
     display: inline-block;
     justify-content: space-between;

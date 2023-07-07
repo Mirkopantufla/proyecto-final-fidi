@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../estilos/Dashboardv.css";
 import { FaEnvelopeOpen } from 'react-icons/fa';
 import { PiPencilSimpleLineBold } from 'react-icons/pi';
@@ -6,12 +6,54 @@ import MadCat3 from '../dashimg/madcat3.jpg';
 import MadCat4 from '../dashimg/madcat4.jpg';
 import MadCat5 from '../dashimg/madcat5.jpg';
 
+const ArticlePost = ({ article }) => {
+  const [showFullArticle, setShowFullArticle] = useState(false);
 
-//font-family: 'Bagel Fat One', cursive;
-//font-family: 'Modak', cursive;
-//font-family: 'Shrikhand', cursive; 
+  const handleToggleArticle = () => {
+    setShowFullArticle(!showFullArticle);
+  };
+
+  return (
+    <div className="article-post" style={{color:"#11100F" , backgroundColor: "#eaeaf04f" , marginBlock:"30px" , width: "750px", padding: "15px" , fontSize: "16px"}}>
+       {article.image ? (
+        <div className="article-image" style={{color:"#11100F" , marginBlock:"25px" , fontSize: "20px"}}>
+          <img src={article.image} alt={article.title} />
+        </div>
+      ) : null}
+      <h3>{article.title}</h3>
+      {showFullArticle ? (
+        <>
+          <p>{article.abstract}</p>
+          <p>Escrito por {article.byline}</p>
+          <button onClick={handleToggleArticle} style={{fontWeight: "500" , color:"#F745AE" , backgroundColor:"#eaeaf0ae" , borderRadius:"20px" , border: "none"}}>Resumen</button>
+        </>
+      ) : (
+        <>
+          <p>{article.abstract.slice(0, 90)}...</p>
+          <button onClick={handleToggleArticle} style={{fontWeight: "500" , color:"#F7BA0D" , backgroundColor:"#eaeaf0ae" , borderRadius:"20px" , border: "none"}} >Artículo completo</button>
+        </>
+      )}
+    </div>
+  );
+};
 
 const Dashboardv = () => {
+  const [apiData, setApiData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=ZtXPD0bXAbNqSySaMN17ptB7Hrc7SxhJ');
+        const data = await response.json();
+        setApiData(data);
+      } catch (error) {
+        console.error('Error fetching API data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
 
     <div className="container-fluid">
@@ -22,33 +64,19 @@ const Dashboardv = () => {
 
           <div className="d-flex justify-content-center align-items-center flex-column">
 
-            <div className="card" style={{ width: "35rem" , height: "45rem" , marginTop:"20px" }}>
-              <img src={MadCat5} className="card-img-top" style={{width: "35rem" , height: "35rem"}} alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Título de la noticia</h5>
-                <p className="card-text">Descripción de la noticia</p>
-                <a href="#" className="btn btn-primary">Ver más</a>
+          {apiData ? (
+              <div>
+                <h6 style={{marginTop:"10px"}}>Quizás te pueda interesar...</h6>
+                <div className="article-list">
+                  {apiData.results.map((article) => (
+                    <ArticlePost key={article.id} article={article} />
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className="card" style={{ width: "35rem" , height: "45rem" , marginTop:"20px" }}>
-              <img src={MadCat5} className="card-img-top" style={{width: "35rem" , height: "35rem"}} alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Título de la noticia</h5>
-                <p className="card-text">Descripción de la noticia</p>
-                <a href="#" className="btn btn-primary">Ver más</a>
-              </div>
-            </div>
-            <div className="card" style={{ width: "35rem" , height: "45rem" , marginTop:"20px" }}>
-              <img src={MadCat5} className="card-img-top" style={{width: "35rem" , height: "35rem"}} alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Título de la noticia</h5>
-                <p className="card-text">Descripción de la noticia</p>
-                <a href="#" className="btn btn-primary">Ver más</a>
-              </div>
-            </div>
-
-
+            ) : (
+              <div>Cargando...</div>
+            )}
+            
             <div className="button-container">
               <button className="btn btn-primary rounded-circle">1</button>
 

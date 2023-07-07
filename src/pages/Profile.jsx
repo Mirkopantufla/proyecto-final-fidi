@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../estilos/Profile.css";
 import { FaHeart, FaTimes } from "react-icons/fa";
+import { Context } from "../store/AppContext";
 
 const Profile = ({ profileId }) => {
   const [liked, setLiked] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const { store, actions } = useContext(Context);
+
+  useEffect(() => {
+
+    obtenerDatosUsuario(store.access_token)
+
+  }, [])
+
 
   const handleLike = () => {
     setLiked(true);
@@ -44,6 +53,23 @@ const Profile = ({ profileId }) => {
     interests: ["los que se seleccionaron en el formulario"],
     wantsToLearn: ["los que se seleccionaron en el formulario"],
   };
+
+  //--------------------------------------------------------------------------------------------------------
+  //Funcion para traer la habilidades en la base de datos, se conecta con la API y extrae cada una de ellas
+  //estas las almaceno en el estado habilidadesDB para poder manipularlas en el front
+  const obtenerDatosUsuario = (token) => {
+
+    console.log(token)
+    const options = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+    actions.fetchData(`${store.apiURL}/api/profile`, options)
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  }
 
   return (
     <div className="container main-container custom-bg rounded">

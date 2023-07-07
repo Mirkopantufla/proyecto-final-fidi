@@ -145,6 +145,8 @@ const Formulario = () => {
       })
       .catch((error) => console.log(error));
 
+    setHabilidades([])
+    setIntereses([])
   };
 
   const hayHabilidadesRepetidas = () => {

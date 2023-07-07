@@ -29,7 +29,7 @@ function Registro() {
   };
 
   const handleLogin = () => {
-    navigate('./LoginForm');
+    navigate('/loginform');
   };
 
   const handleGoogleSuccess = (response) => {

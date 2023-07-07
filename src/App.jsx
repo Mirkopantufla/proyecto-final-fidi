@@ -29,10 +29,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/*" element={<Chat />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/auth" component={Auth} />
-        <Route path="/matches" element={<Matches />} />
+        <Route path="/matches/*" element={<Matches />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings/*" element={<Settings />} />
         <Route path='/dashboard' element={<Dashboardv />} />

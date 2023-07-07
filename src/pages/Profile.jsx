@@ -3,38 +3,8 @@ import "../estilos/Profile.css";
 import { FaHeart, FaTimes } from "react-icons/fa";
 
 const Profile = ({ profileId }) => {
-  const [liked, setLiked] = useState(false);
-  const [rejected, setRejected] = useState(false);
-
-  const handleLike = () => {
-    setLiked(true);
-    // Enviar solicitud al servidor para registrar el like
-    fetch(`/api/profiles/${profileId}/like`, {
-      method: "POST",
-      // Puedes incluir encabezados o datos adicionales si es necesario
-    })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
-  };
-
-  const handleReject = () => {
-    setRejected(true);
-    // Enviar solicitud al servidor para registrar el rechazo
-    fetch(`/api/profiles/${profileId}/reject`, {
-      method: "POST",
-      // Puedes incluir encabezados o datos adicionales si es necesario
-    })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
-  };
+ 
+  
 
   // Datos de ejemplo para la foto de perfil, intereses y lo que el usuario quiere aprender
   const profileData = {
@@ -46,12 +16,12 @@ const Profile = ({ profileId }) => {
   };
 
   return (
-    <div className="container main-container custom-bg rounded">
-      <div className="row">
-        <div className="col-sm-">
-          <div className="explore-container p-4">
-            <div className="background">
-              <div>
+    <div className="container">
+    <div className="container-fluid">
+      <div className="row justify-content-center p-4 custom-bg rounded-2">
+        <div className="col-md-6 text-center">
+          <div className="row">
+            <div className="col-md-8">
                 <h1>¡a conocer!</h1>
                 <div className="profile-container">
                   <div className="profile-image">
@@ -70,20 +40,7 @@ const Profile = ({ profileId }) => {
                     <p>{profileData.wantsToLearn}</p>
                   </div>
                 </div>
-                <div className="profile-actions d-flex align-items-center">
-                  <button className="btn btn-like" onClick={handleLike}>
-                    <span className="like-icon">
-                      <FaHeart />
-                    </span>
-                  </button>
-                  <button className="btn btn-reject" onClick={handleReject}>
-                    <span className="reject-icon">
-                      <FaTimes />
-                    </span>
-                  </button>
-                </div>
-                {liked && <p>¡Has dado like a este perfil!</p>}
-                {rejected && <p>Has rechazado este perfil.</p>}
+                
 
               </div>
             </div>

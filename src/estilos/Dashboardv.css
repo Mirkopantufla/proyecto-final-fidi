@@ -15,6 +15,21 @@
     background-color: #ffffff41;
   }
   
+.onClick {
+  color: #332805;
+  background-color: #eaeaf0ae;
+  margin-bottom: 6px;
+  margin-top: -5px;
+  border-radius: 15px;
+  border-color: #F7BA0D;
+}
+
+.onClick:hover {
+  color: #332805;
+  background-color: #f745ad74;
+  transform: scale(1.00);
+}
+
   .button-container {
     display: inline-block;
     justify-content: space-between;
@@ -23,13 +38,13 @@
   }
   
   .btn:hover {
-    color: hsl(195, 85%, 77%);
-    background-color: #F745AE;
+    color: #f745ad90;
+    background-color: #0CD5A9;
     transform: scale(1.00);
   }
 
   .btn {
-    color: #65eed3;
+    color: #0CD5A9;
     margin: 10px;
   }
 
@@ -64,19 +79,11 @@
 
   .user-item:hover{
     color: hsl(0, 0%, 1%);
-    background-color: #f8aad13d;
-    transform: scale(1.01);
+    background-color: #f745ad5f;
+    transform: scale(1.03);
 
   }
-.h {
 
-  color:  #11100F
-    #0CD5A9
-    #F7BA0D
-    #F745AE
-    #EAEAF0
-    #ffffff
- } 
   .user-item {
     display: flex;
     align-items: center;
@@ -84,18 +91,47 @@
   }
   
   .user-item img {
-    margin-bottom: 15px;
-    width: 40px;
-    height: 40px;
+    margin-bottom: 35px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
   }
   
   .user-details {
     margin-left: 10px;
+    margin-top: 5px;
     
+  }
+
+  .btn-user-detail {
+    color: #332805;
+    background-color: #eaeaf0ae;
+    margin-bottom: 6px;
+    margin-top: -5px;
+    border-radius: 15px;
+    border-color: #F7BA0D;
+  }
+
+  .btn-user-detail:hover {
+    color: #332805;
+    background-color: #f745ad74;
+    transform: scale(1.00);
   }
   
   .card {
+    background-color: #f7b90d76;
     margin-bottom: 50px;
     width: 340px;
   }
+
+  .info {
+
+    color:  #11100F
+      #0CD5A9
+      #F7BA0D
+      #F745AE
+      #EAEAF0
+      #ffffff
+
+      #eaeaf0c9
+   } 

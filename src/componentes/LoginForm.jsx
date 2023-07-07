@@ -1,32 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import logoImage2 from "../logo2rosa.png";
+import { Context } from '../store/AppContext';
 
 
 
 function LoginForm() {
+  const { store, actions } = useContext(Context);
   const clientId = '887454848030-hcrspiurrepmmojkcv1spvfh8607h1g9.apps.googleusercontent.com';
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes realizar acciones adicionales, como enviar los datos a un servidor, validar la autenticación, etc.
-    // Si la autenticación es exitosa, redirige a la página de perfil
-    navigate('/profile');
-  };
+  // const handleFormSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Aquí puedes realizar acciones adicionales, como enviar los datos a un servidor, validar la autenticación, etc.
+  //   // Si la autenticación es exitosa, redirige a la página de perfil
+  //   navigate('/profile');
+  // };
 
   const handleGoogleSuccess = (response) => {
     // Aquí puedes realizar acciones adicionales cuando se acepta el inicio de sesión con Google
@@ -44,7 +38,7 @@ function LoginForm() {
       <div className="row justify-content-center p-4 custom-bg rounded-2">
         <div className="col-md-6 text-center">
 
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={(e) => actions.login(e, navigate)}>
             <br />
             <div className="form-group">
               <h4 className="email text-center ">Ingresa tu email</h4>
@@ -52,9 +46,9 @@ function LoginForm() {
               <input
                 type="email"
                 className="form-control"
-                id="email"
-                value={email}
-                onChange={handleEmailChange}
+                id="correo"
+                name="correo"
+                onChange={actions.handleChange}
                 required
               />
               <br />
@@ -66,8 +60,8 @@ function LoginForm() {
                 type="password"
                 className="form-control"
                 id="password"
-                value={password}
-                onChange={handlePasswordChange}
+                name="password"
+                onChange={actions.handleChange}
                 required
               />
               <br />
@@ -91,7 +85,6 @@ function LoginForm() {
             <br />
           </form>
           <div className="logo-container">
-
             <img
               src={logoImage2}
               alt="Logo"

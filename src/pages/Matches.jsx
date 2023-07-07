@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHeart, FaTimes } from 'react-icons/fa';
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import "../estilos/Matches.css";
+import "../estilos/Profile.css";
+
+import { FaHeart, FaTimes } from "react-icons/fa";
+import { Context } from "../store/AppContext";
 
 const Matches = () => {
   const [liked, setLiked] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const [estado, setEstado] = useState(0);
+  const { store, setStore } = useContext(Context);
 
   // Perfil de la persona rescatada (ejemplo)
   const perfilRescatado = {

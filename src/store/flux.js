@@ -15,14 +15,13 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             apiURL: 'http://127.0.0.1:5000',
+            access_token: '',
             currentUser: null,
+            id_usuario: null,
             correo: '',
             nombre: '',
             password: '',
-            esAdministrador: true,
-            color: {
-
-            }
+            role: null
         },
         actions: {
             handleChange: e => {
@@ -30,9 +29,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({
                     [name]: value
                 })
-            },
-            cleanContext: () => {
-                setStore({ password: '' });
             },
             // Esta funcion la cree para poder recortar unas cuantas lineas
             fetchData: (url, options = {}) => {
@@ -50,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
 
                 const data = {
-                    apiURL: `${apiURL}/api/formulario`,
+                    apiURL: `${apiURL}/api/loginform`,
                     options: {
                         method: 'POST',
                         headers: {
@@ -60,21 +56,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 }
 
-                // serviceLogin(data).then(respJson => {
-                //     console.log(respJson);
-                //     if (respJson.message) {
-                //         toast(respJson.message, { type: toast.TYPE.ERROR });
-                //         setStore({ password: '' });
-                //     } else {
-                //         setStore({ correo: '', password: '' });
-                //         navigate('/formulario')
-                //     }
-                // });
-
                 fetch(data.apiURL, data.options)
                     .then(response => response.json())
                     .then(respJson => {
-                        console.log(respJson);
                         if (respJson.message) {
                             toast(respJson.message, { type: toast.TYPE.ERROR });
                             setStore({ password: '' });
@@ -85,9 +69,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                             toast(respJson.password, { type: toast.TYPE.WARNING });
                             setStore({ password: '' });
                         } else {
-                            setStore({ correo: '', password: '', currentUser: respJson });
+                            setStore({
+                                correo: '',
+                                password: '',
+                                access_token: respJson.data.access_token,
+                                role: respJson.data.user.id_roles,
+                                id_usuario: respJson.data.user.id,
+                                currentUser: respJson
+                            });
                             sessionStorage.setItem('currentUser', JSON.stringify(respJson));
-                            navigate('/dashboard')
+                            navigate('/profile')
                         }
                     });
 

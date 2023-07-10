@@ -29,7 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
-        <Route path="/chat" element={<PrivateRoute user={store.currentUser}><Chat /></PrivateRoute>} />
+        <Route path="/chat/*" element={<PrivateRoute user={store.currentUser}><Chat /></PrivateRoute>} />
         <Route path="/explore" element={<PrivateRoute user={store.currentUser}><Explore /></PrivateRoute>} />
         <Route path="/auth" component={Auth} />
         <Route path="/matches" element={<PrivateRoute user={store.currentUser}><Matches /></PrivateRoute>} />

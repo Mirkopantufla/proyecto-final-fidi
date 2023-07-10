@@ -137,6 +137,8 @@ const Formulario = () => {
     //--------------------------------------------------------------------------------------------------------
     //Hago el fetch a la api/formulario con el metodo POST para subir el usuario a la base de datos, apretando el boton
     //de registrarse, de momento pasamos email, nombre, password y foto.
+    console.log(form.get('nombre'));
+    console.log("impirimendo")
     actions.fetchData(`${store.apiURL}/api/formulario`, options)
       .then(response => response.json())
       .then(data => {

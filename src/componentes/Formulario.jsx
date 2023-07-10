@@ -1,20 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import logoImage from "../logo1.png";
 import { Context } from '../store/AppContext';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Formulario = () => {
-  const habilidadesPrincipales = ['Programación', 'Marketing', 'Idiomas', 'Habilidades blandas', 'Startups', 'Diseño UX', 'Negocios'];
-  const habilidadesIntereses = {
-    Programación: ['JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP'],
-    Marketing: ['SEO', 'SEM', 'Marketing de contenidos', 'Analítica Web', 'Email Marketing'],
-    Idiomas: ['Inglés', 'Español', 'Francés', 'Alemán', 'Chino', 'Japonés'],
-    'Habilidades blandas': ['Comunicación Efectiva', 'Trabajo en Equipo', 'Liderazgo', 'Resolución de Problemas'],
-    Startups: ['Emprendimiento', 'Validación de Ideas', 'Finanzas para Startups', 'Modelos de negocio'],
-    'Diseño UX': ['Wireframing', 'Prototipado', 'Investigación de usuarios', 'Arquitectura de información'],
-    Negocios: ['Planificación estratégica', 'Gestión de Proyectos', 'Análisis de Mercado', 'Ventas'],
-  };
-
   const [habilidades, setHabilidades] = useState([]);
   const [intereses, setIntereses] = useState([]);
   const [aprendizaje, setAprendizaje] = useState('');
@@ -24,6 +13,8 @@ const Formulario = () => {
   const [interesesError, setInteresesError] = useState(false);
   const { store, actions } = useContext(Context);
   const [habilidadesDB, setHabilidadesDB] = useState([]);
+  const [categoriasHabilidades, setCategoriasHabilidades] = useState([]);
+  const [habilidadesIntereses, setHabilidadesIntereses] = useState([]);
   let aux = [];
 
   //Use effect para traer la data apenas se cargue el componente
@@ -35,12 +26,37 @@ const Formulario = () => {
   //Funcion para traer la habilidades en la base de datos, se conecta con la API y extrae cada una de ellas
   //estas las almaceno en el estado habilidadesDB para poder manipularlas en el front
   const obtenerHabilidades = () => {
+    let arrayCategorias = [];
     actions.fetchData(`${store.apiURL}/api/habilidades`, {})
       .then((response) => response.json())
       .then((data) => {
         setHabilidadesDB(data);
+        data.forEach(dato => {
+          arrayCategorias.includes(dato.categoria) ? null : arrayCategorias.push(dato.categoria);
+        });
+        setCategoriasHabilidades(arrayCategorias)
+        let x = agruparHabilidadesPorCategoria(data)
+        setHabilidadesIntereses(x)
       })
       .catch((error) => console.log(error));
+  }
+
+  //Funcion para ordenar la informacion provista por la base de datos de la misma manera en la que se trabajaba
+  //la informacion hardcodeada
+  function agruparHabilidadesPorCategoria(payload) {
+    const habilidadesPorCategoria = {};
+
+    for (let i = 0; i < payload.length; i++) {
+      const habilidad = payload[i];
+      const categoria = habilidad.categoria;
+
+      if (!habilidadesPorCategoria[categoria]) {
+        habilidadesPorCategoria[categoria] = [];
+      }
+
+      habilidadesPorCategoria[categoria].push(habilidad.descripcion);
+    }
+    return habilidadesPorCategoria;
   }
 
   const handleHabilidadClick = (habilidad) => {
@@ -66,19 +82,6 @@ const Formulario = () => {
   const handleEliminarInteres = (interes) => {
     setIntereses(intereses.filter((item) => item !== interes));
   };
-
-  //--------------------------------------------------------------------------------------------------------
-  const ordenarInformacion = (estado, setEstado) => {
-    aux = [];
-    for (let i = 0; i < estado.length; i++) {
-      for (let j = 0; j < habilidadesDB.length; j++) {
-        estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
-      }
-    };
-
-    function comparar(a, b) { return a - b; }
-    setEstado(aux.sort(comparar))
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -114,17 +117,34 @@ const Formulario = () => {
     console.log('Foto de perfil:', fotoPerfil);
 
     //--------------------------------------------------------------------------------------------------------
+    //Creo una funcion para recibir el nombre de la habilidad y conocer el id dentro de la DB de esta 
+
+    const ordenarInformacion = (estado) => {
+      aux = [];
+      for (let i = 0; i < estado.length; i++) {
+        for (let j = 0; j < habilidadesDB.length; j++) {
+          estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
+        }
+      };
+
+      let idsOrdenados = aux.sort()
+      return idsOrdenados;
+    }
+
+    //--------------------------------------------------------------------------------------------------------
     //Creo un formulario para enviar la informacion al back, rescatada de los campos y del context
 
-    ordenarInformacion(habilidades, setHabilidades)
-    ordenarInformacion(intereses, setIntereses)
+    let habilidadesOrdenadas = ordenarInformacion(habilidades, setHabilidades)
+    let interesesOrdenadas = ordenarInformacion(intereses, setIntereses)
+
+    console.log(habilidadesOrdenadas)
 
     const form = new FormData();
     form.append('correo', store.correo)
     form.append('nombre', store.nombre)
     form.append('password', store.password)
-    // form.append('habilidades', habilidades)
-    // form.append('intereses', habilidades)
+    form.append('habilidades', habilidadesOrdenadas)
+    form.append('intereses', interesesOrdenadas)
     form.append('imagen', fotoPerfil)
 
     //--------------------------------------------------------------------------------------------------------
@@ -137,12 +157,14 @@ const Formulario = () => {
     //--------------------------------------------------------------------------------------------------------
     //Hago el fetch a la api/formulario con el metodo POST para subir el usuario a la base de datos, apretando el boton
     //de registrarse, de momento pasamos email, nombre, password y foto.
-    console.log(form.get('nombre'));
-    console.log("impirimendo")
     actions.fetchData(`${store.apiURL}/api/formulario`, options)
       .then(response => response.json())
       .then(data => {
-        toast.success(data.message);
+        toast.success(data.success);
+        toast.warn(data.advertencia);
+        // setHabilidades(null);
+        // setIntereses(null);
+        // setFotoPerfil(null);
         e.target.reset();
       })
       .catch((error) => console.log(error));
@@ -166,11 +188,11 @@ const Formulario = () => {
             <div className="row">
               <div className="col-sm-6">
                 <div className="form-group">
-                  <label htmlFor="habilidades" className="text-light">
+                  <label htmlFor="habilidades" className="text-dark">
                     Selecciona lo que puedes enseñar:
                   </label>
                   <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {habilidadesPrincipales.map((principal) => (
+                    {categoriasHabilidades.map((principal) => (
                       <div key={principal} className="m-1">
                         <button
                           type="button"
@@ -216,11 +238,11 @@ const Formulario = () => {
               </div>
               <div className="col-sm-6">
                 <div className="form-group">
-                  <label htmlFor="intereses" className="text-light">
+                  <label htmlFor="intereses" className="text-dark">
                     Selecciona lo que te gustaría aprender:
                   </label>
                   <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {habilidadesPrincipales.map((principal) => (
+                    {categoriasHabilidades.map((principal) => (
                       <div key={principal} className="m-1">
                         <button
                           type="button"
@@ -266,7 +288,7 @@ const Formulario = () => {
               </div>
             </div>
             <div className="form-group mt-4">
-              <label htmlFor="aprendizaje" className="text-light">
+              <label htmlFor="aprendizaje" className="text-dark">
                 Resalta tus mayores cualidades a la hora de aprender y enseñar (máximo 200 caracteres)
               </label>
               <textarea
@@ -278,7 +300,7 @@ const Formulario = () => {
               ></textarea>
             </div>
             <div className="form-group mt-4">
-              <label htmlFor="biografia" className="text-light">
+              <label htmlFor="biografia" className="text-dark">
                 Cuéntanos un poco sobre ti: (máximo 500 caracteres)
               </label>
               <textarea
@@ -290,7 +312,7 @@ const Formulario = () => {
               ></textarea>
             </div>
             <div className="form-group mt-4">
-              <label htmlFor="fotoPerfil" className="text-light">
+              <label htmlFor="fotoPerfil" className="text-dark">
                 Sube tu foto de perfil:
               </label>
               <br />
@@ -319,6 +341,18 @@ const Formulario = () => {
           className="logo"
         />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
 
   );

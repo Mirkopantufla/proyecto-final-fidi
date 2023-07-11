@@ -11,7 +11,7 @@ const Profile = ({ profileId }) => {
   const [imagenUsuario, setImagenUsuario] = useState('');
 
   useEffect(() => {
-
+    console.log("Entre al principio")
     obtenerDatosUsuario(store.access_token)
 
   }, [])
@@ -42,8 +42,6 @@ const Profile = ({ profileId }) => {
         setImagenUsuario(data.usuario.src_imagen)
       })
       .catch((error) => console.log(error));
-
-
   }
 
   return (

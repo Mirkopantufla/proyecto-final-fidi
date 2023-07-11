@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../estilos/Matches.css";
 import "../estilos/Profile.css";
@@ -10,7 +10,36 @@ const Matches = () => {
   const [liked, setLiked] = useState(false);
   const [rejected, setRejected] = useState(false);
   const [estado, setEstado] = useState(0);
-  const { store, setStore } = useContext(Context);
+  const { store, actions} = useContext(Context);
+  const [idUsuario, setIdUsuario] = useState('');
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [imagenUsuario, setImagenUsuario] = useState('');
+ 
+  useEffect(() => {
+    obtenerDatosUsuarios(store.access_token)
+  }, [])
+
+  const obtenerDatosUsuarios = (token) => {
+
+    const options = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+ 
+    actions.fetchData(`${store.apiURL}/api/listarUsuarios`, options)
+      .then((response) => response.json())
+      .then((data) => {
+
+        if (data.usuario.length > 0) {
+          const primerUsuario = data.usuario[0];
+          setIdUsuario(primerUsuario.id);
+          setNombreUsuario(primerUsuario.nombre);
+          setImagenUsuario(primerUsuario.src_imagen);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
 
   // Perfil de la persona rescatada (ejemplo)
   const perfilRescatado = {
@@ -22,20 +51,31 @@ const Matches = () => {
     foto: 'ruta-a-la-foto-de-perfil.jpg',
   };
 
-  const handleLike = () => {
-    setLiked(true);
-    // Enviar solicitud al servidor para registrar el like
-    fetch(`/api/profiles/${profileId}/like`, {
-      method: 'POST',
-      // Puedes incluir encabezados o datos adicionales si es necesario
+const handleLike = () => {
+  
+  setLiked(true);
+  // token = store.access_token;
+  // console.log(token)
+  console.log("Aquí tengo el usuario receptor: " + idUsuario);
+  // Enviar solicitud al servidor para registrar el like
+  fetch(`/api/GuardarMatch`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+      //'Authorization': `Bearer ${token}` Reemplaza 'token' por el token válido
+    },
+    body: JSON.stringify({
+      usuarioReceptor: idUsuario,
+      liked: liked
     })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
-  };
+  })
+    .then((response) => {
+      // Manejar la respuesta del servidor si es necesario
+    })
+    .catch((error) => {
+      // Manejar el error si ocurre
+    });
+};
 
   const handleReject = () => {
     setRejected(true);
@@ -67,8 +107,9 @@ const Matches = () => {
             <div className="row">
               <div className="col-12">
                 <h2 className="titulos">Te podría interesar</h2>
-                <h3>{perfilRescatado.nombre}</h3>
-                <img src={perfilRescatado.foto} alt="Foto de perfil" />
+                <h3>{nombreUsuario}</h3>
+
+                <img src={imagenUsuario} alt="Foto de perfil" />
                 <div className="d-flex flex-wrap d-flex justify-content-center ">
                   <br />
                   <p>Lo que quiero aprender:</p>

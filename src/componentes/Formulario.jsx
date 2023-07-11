@@ -16,6 +16,8 @@ const Formulario = () => {
   const [categoriasHabilidades, setCategoriasHabilidades] = useState([]);
   const [habilidadesIntereses, setHabilidadesIntereses] = useState([]);
   let aux = [];
+  let habilidadesOrdenadas = []
+  let interesesOrdenadas = []
 
   //Use effect para traer la data apenas se cargue el componente
   useEffect(() => {
@@ -42,7 +44,7 @@ const Formulario = () => {
   }
 
   //Funcion para ordenar la informacion provista por la base de datos de la misma manera en la que se trabajaba
-  //la informacion hardcodeada
+  //la informacion anteriormente
   function agruparHabilidadesPorCategoria(payload) {
     const habilidadesPorCategoria = {};
 
@@ -127,17 +129,22 @@ const Formulario = () => {
         }
       };
 
-      let idsOrdenados = aux.sort()
-      return idsOrdenados;
+      return aux;
     }
 
     //--------------------------------------------------------------------------------------------------------
     //Creo un formulario para enviar la informacion al back, rescatada de los campos y del context
 
-    let habilidadesOrdenadas = ordenarInformacion(habilidades, setHabilidades)
-    let interesesOrdenadas = ordenarInformacion(intereses, setIntereses)
+
+    habilidadesOrdenadas = [...ordenarInformacion(habilidades)]
+
+    interesesOrdenadas = [...ordenarInformacion(intereses)]
 
     console.log(habilidadesOrdenadas)
+    console.log(habilidades)
+    console.log('-------------------------------------')
+    console.log(interesesOrdenadas)
+    console.log(intereses)
 
     const form = new FormData();
     form.append('correo', store.correo)
@@ -162,8 +169,8 @@ const Formulario = () => {
       .then(data => {
         toast.success(data.success);
         toast.warn(data.advertencia);
-        // setHabilidades(null);
-        // setIntereses(null);
+        setHabilidades([]);
+        setIntereses([]);
         // setFotoPerfil(null);
         e.target.reset();
       })

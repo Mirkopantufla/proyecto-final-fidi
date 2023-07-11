@@ -1,25 +1,25 @@
-body{
-    background-image:url("fondo1.png");
-    background-size:auto;
+body {
+  background-image: url("fondo1.png");
+  background-size: auto;
 }
 
 .custom-bg {
-    background-color: rgba(255, 255, 255, 0.6); /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
-  }
-  .container {
-    position: relative;
-  }
-  
-  .footer-logo {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  }
-  .titulos {
-    color:#11100F
+  background-color: rgba(255, 255, 255, 0.6);
+  /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
+}
 
-    ;
-   
-font-family: 'Staatliches', cursive; 
-  }
-  
+.container {
+  position: relative;
+}
+
+.footer-logo {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.titulos {
+  color: #11100F;
+
+  font-family: 'Staatliches', cursive;
+}

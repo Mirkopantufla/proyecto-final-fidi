@@ -11,7 +11,6 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg bg-ligth">
-      <h1>{ }</h1>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img src={logoImage} alt="Logo"

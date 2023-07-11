@@ -18,6 +18,7 @@ import LoginForm from './componentes/LoginForm';
 // import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';
 import Settings from './pages/Settings';
+import MostrarNavBar from './componentes/MostrarNavBar';
 
 const App = () => {
 
@@ -25,7 +26,9 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar rolUsuario={store.currentUser} />
+      <MostrarNavBar>
+        <Navbar />
+      </MostrarNavBar>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />

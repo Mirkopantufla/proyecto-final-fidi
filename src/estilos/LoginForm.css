@@ -1,6 +1,8 @@
 .custom-bg {
-    background-color:#0CD5A9; /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
-  }
-  .container {
-    position: relative;
-  }
+  background-color: #0CD5A9;
+  /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
+}
+
+.container {
+  position: relative;
+}

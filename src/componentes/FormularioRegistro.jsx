@@ -55,7 +55,6 @@ function Registro() {
   return (
 
     <div className="container">
-
       <div className="row justify-content-center p-4">
         <div className="col-md-6 text-center">
           <form>

@@ -8,7 +8,7 @@ const Login = () => {
         <>
 
             <div className="container main-container custom-bg rounded">
-                <div className="row">
+                <div className="row mt-5">
                     <div className="col-sm-12">
                         <div className="explore-container p-4">
                             <Registro />

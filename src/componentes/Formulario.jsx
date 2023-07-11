@@ -32,13 +32,13 @@ const Formulario = () => {
     actions.fetchData(`${store.apiURL}/api/habilidades`, {})
       .then((response) => response.json())
       .then((data) => {
-        setHabilidadesDB(data);
+        setHabilidadesDB(data); //Guardo toda la Data en el estado habilidadesDB
         data.forEach(dato => {
           arrayCategorias.includes(dato.categoria) ? null : arrayCategorias.push(dato.categoria);
         });
-        setCategoriasHabilidades(arrayCategorias)
+        setCategoriasHabilidades(arrayCategorias) //Guardo todas las categorias presentes, sin repetir
         let x = agruparHabilidadesPorCategoria(data)
-        setHabilidadesIntereses(x)
+        setHabilidadesIntereses(x) //Guardo la data en un formato adaptado a las necesidades
       })
       .catch((error) => console.log(error));
   }
@@ -120,7 +120,6 @@ const Formulario = () => {
 
     //--------------------------------------------------------------------------------------------------------
     //Creo una funcion para recibir el nombre de la habilidad y conocer el id dentro de la DB de esta 
-
     const ordenarInformacion = (estado) => {
       aux = [];
       for (let i = 0; i < estado.length; i++) {
@@ -186,7 +185,7 @@ const Formulario = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row justify-content-center p-4 custom-bg rounded-2">
+      <div className="row justify-content-center p-4 custom-bg rounded-2 mt-5">
         <div className="col-md-6 text-center">
 
           <h3 className='titulos '>!Completa el siguiente formulario para encontrar el Match ideal!</h3>

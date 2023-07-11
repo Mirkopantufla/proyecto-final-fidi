@@ -34,8 +34,7 @@ function LoginForm() {
 
   return (
     <div className="container">
-
-      <div className="row justify-content-center p-4 custom-bg rounded-2">
+      <div className="row justify-content-center p-4 custom-bg rounded-2 mt-5">
         <div className="col-md-6 text-center">
 
           <form onSubmit={(e) => actions.login(e, navigate)}>

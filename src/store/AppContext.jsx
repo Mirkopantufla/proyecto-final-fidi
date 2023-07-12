@@ -19,6 +19,12 @@ const injectContext = PassedComponent => {
 
         }, [])
 
+        useEffect(() => {
+            if (state.store.access_token) {
+                state.actions.getMatches(state.store.access_token)
+            }
+        }, [state.store.access_token])
+
         return (
             <Context.Provider value={state}>
                 <PassedComponent {...props} />

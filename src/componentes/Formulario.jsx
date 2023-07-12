@@ -6,8 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 const Formulario = () => {
   const [habilidades, setHabilidades] = useState([]);
   const [intereses, setIntereses] = useState([]);
-  const [aprendizaje, setAprendizaje] = useState('');
-  const [biografia, setBiografia] = useState('');
+  const [descripcion, setDescripcion] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [habilidadesError, setHabilidadesError] = useState(false);
   const [interesesError, setInteresesError] = useState(false);
@@ -111,11 +110,13 @@ const Formulario = () => {
       setInteresesError(false);
     }
 
-    // Esto se puede modificar para guardar los datos en una base de datos mas adelante
+    // Esto sirve para ver los datos que vienen por cada campo requerido
+
+    console.log('Correo:', store.correo);
+    console.log('Nombre:', store.nombre);
     console.log('Habilidades:', habilidades);
     console.log('Intereses:', intereses);
-    console.log('Aprendizaje:', aprendizaje);
-    console.log('Biografía:', biografia);
+    console.log('Descripcion:', descripcion);
     console.log('Foto de perfil:', fotoPerfil);
 
     //--------------------------------------------------------------------------------------------------------
@@ -151,6 +152,7 @@ const Formulario = () => {
     form.append('password', store.password)
     form.append('habilidades', habilidadesOrdenadas)
     form.append('intereses', interesesOrdenadas)
+    form.append('descripcion', descripcion)
     form.append('imagen', fotoPerfil)
 
     //--------------------------------------------------------------------------------------------------------
@@ -170,6 +172,7 @@ const Formulario = () => {
         toast.warn(data.advertencia);
         setHabilidades([]);
         setIntereses([]);
+        setDescripcion('');
         // setFotoPerfil(null);
         e.target.reset();
       })
@@ -294,18 +297,6 @@ const Formulario = () => {
               </div>
             </div>
             <div className="form-group mt-4">
-              <label htmlFor="aprendizaje" className="text-dark">
-                Resalta tus mayores cualidades a la hora de aprender y enseñar (máximo 200 caracteres)
-              </label>
-              <textarea
-                id="aprendizaje"
-                className="form-control"
-                maxLength="200"
-                value={aprendizaje}
-                onChange={(e) => setAprendizaje(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="form-group mt-4">
               <label htmlFor="biografia" className="text-dark">
                 Cuéntanos un poco sobre ti: (máximo 500 caracteres)
               </label>
@@ -313,8 +304,8 @@ const Formulario = () => {
                 id="biografia"
                 className="form-control"
                 maxLength="500"
-                value={biografia}
-                onChange={(e) => setBiografia(e.target.value)}
+                onChange={(e) => setDescripcion(e.target.value)}
+                rows="4"
               ></textarea>
             </div>
             <div className="form-group mt-4">
@@ -326,10 +317,13 @@ const Formulario = () => {
               <input
                 type="file"
                 id="fotoPerfil"
-                className="form-control-file"
+                className="form-control"
                 accept="image/*"
                 onChange={(e) => setFotoPerfil(e.target.files[0])}
               />
+              {
+                fotoPerfil ? <img className='w-50 mt-4 border border-3 rounded-3 border-dark' src={URL.createObjectURL(fotoPerfil)} alt="" /> : null
+              }
             </div>
             <button type="submit" className="btn btn-dark mt-4">
               Registrarme
@@ -349,7 +343,7 @@ const Formulario = () => {
       </div>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

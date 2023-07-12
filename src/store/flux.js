@@ -21,7 +21,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             correo: '',
             nombre: '',
             password: '',
-            role: null
+            role: null,
+            matches: null
         },
         actions: {
             handleChange: e => {
@@ -81,6 +82,30 @@ const getState = ({ getStore, getActions, setStore }) => {
                             navigate('/profile')
                         }
                     });
+
+            },
+            getMatches: () => {
+                const { apiURL, access_token } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/api/listarUsuarios`,
+                    options: {
+                        method: "GET",
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        },
+                    },
+                };
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        console.log(respJson),
+                            setStore({ matches: respJson });
+                        // setStore({matches: respJson});
+                        // const id_usuario=matches.map((match)=> match.user);
+                        // {id_usuario};
+                    })
 
             }
         }

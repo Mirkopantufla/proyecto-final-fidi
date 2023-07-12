@@ -9,6 +9,9 @@ const Profile = ({ profileId }) => {
   const { store, actions } = useContext(Context);
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [imagenUsuario, setImagenUsuario] = useState('');
+  const [habilidades, setHabilidades] = useState([])
+  const [intereses, setIntereses] = useState([])
+  const [descripcionUsuario, setDescripcionUsuario] = useState('');
 
   useEffect(() => {
     console.log("Entre al principio")
@@ -38,36 +41,53 @@ const Profile = ({ profileId }) => {
     actions.fetchData(`${store.apiURL}/api/profile`, options)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
+        setHabilidades(data.habilidades)
+        setIntereses(data.intereses)
         setNombreUsuario(data.usuario.nombre)
         setImagenUsuario(data.usuario.src_imagen)
+        setDescripcionUsuario(data.usuario.descripcion)
       })
       .catch((error) => console.log(error));
   }
 
   return (
     <div className="container">
-      <div className="container-fluid">
-        <div className="row justify-content-center p-4 custom-bg rounded-2">
-          <div className="col-md-6 text-center">
-            <div className="row">
-              <div className="offset-md-2 col-md-8">
-                <h1>¡a conocer!</h1>
-                <div className="profile-container">
-                  <div className="profile-image d-flex justify-content-center">
-                    <img src={imagenUsuario} alt="Foto de perfil" style={{ width: '400px' }} />
-                  </div>
-                  <div className="profile-info">
-                    <h2>{nombreUsuario != '' ? nombreUsuario : null}</h2>
-                    <p>Edad: {profileData.age} años</p>
-                    <h3>Intereses</h3>
-
-                    {profileData.interests.map((interest, index) => (
-                      <p key={index}>{interest}</p>
-                    ))}
-
-                    <h3>Quiere aprender</h3>
-                    <p>{profileData.wantsToLearn}</p>
-                  </div>
+      <div className="row justify-content-center p-4 custom-bg rounded-2">
+        <div className="col-md-6 text-center">
+          <div className="row">
+            <div className="offset-md-2 col-md-8">
+              <div className="profile-container">
+                <div className="profile-image d-flex justify-content-center">
+                  <img src={imagenUsuario} alt="Foto de perfil" style={{ width: '400px' }} />
+                </div>
+                <div className="profile-info">
+                  <h2>{nombreUsuario != '' ? nombreUsuario : null}</h2>
+                  <p>Edad: {profileData.age} años</p>
+                  <h3>Habilidades</h3>
+                  {
+                    habilidades.length >= 1 ?
+                      habilidades.map((habilidad) => (
+                        <div className="btn btn-dark">
+                          {habilidad}
+                        </div>
+                      ))
+                      :
+                      null
+                  }
+                  <h3>Intereses</h3>
+                  {
+                    intereses.length >= 1 ?
+                      intereses.map((interes) => (
+                        <div className="btn btn-dark">
+                          {interes}
+                        </div>
+                      ))
+                      :
+                      null
+                  }
+                  <h3>Descripcion</h3>
+                  <p>{descripcionUsuario}</p>
                 </div>
               </div>
             </div>

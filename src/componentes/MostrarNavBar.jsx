@@ -7,7 +7,6 @@ const MostrarNavBar = ({ children }) => {
     const [mostrar, setMostrar] = useState(false);
 
     useEffect(() => {
-        console.log(vistaUsuario)
         if (vistaUsuario.pathname === '/' || vistaUsuario.pathname === '/formulario' || vistaUsuario.pathname === '/loginform') {
             setMostrar(false)
         } else {

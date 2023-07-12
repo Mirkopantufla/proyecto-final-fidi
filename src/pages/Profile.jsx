@@ -67,8 +67,8 @@ const Profile = ({ profileId }) => {
                   <h3>Habilidades</h3>
                   {
                     habilidades.length >= 1 ?
-                      habilidades.map((habilidad) => (
-                        <div className="btn btn-dark">
+                      habilidades.map((habilidad, key) => (
+                        <div name={key} className="btn btn-dark">
                           {habilidad}
                         </div>
                       ))
@@ -78,8 +78,8 @@ const Profile = ({ profileId }) => {
                   <h3>Intereses</h3>
                   {
                     intereses.length >= 1 ?
-                      intereses.map((interes) => (
-                        <div className="btn btn-dark">
+                      intereses.map((interes, key) => (
+                        <div name={key} className="btn btn-dark">
                           {interes}
                         </div>
                       ))

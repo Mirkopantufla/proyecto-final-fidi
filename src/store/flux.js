@@ -107,6 +107,79 @@ const getState = ({ getStore, getActions, setStore }) => {
                         // {id_usuario};
                     })
 
+            },
+            likeUser: (emisor_id, receptor_id) => {
+                const { apiURL } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/match/like`,
+                    options: {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ emisor_id, receptor_id }),
+                    },
+                };
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        if (respJson.message === "Has dado un like") {
+                            const existing_match = getStore().existing_match;
+
+                            if (existing_match) {
+                                existing_match.estado = 2;
+                                setStore({ existing_match });
+                            } else {
+                                const new_match = {
+                                    id_usr_emisor: emisor_id,
+                                    id_usr_receptor: receptor_id,
+                                    estado: 1,
+                                };
+                                setStore({ new_match });
+                            }
+
+                            const match_log = {
+                                id_match: existing_match?.id_match || new_match.id_match,
+                                id_usr_emisor: emisor_id,
+                                id_usr_receptor: receptor_id,
+                                estado: new_match.estado,
+                            };
+                            setStore({ match_log });
+
+                            toast(respJson.message, { type: toast.TYPE.SUCCESS });
+                        }
+                    });
+            },
+            unlikeUser: (emisor_id, receptor_id) => {
+                const { apiURL } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/match/unlike`,
+                    options: {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ emisor_id, receptor_id }),
+                    },
+                };
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        if (respJson.message === "Has eliminado el like") {
+                            const existing_match = getStore().existing_match;
+
+                            if (existing_match) {
+                                existing_match.estado = 1;
+                                setStore({ existing_match });
+                            }
+
+                            toast(respJson.message, { type: toast.TYPE.SUCCESS });
+                        }
+                    });
             }
         }
     }

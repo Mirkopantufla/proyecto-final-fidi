@@ -7,13 +7,13 @@ import { FaHeart, FaTimes } from "react-icons/fa";
 import { Context } from "../store/AppContext";
 
 const Matches = () => {
-  const [liked, setLiked] = useState(false);
   const [rejected, setRejected] = useState(false);
   const [estado, setEstado] = useState(0);
   const { store, actions} = useContext(Context);
   const [idUsuario, setIdUsuario] = useState('');
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [imagenUsuario, setImagenUsuario] = useState('');
+  const [liked, setLiked] = useState(false);
  
   useEffect(() => {
     obtenerDatosUsuarios(store.access_token)
@@ -51,31 +51,44 @@ const Matches = () => {
     foto: 'ruta-a-la-foto-de-perfil.jpg',
   };
 
-const handleLike = () => {
-  
-  setLiked(true);
-  // token = store.access_token;
-  // console.log(token)
-  console.log("Aquí tengo el usuario receptor: " + idUsuario);
-  // Enviar solicitud al servidor para registrar el like
-  fetch(`/api/GuardarMatch`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-      //'Authorization': `Bearer ${token}` Reemplaza 'token' por el token válido
-    },
-    body: JSON.stringify({
-      usuarioReceptor: idUsuario,
-      liked: liked
+  const handleLike = () => {
+    setLiked(true);
+
+    // Obtener los datos del emisor y receptor
+    const emisor_id = store.emisor_id; 
+    const receptor_id = store.receptor_id; 
+
+    // Realizar la solicitud POST al endpoint "/api/match/like"
+    console.log({
+      emisor_id: emisor_id,
+      receptor_id: receptor_id,
     })
-  })
-    .then((response) => {
-      // Manejar la respuesta del servidor si es necesario
+    if(state.store.access_token){
+      state.actions.likeUser(emisor_id,receptor_id)
+    }
+
+    fetch(`${store.apiURL}/api/match/like`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${store.access_token}`,
+      },
+      body: JSON.stringify({
+        emisor_id: emisor_id,
+        receptor_id: receptor_id,
+      }),
     })
-    .catch((error) => {
-      // Manejar el error si ocurre
-    });
-};
+      .then((response) => response.json())
+      .then((data) => {
+        // Manejar la respuesta del servidor si es necesario
+        console.log(data);
+      })
+      .catch((error) => {
+        // Manejar el error si ocurre
+        console.log(error);
+      });
+  };
+
 
   const handleReject = () => {
     setRejected(true);

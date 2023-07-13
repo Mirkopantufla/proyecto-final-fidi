@@ -16,8 +16,12 @@ const injectContext = PassedComponent => {
         }))
 
         useEffect(() => {
+            if(state.store.access_token){
+                state.actions.getMatches('http://127.0.0.1:5000')
+            }
+        }, [state.store.access_token])
 
-        }, [])
+        
 
         return (
             <Context.Provider value={state}>

@@ -22,7 +22,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             nombre: '',
             password: '',
             role: null,
-            matches: null
+            matches: null,
+            receptor_id:null,
         },
         actions: {
             handleChange: e => {
@@ -102,9 +103,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .then((respJson) => {
                         console.log(respJson),
                             setStore({ matches: respJson });
-                        // setStore({matches: respJson});
-                        // const id_usuario=matches.map((match)=> match.user);
-                        // {id_usuario};
+                     
                     })
 
             },
@@ -112,11 +111,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const { apiURL } = getStore();
 
                 const data = {
-                    apiURL: `${apiURL}/match/like`,
+                    apiURL: `${apiURL}/api/GuardarMatch`,
                     options: {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
+                            // 'Authorization': `Bearer ${access_token}`
+
                         },
                         body: JSON.stringify({ emisor_id, receptor_id }),
                     },

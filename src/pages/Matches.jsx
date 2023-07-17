@@ -4,6 +4,7 @@ import "../estilos/Matches.css";
 import "../estilos/Profile.css";
 import { FaHeart, FaTimes } from "react-icons/fa";
 import { Context } from "../store/AppContext";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Matches = () => {
   const [rejected, setRejected] = useState(false);
@@ -12,7 +13,12 @@ const Matches = () => {
   const [idUsuario, setIdUsuario] = useState("");
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [imagenUsuario, setImagenUsuario] = useState("");
-  const [liked, setLiked] = useState(false);
+  const [habilidadUsuario, setHabilidadUsuario] = useState("");
+  const [interesUsuario, setInteresUsuario] = useState("");
+  const [descripcionUsuario, setDescripcionUsuario] = useState("");
+   const [liked, setLiked] = useState(false);
+  const[indice, setIndice]= useState(0);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     obtenerDatosUsuarios(store.access_token);
@@ -29,15 +35,37 @@ const Matches = () => {
       .fetchData(`${store.apiURL}/api/listarUsuarios`, options)
       .then((response) => response.json())
       .then((data) => {
+
+        setData(data)
+
+        //muestra primer usuario
         if (data.usuario.length > 0) {
-          const primerUsuario = data.usuario[0];
+          setIndice(0)
+          const primerUsuario = data.usuario[indice];
           setIdUsuario(primerUsuario.id);
           setNombreUsuario(primerUsuario.nombre);
           setImagenUsuario(primerUsuario.src_imagen);
+          setHabilidadUsuario (primerUsuario.habilidad);
+          setInteresUsuario (primerUsuario.interes);
+          setDescripcionUsuario(primerUsuario.descripcion);
         }
       })
       .catch((error) => console.log(error));
   };
+
+  function tarjetaUsuario(indice){
+
+    console.log("indice actualizado "+indice);
+    const usuarioActual = data.usuario[indice];
+          setIdUsuario(usuarioActual.id);
+          setNombreUsuario(usuarioActual.nombre);
+          setImagenUsuario(usuarioActual.src_imagen);
+          setHabilidadUsuario (usuarioActual.habilidad);
+          setInteresUsuario (usuarioActual.interes);
+          setDescripcionUsuario(usuarioActual.descripcion);
+
+          console.log("nombreeeeeeeeeeeeeee "+usuarioActual.nombre)
+  }
 
   // Perfil de la persona rescatada (ejemplo)
   const perfilRescatado = {
@@ -49,7 +77,9 @@ const Matches = () => {
     foto: "ruta-a-la-foto-de-perfil.jpg",
   };
 
-  const handleLike = () => {
+  
+   const handleLike = (e) => {
+    e.preventDefault();
     setLiked(true);
 
     // Obtener los datos del emisor y receptor
@@ -69,8 +99,18 @@ const Matches = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("llego la respuesta aca??????????????'")
+        toast.success(data.success);
         // Manejar la respuesta del servidor si es necesario
-        console.log(data);
+        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee "+indice);
+
+        var i = indice+1;
+
+        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 2  "+i);
+       
+
+        setIndice(i);
+        tarjetaUsuario(i);
+
       })
       .catch((error) => {
         // Manejar el error si ocurre
@@ -102,54 +142,55 @@ const Matches = () => {
 
   return (
     <div className="container">
-      <div className="container-fluid">
-        <div className="row justify-content-center p-4 custom-bg rounded-2">
-          <div className="col-md-6 text-center">
+      <div className="container-fluid justify-content-around">
+        <div className="row custom-bg rounded-2 ">
             <form>
-              <div className="row">
-                <div className="col-12">
-                  <h2 className="titulos">Te podría interesar</h2>
-                  <h3>{nombreUsuario}</h3>
-
-                  <img
-                    src={store.matches.usuario[0].src_imagen}
-                    alt="Foto de perfil"
+            <div className="col-md-8 justify-content-center">
+                <img
+                  //src={store.matches.usuario[0].src_imagen}
+                  src={imagenUsuario}
+                  alt="Foto de perfil"
+                  className="image-overlay img-fluid max-100"
+                  style={{ top: 0, left: 0, width: '30%', height: 'auto',}}
                   />
-                  <div className="d-flex flex-wrap d-flex justify-content-center ">
-                    <br />
-                    <p>Lo que quiero aprender:</p>
-                    <br />
+            </div>    
+            <div className="col-md-4 order-md-last ">
+                  <h1 className="titulos">{nombreUsuario}</h1>
+                  <div className="">
+                    <h3 className="titulos">Lo que quiero aprender:</h3>
                     {perfilRescatado.intereses.map((interes) => (
                       <button
-                        key={interes}
-                        type="button"
-                        className="btn btn-primary btn-sm m-1"
-                        style={{ backgroundColor: "#0CD5A9" }}
+                      key={interesUsuario}
+                      type="button"
+                      className="btn btn-primary btn-sm m-1"
+                      style={{ backgroundColor: "#0CD5A9" }}
                       >
-                        {interes}
+                        {interesUsuario}
                       </button>
                     ))}
                   </div>
                   <div className="d-flex flex-wrap d-flex justify-content-center">
-                    <p>Lo que te puedo enseñar:</p>
+                    <h3 className="titulos">Lo que te puedo enseñar:</h3>
                     {perfilRescatado.habilidades.map((habilidad) => (
                       <button
-                        key={habilidad}
-                        type="button"
-                        className="btn btn-primary btn-sm m-1"
-                        style={{ backgroundColor: "#0CD5A9" }}
+                      key={habilidadUsuario}
+                      type="button"
+                      className="btn btn-primary btn-sm m-1"
+                      style={{ backgroundColor: "#0CD5A9" }}
                       >
-                        {habilidad}
+                        {habilidadUsuario}
                       </button>
                     ))}
                   </div>
-                  <p>Biografía: {perfilRescatado.biografia}</p>
+                  <p className="titulos">{descripcionUsuario}</p>
+            </div>
+            </form>
                   <div
                     className="offcanvas offcanvas-end"
                     tabIndex="-1"
                     id="offcanvasRight"
                     aria-labelledby="offcanvasRightLabel"
-                  >
+                    >
                     <div className="offcanvas-header text-center">
                       <h2 id="offcanvasRightLabel">Mis Matches</h2>
                       <button
@@ -170,7 +211,7 @@ const Matches = () => {
                     </div>
                   </div>
                   <div
-                    className="btn-toolbar d-flex justify-content-center "
+                    className="btn-toolbar d-flex justify-content-left "
                     role="toolbar"
                     aria-label="Toolbar with button groups"
                   >
@@ -181,7 +222,7 @@ const Matches = () => {
                     >
                       <button
                         className="btn btn-secondary btn-like me-1"
-                        onClick={handleLike}
+                        onClick={(e) => handleLike(e)}
                       >
                         <span className="like-icon">
                           <FaHeart />
@@ -207,25 +248,21 @@ const Matches = () => {
                   {rejected && <p>Has rechazado este perfil.</p>}
                 </div>
               </div>
-            </form>
-            <div className="row">
-              <div className="col">
-                <button
-                  className="btn btn-dark custom-button"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasRight"
-                  aria-controls="offcanvasRight"
-                >
-                  Revisar tus Matches
-                </button>
-              </div>
-            </div>
+          <div className="col-md-6">
+            <button
+              className="btn btn-dark custom-button"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+              >
+              Revisar tus Matches
+            </button>
           </div>
         </div>
-      </div>
-    </div>
+      
   );
+  
 };
 
 export default Matches;

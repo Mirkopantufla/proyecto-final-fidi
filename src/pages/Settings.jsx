@@ -12,12 +12,12 @@ import logoImage from "../logo1.png";
 const Settings = () => {
   return (
 
-    <div className="container">
+    <div className="container-fluid">
       <div className="row justify-content-center p-4 custom-bg rounded-2">
-        <div className="col-md-6 text-center">
+        <div className="col-lg-8 col-md-10 col-sm-12 text-center">
           <h1 className='titulos text-center'>¿Qué quieres hacer hoy?</h1>
 
-          <div className="d-grid gap-2">
+          <div className="d-grid gap-3">
             <br />
             <Link to="Password" className="btn btn-dark custom-button">
               Modificar Contraseña

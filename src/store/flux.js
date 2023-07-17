@@ -47,6 +47,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         actions: {
             handleChange: e => {
                 const { name, value } = e.target;
+
+                setStore({ [name]: value })
+
                 const { settings, new_user } = getStore();
 
 
@@ -131,33 +134,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return fetch(url, options);
 
             },
-            // fetchDataUsuario: async () => {
-            //     const { access_token, apiURL } = getStore();
-
-            //     const data = {
-            //         apiURL: `${apiURL}/api/usuario/habilidades`,
-            //         options: {
-            //             method: 'GET',
-            //             headers: {
-            //                 'Authorization': `Bearer ${access_token}`
-            //             }
-            //         }
-            //     }
-
-            //     try {
-            //         const response = await fetch(data.apiURL, data.options)
-            //         const algo = await response.json()
-
-            //         console.log('algo', algo)
-
-            //     } catch (error) {
-            //         console.log(error)
-            //     } finally {
-            //         setStore({
-            //             setIsLoading: false
-            //         })
-            //     }
-            // },
             cargarSesion: () => {
                 const currentUser = sessionStorage.getItem('currentUser')
                 const access_token = sessionStorage.getItem('access_token')
@@ -232,6 +208,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                         }
                     });
 
+            },
+            cerrarSesion: (e, navigate) => {
+                e.preventDefault()
+                sessionStorage.clear()
+                setStore({
+                    currentUser: null,
+                    habilidades: null,
+                    intereses: null,
+                    id_usuario: null
+                })
+                navigate('/loginform');
             },
             obtenerDatosUsuario: () => {
                 const { apiURL, access_token } = getStore();
@@ -397,15 +384,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                 e.target.reset()
             },
             likeUser: (emisor_id, receptor_id) => {
-                const { apiURL } = getStore();
+                const { apiURL, access_token } = getStore();
 
                 const data = {
-                    apiURL: `${apiURL}/api/GuardarMatch`,
+                    apiURL: `${apiURL}/api/like`,
                     options: {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            // 'Authorization': `Bearer ${access_token}`
+                            'Authorization': `Bearer ${access_token}`
 
                         },
                         body: JSON.stringify({ emisor_id, receptor_id }),
@@ -443,14 +430,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
             },
             unlikeUser: (emisor_id, receptor_id) => {
-                const { apiURL } = getStore();
+                const { apiURL, access_token } = getStore();
 
                 const data = {
-                    apiURL: `${apiURL}/match/unlike`,
+                    apiURL: `${apiURL}/api/match/unlike`,
                     options: {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': `Bearer ${access_token}`
                         },
                         body: JSON.stringify({ emisor_id, receptor_id }),
                     },

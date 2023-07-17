@@ -1,6 +1,6 @@
 import logoImage from "../logo1.png";
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Context } from "../store/AppContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRadiation } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import { faRadiation } from '@fortawesome/free-solid-svg-icons';
 const Navbar = () => {
 
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   return (
     <nav className="navbar navbar-expand-lg bg-ligth">
@@ -83,7 +84,7 @@ const Navbar = () => {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#" onClick={() => localStorage.removeItem("currentUser")}>
+                  <a className="dropdown-item" href="#" onClick={(e) => actions.cerrarSesion(e, navigate)}>
                     Cerrar sesión
                   </a>
                 </li>

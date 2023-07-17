@@ -1,6 +1,6 @@
 body {
-  background: rgb(12,213,169);
-  background: linear-gradient(156deg, rgba(12,213,169,1) 0%, rgba(247,186,13,1) 50%);
+  background-image: url("fondo1.png");
+  background-size: cover;
 }
 
 .custom-bg {

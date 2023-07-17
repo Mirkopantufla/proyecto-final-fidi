@@ -8,9 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const Matches = () => {
   const [rejected, setRejected] = useState(false);
-  const [estado, setEstado] = useState(0);
   const { store, actions } = useContext(Context);
-  const [idUsuario, setIdUsuario] = useState("");
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [imagenUsuario, setImagenUsuario] = useState("");
   const [habilidadUsuario, setHabilidadUsuario] = useState("");
@@ -18,53 +16,26 @@ const Matches = () => {
   const [descripcionUsuario, setDescripcionUsuario] = useState("");
   const [liked, setLiked] = useState(false);
   const [indice, setIndice] = useState(0);
-  const [data, setData] = useState(null);
+
+  let aux = [];
 
   useEffect(() => {
-    obtenerDatosUsuarios(store.access_token);
+
+
   }, []);
 
-  const obtenerDatosUsuarios = (token) => {
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    actions
-      .fetchData(`${store.apiURL}/api/listarUsuarios`, options)
-      .then((response) => response.json())
-      .then((data) => {
-
-        setData(data)
-
-        //muestra primer usuario
-        if (data.usuario.length > 0) {
-          setIndice(0)
-          const primerUsuario = data.usuario[indice];
-          setIdUsuario(primerUsuario.id);
-          setNombreUsuario(primerUsuario.nombre);
-          setImagenUsuario(primerUsuario.src_imagen);
-          setHabilidadUsuario(primerUsuario.habilidad);
-          setInteresUsuario(primerUsuario.interes);
-          setDescripcionUsuario(primerUsuario.descripcion);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
 
   function tarjetaUsuario(indice) {
 
+    const usuarioActual = store.matches.usuario[indice];
+
     console.log("indice actualizado " + indice);
-    const usuarioActual = data.usuario[indice];
-    setIdUsuario(usuarioActual.id);
+
     setNombreUsuario(usuarioActual.nombre);
     setImagenUsuario(usuarioActual.src_imagen);
-    setHabilidadUsuario(usuarioActual.habilidad);
-    setInteresUsuario(usuarioActual.interes);
     setDescripcionUsuario(usuarioActual.descripcion);
 
-    console.log("nombreeeeeeeeeeeeeee " + usuarioActual.nombre)
+    actions.obtenerHabilidadesUsuarioMatch(usuarioActual.id)
   }
 
   // Perfil de la persona rescatada (ejemplo)
@@ -80,12 +51,16 @@ const Matches = () => {
 
   const handleLike = (e) => {
     e.preventDefault();
+
     setLiked(true);
+    console.log();
 
     // Obtener los datos del emisor y receptor
     const form = new FormData();
     form.append('emisor_id', store.id_usuario);
     form.append('receptor_id', store.matches.usuario[0].id);
+
+    console.log('YO: ', store.id_usuario)
 
     // if (state.store.access_token) {
     //   state.actions.likeUser(id_usuario, receptor_id);
@@ -98,10 +73,10 @@ const Matches = () => {
         'Authorization': `Bearer ${store.access_token}`
       }
     }
+
     actions.fetchData(`${store.apiURL}/api/match/like`, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log("llego la respuesta aca??????????????'")
         toast.success(data.success);
         // Manejar la respuesta del servidor si es necesario
         console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + indice);
@@ -109,10 +84,8 @@ const Matches = () => {
         var i = indice + 1;
 
         console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 2  " + i);
-
-
-        setIndice(i);
         tarjetaUsuario(i);
+        setIndice(i);
 
       })
       .catch((error) => {
@@ -161,27 +134,27 @@ const Matches = () => {
               <h1 className="titulos">{nombreUsuario}</h1>
               <div className="">
                 <h3 className="titulos">Lo que quiero aprender:</h3>
-                {perfilRescatado.intereses.map((interes) => (
+                {store?.habilidadesUsuarioMatch?.intereses.map((interes, index) => (
                   <button
-                    key={interesUsuario}
+                    key={index}
                     type="button"
                     className="btn btn-primary btn-sm m-1"
                     style={{ backgroundColor: "#0CD5A9" }}
                   >
-                    {interesUsuario}
+                    {interes.descripcion}
                   </button>
                 ))}
               </div>
               <div className="d-flex flex-wrap d-flex justify-content-center">
                 <h3 className="titulos">Lo que te puedo enseñar:</h3>
-                {perfilRescatado.habilidades.map((habilidad) => (
+                {store?.habilidadesUsuarioMatch?.habilidades.map((habilidad, index) => (
                   <button
-                    key={habilidadUsuario}
+                    key={index}
                     type="button"
                     className="btn btn-primary btn-sm m-1"
                     style={{ backgroundColor: "#0CD5A9" }}
                   >
-                    {habilidadUsuario}
+                    {habilidad.descripcion}
                   </button>
                 ))}
               </div>
@@ -262,6 +235,18 @@ const Matches = () => {
           Revisar tus Matches
         </button>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
 
   );

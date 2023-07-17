@@ -42,6 +42,7 @@ const Formulario = () => {
   };
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
 
     if (habilidades.length < 2 || habilidades.length > 10) {

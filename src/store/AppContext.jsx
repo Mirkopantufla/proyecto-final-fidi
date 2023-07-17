@@ -26,9 +26,12 @@ const injectContext = PassedComponent => {
         useEffect(() => {
 
             if (state.store.access_token) {
+
                 state.actions.obtenerDatosUsuario(state.store.access_token)
                 state.actions.obtenerHabilidadesUsuario(state.store.access_token)
                 state.actions.getMatches(state.store.access_token)
+                state.actions.likeUser(state.store.access_token)
+
             }
 
         }, [state.store.access_token])

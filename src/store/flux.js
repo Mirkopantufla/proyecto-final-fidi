@@ -25,6 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             nombre: '',
             role: null,
             matches: null,
+            receptor_id: null,
             settings: {
                 actualPass: "",
                 newPass: "",
@@ -41,6 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 categoriasHabilidades: [],
                 formatoHabilidades: null
             }
+
         },
         actions: {
             handleChange: e => {
@@ -174,8 +176,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         id_usuario: JSON.parse(id_usuario),
                         intereses: JSON.parse(intereses),
                         habilidades: JSON.parse(habilidades)
-                        //correoLogin: usuario.data.user.correo,
-                        // passwordLogin: usuario.data.user.password,
                     })
                 }
             },
@@ -348,7 +348,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 fetch(data.apiURL, data.options)
                     .then((response) => response.json())
                     .then((respJson) => {
-                        setStore({ matches: respJson });
+                        console.log(respJson),
+                            setStore({ matches: respJson });
                     })
                     .catch((error) => console.log(error));
             },
@@ -399,11 +400,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const { apiURL } = getStore();
 
                 const data = {
-                    apiURL: `${apiURL}/match/like`,
+                    apiURL: `${apiURL}/api/GuardarMatch`,
                     options: {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
+                            // 'Authorization': `Bearer ${access_token}`
+
                         },
                         body: JSON.stringify({ emisor_id, receptor_id }),
                     },

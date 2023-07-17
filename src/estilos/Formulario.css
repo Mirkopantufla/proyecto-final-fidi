@@ -1,0 +1,11 @@
+.icono-atras {
+    cursor: pointer;
+}
+
+.icono-atras:hover {
+    color: #c6a037
+}
+
+.icono-atras:active {
+    color: #a0812d
+}

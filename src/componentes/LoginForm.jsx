@@ -1,19 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { ToastContainer } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import logoImage2 from "../logo2rosa.png";
 import { Context } from '../store/AppContext';
-
-
+import { IoChevronBackCircleSharp } from 'react-icons/io5'
 
 function LoginForm() {
   const { store, actions } = useContext(Context);
   const clientId = '887454848030-hcrspiurrepmmojkcv1spvfh8607h1g9.apps.googleusercontent.com';
   const navigate = useNavigate();
-  const [correo, setCorreo] = useState('');
-  const [password, setPassword] = useState('');
 
   // const handleFormSubmit = (e) => {
   //   e.preventDefault();
@@ -35,8 +31,10 @@ function LoginForm() {
   return (
     <div className="container">
       <div className="row justify-content-center p-4 custom-bg rounded-2 mt-5">
+        <div className="col-md-12 d-flex justify-content-start">
+          <IoChevronBackCircleSharp className='display-5 icono-atras' onClick={() => window.history.back()} />
+        </div>
         <div className="col-md-6 text-center">
-
           <form onSubmit={(e) => actions.login(e, navigate)}>
             <br />
             <div className="form-group">
@@ -45,8 +43,8 @@ function LoginForm() {
               <input
                 type="email"
                 className="form-control"
-                id="correo"
-                name="correo"
+                id="correoLogin"
+                name="correoLogin"
                 onChange={actions.handleChange}
                 required
               />
@@ -58,8 +56,8 @@ function LoginForm() {
               <input
                 type="password"
                 className="form-control"
-                id="password"
-                name="password"
+                id="passwordLogin"
+                name="passwordLogin"
                 onChange={actions.handleChange}
                 required
               />
@@ -94,6 +92,18 @@ function LoginForm() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

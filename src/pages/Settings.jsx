@@ -20,32 +20,25 @@ const Settings = () => {
           <div className="d-grid gap-2">
             <br />
             <Link to="Password" className="btn btn-dark custom-button">
-              Modificación de Contraseña
+              Modificar Contraseña
             </Link>
             <Routes>
               <Route path="Password" element={<Password />} />
             </Routes>
-
             <Link to="ProfilePhoto" className="btn btn-dark custom-button">
-              Modificación de Foto de Perfil
+              Modificar Foto de Perfil
             </Link>
             <Routes>
               <Route path="ProfilePhoto" element={<ProfilePhoto />} />
             </Routes>
-            <Link to="Email" className="btn btn-dark custom-button">
-              Modificación de Correo Electrónico
-            </Link>
-            <Routes>
-              <Route path="Email" element={<Email />} />
-            </Routes>
             <Link to="Interest" className="btn btn-dark custom-button">
-              Modificación de Intereses y Aprendizaje
+              Modificar de Habilidades, Intereses y Descripción
             </Link>
             <Routes>
               <Route path="Interest" element={<Interest />} />
             </Routes>
             <Link to="Notification" className="btn btn-dark custom-button">
-              Modificación de Notificación
+              Modificar de Notificación
             </Link>
             <Routes>
               <Route path="Notification" element={<Notification />} />

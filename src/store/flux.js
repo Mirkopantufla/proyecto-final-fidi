@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-import { serviceLogin } from "../services/auth.services"
 
 /**
  * { getStore, getActions, setStore }
@@ -16,20 +15,113 @@ const getState = ({ getStore, getActions, setStore }) => {
         store: {
             apiURL: 'http://127.0.0.1:5000',
             access_token: '',
+            setIsLoading: true,
             currentUser: null,
+            habilidades: null,
+            intereses: null,
             id_usuario: null,
-            correo: '',
+            correoLogin: '',
+            passwordLogin: '',
             nombre: '',
-            password: '',
             role: null,
-            matches: null
+            matches: null,
+            settings: {
+                actualPass: "",
+                newPass: "",
+                verifyPass: "",
+                cambioImagen: null
+            },
+            new_user: {
+                correo: '',
+                nombre: '',
+                password: ''
+            },
+            habilidadesCargadas: {
+                todasHabilidades: [],
+                categoriasHabilidades: [],
+                formatoHabilidades: null
+            }
         },
         actions: {
             handleChange: e => {
                 const { name, value } = e.target;
-                setStore({
-                    [name]: value
-                })
+                const { settings, new_user } = getStore();
+
+
+
+                //Todos estos formateos son para mantener ordenada la vista del context
+                //Formateo de la data de inicio de sesion
+                if (name == 'correoLogin') {
+                    setStore({ [name]: value })
+                } else if (name == 'passwordLogin') {
+                    setStore({ [name]: value })
+                }
+
+                //Formateo de nuevo Usuario y validacion de entrada
+                if (name == 'correo') {
+                    setStore({
+                        new_user: {
+                            [name]: value,
+                            nombre: new_user.nombre,
+                            password: new_user.password
+                        }
+                    })
+                } else if (name == 'nombre') {
+                    setStore({
+                        new_user: {
+                            correo: new_user.correo,
+                            [name]: value,
+                            password: new_user.password
+                        }
+                    })
+                } else if (name == 'password') {
+                    setStore({
+                        new_user: {
+                            correo: new_user.correo,
+                            nombre: new_user.nombre,
+                            [name]: value
+                        }
+                    })
+                }
+
+                //Formateo de settings
+                if (name == 'actualPass') {
+                    setStore({
+                        settings: {
+                            [name]: value,
+                            newPass: settings.newPass,
+                            verifyPass: settings.verifyPass,
+                            cambioImagen: settings.cambioImagen
+                        }
+                    })
+                } else if (name == 'newPass') {
+                    setStore({
+                        settings: {
+                            actualPass: settings.actualPass,
+                            [name]: value,
+                            verifyPass: settings.verifyPass,
+                            cambioImagen: settings.cambioImagen
+                        }
+                    })
+                } else if (name == 'verifyPass') {
+                    setStore({
+                        settings: {
+                            actualPass: settings.actualPass,
+                            newPass: settings.newPass,
+                            [name]: value,
+                            cambioImagen: settings.cambioImagen
+                        }
+                    })
+                } else if (name == 'cambioImagen') {
+                    setStore({
+                        settings: {
+                            actualPass: settings.actualPass,
+                            newPass: settings.newPass,
+                            verifyPass: settings.verifyPass,
+                            [name]: value
+                        }
+                    })
+                }
             },
             // Esta funcion la cree para poder recortar unas cuantas lineas
             fetchData: (url, options = {}) => {
@@ -37,13 +129,63 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return fetch(url, options);
 
             },
+            // fetchDataUsuario: async () => {
+            //     const { access_token, apiURL } = getStore();
+
+            //     const data = {
+            //         apiURL: `${apiURL}/api/usuario/habilidades`,
+            //         options: {
+            //             method: 'GET',
+            //             headers: {
+            //                 'Authorization': `Bearer ${access_token}`
+            //             }
+            //         }
+            //     }
+
+            //     try {
+            //         const response = await fetch(data.apiURL, data.options)
+            //         const algo = await response.json()
+
+            //         console.log('algo', algo)
+
+            //     } catch (error) {
+            //         console.log(error)
+            //     } finally {
+            //         setStore({
+            //             setIsLoading: false
+            //         })
+            //     }
+            // },
+            cargarSesion: () => {
+                const currentUser = sessionStorage.getItem('currentUser')
+                const access_token = sessionStorage.getItem('access_token')
+                const role = sessionStorage.getItem('role')
+                const id_usuario = sessionStorage.getItem('id_usuario')
+                const intereses = sessionStorage.getItem('intereses')
+                const habilidades = sessionStorage.getItem('habilidades')
+                const user = sessionStorage.getItem('user')
+
+                if (currentUser) {
+                    console.log('Si, hay data', JSON.parse(currentUser))
+                    setStore({
+                        currentUser: JSON.parse(currentUser),
+                        access_token: JSON.parse(access_token),
+                        role: JSON.parse(role),
+                        id_usuario: JSON.parse(id_usuario),
+                        intereses: JSON.parse(intereses),
+                        habilidades: JSON.parse(habilidades)
+                        //correoLogin: usuario.data.user.correo,
+                        // passwordLogin: usuario.data.user.password,
+                    })
+                }
+            },
             login: (e, navigate) => {
                 e.preventDefault();
-                const { correo, password, apiURL } = getStore();
+                const { correoLogin, passwordLogin, apiURL } = getStore();
 
                 const credentials = {
-                    correo,
-                    password
+                    correoLogin,
+                    passwordLogin
                 }
 
                 const data = {
@@ -61,28 +203,134 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .then(response => response.json())
                     .then(respJson => {
                         if (respJson.message) {
-                            toast(respJson.message, { type: toast.TYPE.ERROR });
-                            setStore({ password: '' });
-                        } else if (respJson.correo) {
-                            toast(respJson.correo, { type: toast.TYPE.WARNING });
-                            setStore({ password: '' });
-                        } else if (respJson.password) {
-                            toast(respJson.password, { type: toast.TYPE.WARNING });
-                            setStore({ password: '' });
+                            toast.error(respJson.message);
+                            setStore({ passwordLogin: '' });
+                        } else if (respJson.correoLogin) {
+                            toast(respJson.correoLogin, { type: toast.TYPE.WARNING });
+                            setStore({ passwordLogin: '' });
+                        } else if (respJson.passwordLogin) {
+                            toast(respJson.passwordLogin, { type: toast.TYPE.WARNING });
+                            setStore({ passwordLogin: '' });
                         } else {
-                            setStore({
-                                correo: '',
-                                password: '',
-                                access_token: respJson.data.access_token,
-                                role: respJson.data.user.id_roles,
-                                id_usuario: respJson.data.user.id,
-                                currentUser: respJson
-                            });
-                            sessionStorage.setItem('currentUser', JSON.stringify(respJson));
-                            navigate('/profile')
+                            if (respJson.data.access_token) {
+                                setStore({
+                                    correoLogin: '',
+                                    passwordLogin: '',
+                                    access_token: respJson.data.access_token,
+                                    role: respJson.data.user.id_roles,
+                                    id_usuario: respJson.data.user.id,
+                                    currentUser: respJson
+                                });
+                                sessionStorage.setItem('currentUser', JSON.stringify(respJson));
+                                sessionStorage.setItem('access_token', JSON.stringify(respJson.data.access_token));
+                                sessionStorage.setItem('role', JSON.stringify(respJson.data.user.id_roles));
+                                sessionStorage.setItem('id_usuario', JSON.stringify(respJson.data.user.id));
+                                sessionStorage.setItem('user', JSON.stringify(respJson.data.user));
+
+                                navigate('/profile')
+                            }
                         }
                     });
 
+            },
+            obtenerDatosUsuario: () => {
+                const { apiURL, access_token } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/api/profile`,
+                    options: {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        }
+                    }
+                }
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => console.log(error));
+            },
+            obtenerHabilidadesUsuario: () => {
+                const { apiURL, access_token } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/api/usuario/habilidades`,
+                    options: {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        }
+                    }
+                }
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        console.log(respJson)
+                        setStore({
+                            habilidades: respJson.data.habilidades,
+                            intereses: respJson.data.intereses
+                        });
+                        sessionStorage.setItem('habilidades', JSON.stringify(respJson.data.habilidades));
+                        sessionStorage.setItem('intereses', JSON.stringify(respJson.data.habilidades));
+                    })
+                    .catch((error) => console.log(error));
+
+            },
+            //Obtiene todas las habilidades presentes en la tabla Habilidad de base de datos
+            obtenerHabilidades: () => {
+                const { apiURL, access_token, habilidadesCargadas } = getStore();
+                let arrayCategorias = []
+
+                //Funcion para ordenar la informacion provista por la base de datos de la misma manera en la que se trabajaba
+                //la informacion anteriormente
+                const agruparHabilidadesPorCategoria = (payload) => {
+                    const habilidadesPorCategoria = {};
+
+                    for (let i = 0; i < payload.length; i++) {
+                        const habilidad = payload[i];
+                        const categoria = habilidad.categoria;
+
+                        if (!habilidadesPorCategoria[categoria]) {
+                            habilidadesPorCategoria[categoria] = [];
+                        }
+
+                        habilidadesPorCategoria[categoria].push(habilidad.descripcion);
+                    }
+                    return habilidadesPorCategoria;
+                }
+
+                const data = {
+                    apiURL: `${apiURL}/api/habilidades`,
+                    options: {
+                        method: "GET",
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        },
+                    },
+                };
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        respJson.forEach(data => {
+                            arrayCategorias.includes(data.categoria) ? null : arrayCategorias.push(data.categoria);
+                        })
+                        console.log(respJson)
+                        console.log(arrayCategorias)
+                        console.log(agruparHabilidadesPorCategoria(respJson))
+                        setStore({
+                            habilidadesCargadas: {
+                                todasHabilidades: respJson,
+                                categoriasHabilidades: arrayCategorias,
+                                formatoHabilidades: agruparHabilidadesPorCategoria(respJson)
+                            }
+                        });
+                    })
+                    .catch((error) => console.log(error));
             },
             getMatches: () => {
                 const { apiURL, access_token } = getStore();
@@ -100,13 +348,52 @@ const getState = ({ getStore, getActions, setStore }) => {
                 fetch(data.apiURL, data.options)
                     .then((response) => response.json())
                     .then((respJson) => {
-                        console.log(respJson),
-                            setStore({ matches: respJson });
-                        // setStore({matches: respJson});
-                        // const id_usuario=matches.map((match)=> match.user);
-                        // {id_usuario};
+                        setStore({ matches: respJson });
                     })
+                    .catch((error) => console.log(error));
+            },
+            cambiarPassword: (e) => {
+                e.preventDefault()
+                const { apiURL, id_usuario, access_token, settings: { actualPass, newPass, verifyPass } } = getStore();
 
+                const datos = {
+                    actualPass,
+                    newPass,
+                    verifyPass
+                }
+
+                const data = {
+                    apiURL: `${apiURL}/api/settings/cambiarPassword/${id_usuario}`,
+                    options: {
+                        method: "POST",
+                        body: JSON.stringify(datos),
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`,
+                            "Content-Type": "application/json"
+                        },
+                    },
+                };
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        console.log(respJson)
+                        toast.success(respJson.success);
+                        respJson.success ?
+                            setStore({
+                                settings: {
+                                    actualPass: "",
+                                    newPass: "",
+                                    verifyPass: "",
+                                    cambioImagen: ""
+                                }
+                            })
+                            :
+                            toast.warn(respJson.message);
+                    })
+                    .catch((error) => console.log(error));
+
+                e.target.reset()
             },
             likeUser: (emisor_id, receptor_id) => {
                 const { apiURL } = getStore();

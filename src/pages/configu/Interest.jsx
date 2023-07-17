@@ -1,60 +1,132 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../../store/AppContext";
+import { ToastContainer, toast } from 'react-toastify';
+import '../../estilos/config/Interest.css'
 
-const Interests = () => {  
-  const habilidadesPrincipales = ['Programación', 'Marketing', 'Idiomas', 'Habilidades blandas', 'Startups', 'Diseño UX', 'Negocios'];
-  const habilidadesIntereses = {
-    Programación: ['JavaScript', 'Python', 'Java', 'C++', 'Ruby', 'Swift', 'PHP'],
-    Marketing: ['SEO', 'SEM', 'Marketing de contenidos', 'Analítica web', 'Email marketing'],
-    Idiomas: ['Inglés', 'Español', 'Francés', 'Alemán', 'Chino', 'Japonés'],
-    'Habilidades blandas': ['Comunicación efectiva', 'Trabajo en equipo', 'Liderazgo', 'Resolución de problemas'],
-    Startups: ['Emprendimiento', 'Validación de ideas', 'Finanzas para startups', 'Modelos de negocio'],
-    'Diseño UX': ['Wireframing', 'Prototipado', 'Investigación de usuarios', 'Arquitectura de información'],
-    Negocios: ['Planificación estratégica', 'Gestión de proyectos', 'Análisis de mercado', 'Ventas'],
-  };
+const Interests = () => {
+  const [modificarHabilidades, setModificarHabilidades] = useState([]);
+  const [modificarIntereses, setModificarIntereses] = useState([]);
 
-  const [habilidades, setHabilidades] = useState([]);
-  const [intereses, setIntereses] = useState([]);
-  const [aprendizaje, setAprendizaje] = useState('');
-  const [biografia, setBiografia] = useState('');
-  const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [habilidadesError, setHabilidadesError] = useState(false);
+  const [habilidadesError, setHabilidadesError] = useState(false); //Retorna true si hay algun error al seleccionar las habilidades
   const [interesesError, setInteresesError] = useState(false);
+  const { store, actions } = useContext(Context);
+  const [descripcion, setDescripcion] = useState('');
+
+  let aux = [];
+  let habilidadActual = [];
+  let nuevaHabilidad = [];
+  let interesActual = [];
+  let nuevoInteres = [];
+  let incluidas = [];
+  let eliminadas = [];
+  let nuevas = [];
+
+  useEffect(() => {
+
+    setDescripcion(store.currentUser.data.user.descripcion)
+
+    store.habilidades.forEach(element => {
+      aux.push(element.descripcion)
+    });
+    setModificarHabilidades(aux)
+
+    aux = []
+
+    store.intereses.forEach(element => {
+      aux.push(element.descripcion)
+    });
+    setModificarIntereses(aux)
+
+    aux = []
+
+  }, [])
+
+  //Funcion para cargar las habilidades del usuario al abrir la opcion de modificar habilidades e intereses
+  const cargarHabilidadesUsuario = (array) => {
+    aux = []
+    array.forEach(element => {
+      aux.push(element.descripcion)
+    });
+    return aux;
+  }
+
+  //--------------------------------------------------------------------------------------------------------
+  //Creo una funcion para recibir el nombre de la habilidad y conocer el id dentro de la DB de esta 
+  const ordenarInformacion = (estado) => {
+    aux = [];
+    for (let i = 0; i < estado.length; i++) {
+      for (let j = 0; j < store?.habilidadesCargadas?.todasHabilidades?.length; j++) {
+        estado[i] == store.habilidadesCargadas.todasHabilidades[j].descripcion ? aux.push(store.habilidadesCargadas.todasHabilidades[j].id) : null;
+      }
+    };
+
+    return aux;
+  }
+
 
   const handleHabilidadClick = (habilidad) => {
-    if (habilidades.includes(habilidad)) {
-      setHabilidades(habilidades.filter((item) => item !== habilidad));
+    if (modificarHabilidades.includes(habilidad)) {
+      setModificarHabilidades(modificarHabilidades.filter((item) => item !== habilidad));
     } else {
-      setHabilidades([...habilidades, habilidad]);
+      setModificarHabilidades([...modificarHabilidades, habilidad]);
     }
   };
 
   const handleInteresClick = (interes) => {
-    if (intereses.includes(interes)) {
-      setIntereses(intereses.filter((item) => item !== interes));
+    if (modificarIntereses.includes(interes)) {
+      setModificarIntereses(modificarIntereses.filter((item) => item !== interes));
     } else {
-      setIntereses([...intereses, interes]);
+      setModificarIntereses([...modificarIntereses, interes]);
     }
   };
 
   const handleEliminarHabilidad = (habilidad) => {
-    setHabilidades(habilidades.filter((item) => item !== habilidad));
+    setModificarHabilidades(modificarHabilidades.filter((item) => item !== habilidad));
   };
 
   const handleEliminarInteres = (interes) => {
-    setIntereses(intereses.filter((item) => item !== interes));
+    setModificarIntereses(modificarIntereses.filter((item) => item !== interes));
   };
+
+  const habilidadesNuevasEliminadas = (actual, nuevo) => {
+
+    for (let i = 0; i < actual.length; i++) {
+      if (nuevo.includes(actual[i])) {
+        incluidas.push(actual[i])
+      } else {
+        eliminadas.push(actual[i])
+      }
+    }
+
+    // console.log('Incluidas:', incluidas);
+    // console.log('Eliminadas:', eliminadas);
+
+    //Con este loop guardo las habilidades nuevas
+    for (let i = 0; i < nuevo.length; i++) {
+      if (nuevo.includes(incluidas[i])) {
+
+      } else {
+        nuevas.push(nuevo[i])
+      }
+    }
+
+    // console.log('Nuevas:', nuevas);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (habilidades.length < 2 || habilidades.length > 10) {
+    const form = new FormData();
+    let errorPoint = 0;
+
+    if (modificarHabilidades.length < 2 || modificarHabilidades.length > 10) {
       setHabilidadesError(true);
       return;
     } else {
       setHabilidadesError(false);
     }
 
-    if (intereses.length < 2 || intereses.length > 10) {
+    if (modificarIntereses.length < 2 || modificarIntereses.length > 10) {
       setInteresesError(true);
       return;
     } else {
@@ -70,16 +142,121 @@ const Interests = () => {
       setInteresesError(false);
     }
 
-    // Esto se puede modificar para guardar los datos en una base de datos mas adelante
-    console.log('Habilidades:', habilidades);
-    console.log('Intereses:', intereses);
-    console.log('Aprendizaje:', aprendizaje);
-    console.log('Biografía:', biografia);
-    console.log('Foto de perfil:', fotoPerfil);
+    habilidadActual = ordenarInformacion(cargarHabilidadesUsuario(store.habilidades))
+    interesActual = ordenarInformacion(cargarHabilidadesUsuario(store.intereses))
+
+    nuevaHabilidad = ordenarInformacion(modificarHabilidades)
+    nuevoInteres = ordenarInformacion(modificarIntereses)
+
+    //Esta funcion me trae, de la comparacion de habilidadActual y nuevaHabilidad
+    //Los arrays [nuevas] con las habilidades nuevas y [eliminadas] con las habilidades eliminadas.
+    habilidadesNuevasEliminadas(habilidadActual, nuevaHabilidad)
+
+    //Pregunto si NO hay habilidades en los arrays [nuevas] y [eliminadas]
+    //Si NO hay, suma un punto a errorPoint
+    if (eliminadas.length == 0 && nuevas.length == 0) {
+      errorPoint += 1;
+      console.log('No has modificado habilidades')
+    } else {
+      //Si HAY, añado las habilidades nuevas y eliminadas al formulario
+      form.append('habilidades_eliminadas', eliminadas)
+      form.append('habilidades_agregadas', nuevas)
+    }
+
+    //Se liberan despues de guardarlas las habilidades en el form
+    incluidas = [];
+    eliminadas = [];
+    nuevas = [];
+
+    //Esta funcion me trae, de la comparacion de interesActual y nuevoInteres
+    //Los arrays [nuevas] con los intereses nuevos y [eliminadas] con los intereses eliminados.
+    habilidadesNuevasEliminadas(interesActual, nuevoInteres)
+
+    //Pregunto si NO hay Intereses en los arrays [nuevas] y [eliminadas]
+    if (eliminadas.length == 0 && nuevas.length == 0) {
+      //Si NO hay, suma un punto a errorPoint
+      errorPoint += 1;
+      console.log('No has modificado intereses')
+    } else {
+      //Si HAY, añado los intereses nuevos y eliminados al formulario
+      form.append('intereses_eliminados', eliminadas)
+      form.append('intereses_agregados', nuevas)
+    }
+
+    //Se liberan despues de guardarlas las intereses en el form
+    incluidas = [];
+    eliminadas = [];
+    nuevas = [];
+
+    //Pregunto si se ha modificado el campo descripción
+    if (descripcion == store.currentUser.data.user.descripcion) {
+      errorPoint += 1
+    } else {
+      form.append('descripcion', descripcion)
+    }
+
+
+    //Aqui verifico, si tengo 3 errorPoints o más se termina la funcion
+    if (errorPoint >= 3) {
+      console.log('No has modificado NADA')
+      errorPoint = 0;
+      return;
+    }
+
+    const dataPost = {
+      apiURL: `${store.apiURL}/api/settings/modificarHabilidad/${store.id_usuario}/agregar`,
+      options: {
+        method: "POST",
+        body: form,
+        headers: {
+          "Authorization": `Bearer ${store.access_token}`
+        },
+      },
+    }
+
+    const dataDelete = {
+      apiURL: `${store.apiURL}/api/settings/modificarHabilidad/${store.id_usuario}/eliminar`,
+      options: {
+        method: "DELETE",
+        body: form,
+        headers: {
+          "Authorization": `Bearer ${store.access_token}`
+        },
+      },
+    }
+
+    fetch(dataDelete.apiURL, dataDelete.options)
+      .then(response => response.json())
+      .then(data => {
+        toast.success(data.success);
+        toast.warn(data.warning);
+      })
+      .catch((error) => console.log(error));
+
+    //--------------------------------------------------------------------------------------------------------
+    //Hago el fetch a la api/formulario con el metodo POST para subir el usuario a la base de datos, apretando el boton
+    //de registrarse, de momento pasamos email, nombre, password y foto.
+    fetch(dataPost.apiURL, dataPost.options)
+      .then(response => response.json())
+      .then(data => {
+        toast.success(data.success);
+        toast.warn(data.warning);
+      })
+      .catch((error) => console.log(error));
+
+    //Libero las variables
+    errorPoint = 0;
+    incluidas = [];
+    eliminadas = [];
+    nuevas = [];
+    habilidadActual = [];
+    nuevaHabilidad = [];
+    interesActual = [];
+    nuevoInteres = [];
   };
 
   const hayHabilidadesRepetidas = () => {
-    const habilidadesSeleccionadas = [...habilidades, ...intereses];
+    const habilidadesSeleccionadas = [...modificarHabilidades, ...modificarIntereses];
     const uniqueHabilidades = new Set(habilidadesSeleccionadas);
     return habilidadesSeleccionadas.length !== uniqueHabilidades.size;
   };
@@ -87,159 +264,167 @@ const Interests = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-sm-6 mx-auto">
-        <label  className="text-light text-center">
-                     <h1>Actualiza tu perfil</h1>
-                  </label>
+        <div className="col-sm-12 mx-auto">
           <form onSubmit={handleSubmit}>
             <div className="row">
-              <div className="col-sm-6">
-                <div className="form-group">
-                  <label htmlFor="habilidades" className="text-light">
+              <div className="col-8 col-lg-12">
+                <h2>Modificar Habilidades</h2>
+                <div className="form-group p-3 border border-1 rounded border-dark">
+                  <h5 className="text-dark">
                     Selecciona lo que puedes enseñar:
-                  </label>
-                  <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {habilidadesPrincipales.map((principal) => (
-                      <div key={principal} className="m-1">
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-sm"
-                          style={{ backgroundColor: '#0CD5A9' }}
-                          disabled
-                        >
-                          {principal}
-                        </button>
-                        {habilidadesIntereses[principal].map((habilidad) => (
-                          <button
-                            key={habilidad}
-                            type="button"
-                            className={`btn btn-sm m-1 ${
-                              habilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
-                            }`}
-                            style={{ backgroundColor: habilidades.includes(habilidad) ? '#F745AE' : '#0CD5A9' }}
-                            onClick={() => handleHabilidadClick(habilidad)}
-                          >
-                            {habilidad}
-                          </button>
-                        ))}
-                      </div>
-                    ))}
+                  </h5>
+                  <hr />
+                  <div className="flex-wrap custom-scrollbar" style={{ maxHeight: '200px' }}>
+                    {
+                      store.habilidadesCargadas.categoriasHabilidades ?
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
+                          <div className="" key={principal}>
+                            <h5 className="py-1 bg-warning rounded">
+                              <b>{principal}</b>
+                            </h5>
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((habilidad) => (
+                              <div className="flex-wrap d-inline p-1">
+                                <button
+                                  key={habilidad}
+                                  type="button"
+                                  className={`btn btn-md mb-2 ${modificarHabilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
+                                    }`}
+                                  style={{ backgroundColor: modificarHabilidades.includes(habilidad) ? '#F745AE' : '#0CD5A9' }}
+                                  onClick={() => handleHabilidadClick(habilidad)}
+                                >
+                                  {habilidad}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ))
+                        : null
+                    }
                   </div>
                   {habilidadesError && <p className="text-danger">Debes seleccionar entre 2 y 10 habilidades sin repetir.</p>}
                 </div>
-                <div className="mt-4">
-                  <h5>Habilidades seleccionadas:</h5>
-                  <div className="d-flex flex-wrap">
-                    {habilidades.map((habilidad) => (
-                      <button
-                        key={habilidad}
-                        type="button"
-                        className="btn btn-primary btn-sm m-1"
-                        style={{ backgroundColor: '#F745AE' }}
-                        onClick={() => handleEliminarHabilidad(habilidad)}
-                      >
-                        {habilidad}
-                      </button>
-                    ))}
+                <div className="mt-2 p-2 border border-1 rounded border-dark">
+                  <h5 className={modificarHabilidades && modificarHabilidades.length < 2 || modificarHabilidades.length > 10 ? 'text-danger' : ''}>
+                    Habilidades seleccionadas: {modificarHabilidades ? modificarHabilidades.length : null}
+                  </h5>
+                  <hr />
+                  <div className="d-flex flex-wrap justify-content-center">
+                    {
+                      modificarHabilidades ?
+                        modificarHabilidades.map((habilidad) => (
+                          <button
+                            key={habilidad}
+                            type="button"
+                            className="btn btn-primary btn-md m-1"
+                            style={{ backgroundColor: '#F745AE' }}
+                            onClick={() => handleEliminarHabilidad(habilidad)}
+                          >
+                            {habilidad}
+                          </button>
+                        ))
+                        :
+                        null
+                    }
                   </div>
                 </div>
               </div>
-              <div className="col-sm-6">
-                <div className="form-group">
-                  <label htmlFor="intereses" className="text-light">
+              <hr className="my-3 custom-hr" />
+              <div className="col-8 col-lg-12">
+                <h2>Modificar Intereses</h2>
+                <div className="form-group p-3 border border-1 rounded border-dark">
+                  <h5 className="text-dark">
                     Selecciona lo que te gustaría aprender:
-                  </label>
-                  <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {habilidadesPrincipales.map((principal) => (
-                      <div key={principal} className="m-1">
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-sm"
-                          style={{ backgroundColor: '#0CD5A9' }}
-                          disabled
-                        >
-                          {principal}
-                        </button>
-                        {habilidadesIntereses[principal].map((interes) => (
-                          <button
-                            key={interes}
-                            type="button"
-                            className={`btn btn-sm m-1 ${
-                              intereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
-                            }`}
-                            style={{ backgroundColor: intereses.includes(interes) ? '#F745AE' : '#0CD5A9' }}
-                            onClick={() => handleInteresClick(interes)}
-                          >
-                            {interes}
-                          </button>
-                        ))}
-                      </div>
-                    ))}
+                  </h5>
+                  <hr />
+                  <div className="flex-wrap custom-scrollbar" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                    {
+                      store.habilidadesCargadas.categoriasHabilidades ?
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
+                          <div key={principal}>
+                            <h5 className="py-1 bg-warning rounded">
+                              <b>{principal}</b>
+                            </h5>
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((interes) => (
+                              <div className="flex-wrap d-inline p-1">
+                                <button
+                                  key={interes}
+                                  type="button"
+                                  className={`btn btn-md mb-2 ${modificarIntereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
+                                    }`}
+                                  style={{ backgroundColor: modificarIntereses.includes(interes) ? '#F745AE' : '#0CD5A9' }}
+                                  onClick={() => handleInteresClick(interes)}
+                                >
+                                  {interes}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ))
+                        :
+                        null
+                    }
                   </div>
                   {interesesError && <p className="text-danger">Debes seleccionar entre 2 y 10 intereses sin repetir.</p>}
                 </div>
-                <div className="mt-4">
-                  <h5>Intereses seleccionados:</h5>
-                  <div className="d-flex flex-wrap">
-                    {intereses.map((interes) => (
-                      <button
-                        key={interes}
-                        type="button"
-                        className="btn btn-primary btn-sm m-1"
-                        style={{ backgroundColor: '#F745AE' }}
-                        onClick={() => handleEliminarInteres(interes)}
-                      >
-                        {interes}
-                      </button>
-                    ))}
+                <div className="mt-4 p-2 border border-1 rounded border-dark">
+                  <h5 className={modificarIntereses && modificarIntereses.length < 2 || modificarIntereses.length > 10 ? 'text-danger' : ''}>
+                    Intereses seleccionados: {modificarIntereses ? modificarIntereses.length : null}
+                  </h5>
+                  <hr />
+                  <div className="d-flex flex-wrap justify-content-center">
+                    {
+                      modificarIntereses ?
+                        modificarIntereses.map((interes) => (
+                          <button
+                            key={interes}
+                            type="button"
+                            className="btn btn-primary btn-md m-1"
+                            style={{ backgroundColor: '#F745AE' }}
+                            onClick={() => handleEliminarInteres(interes)}
+                          >
+                            {interes}
+                          </button>
+                        ))
+                        :
+                        null
+                    }
                   </div>
                 </div>
               </div>
             </div>
+            <hr className="my-3 custom-hr" />
+            <h2>Modificar Descripcion</h2>
             <div className="form-group mt-4">
-              <label htmlFor="aprendizaje" className="text-light">
-                Resalta tus mayores cualidades a la hora de aprender y enseñar (máximo 200 caracteres)
-              </label>
-              <textarea
-                id="aprendizaje"
-                className="form-control"
-                maxLength="200"
-                value={aprendizaje}
-                onChange={(e) => setAprendizaje(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="form-group mt-4">
-              <label htmlFor="biografia" className="text-light">
-                Cuéntanos un poco sobre ti: (máximo 500 caracteres)
+              <label htmlFor="biografia" className="text-dark fs-5">
+                Puedes modificar tu descripcion: (máximo 500 caracteres)
               </label>
               <textarea
                 id="biografia"
                 className="form-control"
                 maxLength="500"
-                value={biografia}
-                onChange={(e) => setBiografia(e.target.value)}
+                onChange={(e) => setDescripcion(e.target.value)}
+                value={descripcion}
+                rows="4"
               ></textarea>
             </div>
-            <div className="form-group mt-4">
-              <label htmlFor="fotoPerfil" className="text-light">
-                Sube tu foto de perfil:
-              </label>
-              <br />
-              <br />
-              <input
-                type="file"
-                id="fotoPerfil"
-                className="form-control-file"
-                accept="image/*"
-                onChange={(e) => setFotoPerfil(e.target.files[0])}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mt-4">
+            <button type="submit" className="btn btn-primary text-light mt-4">
               Aceptar Modificaciones
             </button>
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

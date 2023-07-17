@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import logoImage from "../logo1.png";
 import { Context } from '../store/AppContext';
 import { ToastContainer, toast } from 'react-toastify';
+import { IoChevronBackCircleSharp } from 'react-icons/io5'
+import '../estilos/Formulario.css'
 
 const Formulario = () => {
   const [habilidades, setHabilidades] = useState([]);
@@ -11,54 +13,9 @@ const Formulario = () => {
   const [habilidadesError, setHabilidadesError] = useState(false);
   const [interesesError, setInteresesError] = useState(false);
   const { store, actions } = useContext(Context);
-  const [habilidadesDB, setHabilidadesDB] = useState([]);
-  const [categoriasHabilidades, setCategoriasHabilidades] = useState([]);
-  const [habilidadesIntereses, setHabilidadesIntereses] = useState([]);
   let aux = [];
   let habilidadesOrdenadas = []
   let interesesOrdenadas = []
-
-  //Use effect para traer la data apenas se cargue el componente
-  useEffect(() => {
-    obtenerHabilidades()
-  }, [])
-
-  //--------------------------------------------------------------------------------------------------------
-  //Funcion para traer la habilidades en la base de datos, se conecta con la API y extrae cada una de ellas
-  //estas las almaceno en el estado habilidadesDB para poder manipularlas en el front
-  const obtenerHabilidades = () => {
-    let arrayCategorias = [];
-    actions.fetchData(`${store.apiURL}/api/habilidades`, {})
-      .then((response) => response.json())
-      .then((data) => {
-        setHabilidadesDB(data); //Guardo toda la Data en el estado habilidadesDB
-        data.forEach(dato => {
-          arrayCategorias.includes(dato.categoria) ? null : arrayCategorias.push(dato.categoria);
-        });
-        setCategoriasHabilidades(arrayCategorias) //Guardo todas las categorias presentes, sin repetir
-        let x = agruparHabilidadesPorCategoria(data)
-        setHabilidadesIntereses(x) //Guardo la data en un formato adaptado a las necesidades
-      })
-      .catch((error) => console.log(error));
-  }
-
-  //Funcion para ordenar la informacion provista por la base de datos de la misma manera en la que se trabajaba
-  //la informacion anteriormente
-  function agruparHabilidadesPorCategoria(payload) {
-    const habilidadesPorCategoria = {};
-
-    for (let i = 0; i < payload.length; i++) {
-      const habilidad = payload[i];
-      const categoria = habilidad.categoria;
-
-      if (!habilidadesPorCategoria[categoria]) {
-        habilidadesPorCategoria[categoria] = [];
-      }
-
-      habilidadesPorCategoria[categoria].push(habilidad.descripcion);
-    }
-    return habilidadesPorCategoria;
-  }
 
   const handleHabilidadClick = (habilidad) => {
     if (habilidades.includes(habilidad)) {
@@ -124,8 +81,8 @@ const Formulario = () => {
     const ordenarInformacion = (estado) => {
       aux = [];
       for (let i = 0; i < estado.length; i++) {
-        for (let j = 0; j < habilidadesDB.length; j++) {
-          estado[i] == habilidadesDB[j].descripcion ? aux.push(habilidadesDB[j].id) : null;
+        for (let j = 0; j < store.habilidadesCargadas.todasHabilidades.length; j++) {
+          estado[i] == store.habilidadesCargadas.todasHabilidades[j].descripcion ? aux.push(store.habilidadesCargadas.todasHabilidades[j].id) : null;
         }
       };
 
@@ -147,9 +104,9 @@ const Formulario = () => {
     console.log(intereses)
 
     const form = new FormData();
-    form.append('correo', store.correo)
-    form.append('nombre', store.nombre)
-    form.append('password', store.password)
+    form.append('correo', store.new_user.correo)
+    form.append('nombre', store.new_user.nombre)
+    form.append('password', store.new_user.password)
     form.append('habilidades', habilidadesOrdenadas)
     form.append('intereses', interesesOrdenadas)
     form.append('descripcion', descripcion)
@@ -173,10 +130,9 @@ const Formulario = () => {
         setHabilidades([]);
         setIntereses([]);
         setDescripcion('');
-        // setFotoPerfil(null);
-        e.target.reset();
       })
       .catch((error) => console.log(error));
+
 
   };
 
@@ -187,44 +143,50 @@ const Formulario = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container">
       <div className="row justify-content-center p-4 custom-bg rounded-2 mt-5">
-        <div className="col-md-6 text-center">
-
-          <h3 className='titulos '>!Completa el siguiente formulario para encontrar el Match ideal!</h3>
+        <div className="col-md-12 d-flex justify-content-start">
+          <IoChevronBackCircleSharp className='display-5 icono-atras' onClick={() => window.history.back()} />
+        </div>
+        <div className="col-md-8">
+          <h3 className='titulos text-center'>!Completa el siguiente formulario para encontrar el Match ideal!</h3>
 
           <form onSubmit={handleSubmit}>
             <div className="row">
-              <div className="col-sm-6">
+              <div className="col-6 text-center">
                 <div className="form-group">
                   <label htmlFor="habilidades" className="text-dark">
                     Selecciona lo que puedes enseñar:
                   </label>
                   <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {categoriasHabilidades.map((principal) => (
-                      <div key={principal} className="m-1">
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-sm"
-                          style={{ backgroundColor: '#0CD5A9' }}
-                          disabled
-                        >
-                          {principal}
-                        </button>
-                        {habilidadesIntereses[principal].map((habilidad) => (
-                          <button
-                            key={habilidad}
-                            type="button"
-                            className={`btn btn-sm m-1 ${habilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
-                              }`}
-                            style={{ backgroundColor: habilidades.includes(habilidad) ? '#F745AE' : '#0CD5A9' }}
-                            onClick={() => handleHabilidadClick(habilidad)}
-                          >
-                            {habilidad}
-                          </button>
-                        ))}
-                      </div>
-                    ))}
+                    {
+                      store.habilidadesCargadas.categoriasHabilidades ?
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
+                          <div key={principal} className="m-1">
+                            <button
+                              type="button"
+                              className="btn btn-primary btn-sm"
+                              style={{ backgroundColor: '#0CD5A9' }}
+                              disabled
+                            >
+                              {principal}
+                            </button>
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((habilidad) => (
+                              <button
+                                key={habilidad}
+                                type="button"
+                                className={`btn btn-sm m-1 ${habilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
+                                  }`}
+                                style={{ backgroundColor: habilidades.includes(habilidad) ? '#F745AE' : '#0CD5A9' }}
+                                onClick={() => handleHabilidadClick(habilidad)}
+                              >
+                                {habilidad}
+                              </button>
+                            ))}
+                          </div>
+                        ))
+                        : null
+                    }
                   </div>
                   {habilidadesError && <p className="text-danger">Debes seleccionar entre 2 y 10 habilidades sin repetir.</p>}
                 </div>
@@ -245,36 +207,40 @@ const Formulario = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-6">
+              <div className="col-sm-6 text-center">
                 <div className="form-group">
                   <label htmlFor="intereses" className="text-dark">
                     Selecciona lo que te gustaría aprender:
                   </label>
                   <div className="d-flex flex-wrap" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-                    {categoriasHabilidades.map((principal) => (
-                      <div key={principal} className="m-1">
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-sm"
-                          style={{ backgroundColor: '#0CD5A9' }}
-                          disabled
-                        >
-                          {principal}
-                        </button>
-                        {habilidadesIntereses[principal].map((interes) => (
-                          <button
-                            key={interes}
-                            type="button"
-                            className={`btn btn-sm m-1 ${intereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
-                              }`}
-                            style={{ backgroundColor: intereses.includes(interes) ? '#F745AE' : '#0CD5A9' }}
-                            onClick={() => handleInteresClick(interes)}
-                          >
-                            {interes}
-                          </button>
-                        ))}
-                      </div>
-                    ))}
+                    {
+                      store.habilidadesCargadas.categoriasHabilidades ?
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
+                          <div key={principal} className="m-1">
+                            <div
+                              className="btn btn-primary btn-sm"
+                              style={{ backgroundColor: '#0CD5A9' }}
+                              disabled
+                            >
+                              {principal}
+                            </div>
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((interes) => (
+                              <button
+                                key={interes}
+                                type="button"
+                                className={`btn btn-sm m-1 ${intereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
+                                  }`}
+                                style={{ backgroundColor: intereses.includes(interes) ? '#F745AE' : '#0CD5A9' }}
+                                onClick={() => handleInteresClick(interes)}
+                              >
+                                {interes}
+                              </button>
+                            ))}
+                          </div>
+                        ))
+                        :
+                        null
+                    }
                   </div>
                   {interesesError && <p className="text-danger">Debes seleccionar entre 2 y 10 intereses sin repetir.</p>}
                 </div>
@@ -296,8 +262,8 @@ const Formulario = () => {
                 </div>
               </div>
             </div>
-            <div className="form-group mt-4">
-              <label htmlFor="biografia" className="text-dark">
+            <div className="form-group mt-4 text-center">
+              <label htmlFor="biografia" className="fs-5 text-dark mb-2">
                 Cuéntanos un poco sobre ti: (máximo 500 caracteres)
               </label>
               <textarea
@@ -308,7 +274,7 @@ const Formulario = () => {
                 rows="4"
               ></textarea>
             </div>
-            <div className="form-group mt-4">
+            <div className="form-group mt-4 text-center fs-5">
               <label htmlFor="fotoPerfil" className="text-dark">
                 Sube tu foto de perfil:
               </label>
@@ -325,9 +291,12 @@ const Formulario = () => {
                 fotoPerfil ? <img className='w-50 mt-4 border border-3 rounded-3 border-dark' src={URL.createObjectURL(fotoPerfil)} alt="" /> : null
               }
             </div>
-            <button type="submit" className="btn btn-dark mt-4">
-              Registrarme
-            </button>
+            <div className='d-flex justify-content-center'>
+              <button type="submit" className="btn btn-dark mt-4">
+                Registrarme
+              </button>
+            </div>
+
           </form>
         </div>
       </div>

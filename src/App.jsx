@@ -32,21 +32,23 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
-        <Route path="/chat/*" element={<PrivateRoute user={store.currentUser}><Chat /></PrivateRoute>} />
-        <Route path="/explore" element={<PrivateRoute user={store.currentUser}><Explore /></PrivateRoute>} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/chat/*" element={<Chat />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/matches" element={<Matches />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings/*" element={<Settings />} />
+        </Route>
         <Route path="/auth" component={Auth} />
-        <Route path="/matches" element={<PrivateRoute user={store.currentUser}><Matches /></PrivateRoute>} />
-        <Route path="/profile" element={<PrivateRoute user={store.currentUser}><Profile /></PrivateRoute>} />
-        <Route path="/settings/*" element={<PrivateRoute user={store.currentUser}><Settings /></PrivateRoute>} />
         <Route path="/loginform" element={<LoginForm />} />
-        <Route path="/administrar">
+        {/* <Route path="/administrar">
           <Route index element={<GestionarNoticia />} />
           <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
           <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />
           <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} />
-        </Route>
-        {/* <Route path='' element={<NotFound />} /> */}
-        {/* <Route path='/administrar' element={<GestionarNoticia />} />
+        </Route> */}
+        {/* <Route path='' element={<NotFound />} />
+        <Route path='/administrar' element={<GestionarNoticia />} />
         <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
         <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />
         <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} /> */}

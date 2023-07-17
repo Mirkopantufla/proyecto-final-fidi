@@ -4,7 +4,7 @@ body {
 }
 
 .custom-bg {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.7);
   /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
 }
 

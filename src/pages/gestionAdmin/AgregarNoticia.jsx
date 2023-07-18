@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
-import { Context } from '../store/AppContext';
+import { Context } from '../../store/AppContext';
 import { ToastContainer, toast } from 'react-toastify';
+import { IoChevronBackCircleSharp } from 'react-icons/io5';
 
 const AgregarNoticia = () => {
 
@@ -40,12 +41,15 @@ const AgregarNoticia = () => {
   }
 
   return (
-    <div className='container-fluid'>
-      <h1 className='text-center my-5'>
-        Agrega una noticia
-      </h1>
-      <div className="row">
-        <div className="offset-3 col-6 border border-2 border-dark p-5">
+    <div className='container'>
+      <div className="row custom-bg">
+        <div className="mt-5 ms-5 col-md-12 d-flex justify-content-start">
+          <IoChevronBackCircleSharp className='display-5 icono-atras' onClick={() => window.history.back()} />
+        </div>
+        <h1 className='text-center mb-5'>
+          Agrega una noticia
+        </h1>
+        <div className="offset-3 col-6 border border-2 border-dark p-5 mb-5">
           <form className='form-group' onSubmit={handleNuevaNoticia}>
             <div className="mb-3">
               <label

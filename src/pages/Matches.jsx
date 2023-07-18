@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, json } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../estilos/Matches.css";
 import "../estilos/Profile.css";
 import { FaHeart, FaTimes } from "react-icons/fa";
@@ -9,18 +9,23 @@ import { ToastContainer, toast } from 'react-toastify';
 const Matches = () => {
   const [rejected, setRejected] = useState(false);
   const { store, actions } = useContext(Context);
-  const [nombreUsuario, setNombreUsuario] = useState("");
-  const [imagenUsuario, setImagenUsuario] = useState("");
-  const [habilidadUsuario, setHabilidadUsuario] = useState("");
-  const [interesUsuario, setInteresUsuario] = useState("");
   const [descripcionUsuario, setDescripcionUsuario] = useState("");
   const [liked, setLiked] = useState(false);
   const [indice, setIndice] = useState(0);
+  const [nombreUsuario, setNombreUsuario] = useState("");
+  const [imagenUsuario, setImagenUsuario] = useState("");
 
   let aux = [];
+  let charge = false;
 
   useEffect(() => {
 
+    if (!charge) {
+      setNombreUsuario(store?.matches?.usuario[indice].nombre)
+      setImagenUsuario(store?.matches?.usuario[indice].src_imagen)
+      setDescripcionUsuario(store?.matches?.usuario[indice].descripcion)
+    }
+    charge = true;
 
   }, []);
 
@@ -31,8 +36,6 @@ const Matches = () => {
 
     console.log("indice actualizado " + indice);
 
-    setNombreUsuario(usuarioActual.nombre);
-    setImagenUsuario(usuarioActual.src_imagen);
     setDescripcionUsuario(usuarioActual.descripcion);
 
     actions.obtenerHabilidadesUsuarioMatch(usuarioActual.id)
@@ -58,9 +61,10 @@ const Matches = () => {
     // Obtener los datos del emisor y receptor
     const form = new FormData();
     form.append('emisor_id', store.id_usuario);
-    form.append('receptor_id', store.matches.usuario[0].id);
+    form.append('receptor_id', store.matches.usuario[indice + 1].id);
 
     console.log('YO: ', store.id_usuario)
+    console.log('EL OTRO WE: ', store.matches.usuario[indice + 1].id)
 
     // if (state.store.access_token) {
     //   state.actions.likeUser(id_usuario, receptor_id);
@@ -79,13 +83,9 @@ const Matches = () => {
       .then((data) => {
         toast.success(data.success);
         // Manejar la respuesta del servidor si es necesario
-        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + indice);
 
-        var i = indice + 1;
-
-        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 2  " + i);
-        tarjetaUsuario(i);
-        setIndice(i);
+        tarjetaUsuario(indice + 1);
+        setIndice(indice + 1);
 
       })
       .catch((error) => {
@@ -120,47 +120,45 @@ const Matches = () => {
     <div className="container">
       <div className="container-fluid justify-content-around">
         <div className="row custom-bg rounded-2 ">
-          <form>
-            <div className="col-md-8 justify-content-center">
-              <img
-                //src={store.matches.usuario[0].src_imagen}
-                src={imagenUsuario}
-                alt="Foto de perfil"
-                className="image-overlay img-fluid max-100"
-                style={{ top: 0, left: 0, width: '30%', height: 'auto', }}
-              />
+          <div className="col-8 justify-content-center">
+            <img
+              //src={store.matches.usuario[0].src_imagen}
+              src={store.matches?.usuario[indice].src_imagen ? store.matches?.usuario[indice].src_imagen : ""}
+              alt="Foto de perfil"
+              className="image-overlay img-fluid max-100"
+              style={{ top: 0, left: 0, width: '30%', height: 'auto', }}
+            />
+          </div>
+          <div className="col-md-4 order-md-last ">
+            <h1 className="titulos">{store.matches.usuario[indice].nombre && store.matches.usuario[indice].nombre != "" ? store?.matches?.usuario[indice].nombre : ""}</h1>
+            <div className="">
+              <h3 className="titulos">Lo que quiero aprender:</h3>
+              {store?.habilidadesUsuarioMatch?.intereses.map((interes, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="btn btn-primary btn-sm m-1"
+                  style={{ backgroundColor: "#0CD5A9" }}
+                >
+                  {interes.descripcion}
+                </button>
+              ))}
             </div>
-            <div className="col-md-4 order-md-last ">
-              <h1 className="titulos">{nombreUsuario}</h1>
-              <div className="">
-                <h3 className="titulos">Lo que quiero aprender:</h3>
-                {store?.habilidadesUsuarioMatch?.intereses.map((interes, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className="btn btn-primary btn-sm m-1"
-                    style={{ backgroundColor: "#0CD5A9" }}
-                  >
-                    {interes.descripcion}
-                  </button>
-                ))}
-              </div>
-              <div className="d-flex flex-wrap d-flex justify-content-center">
-                <h3 className="titulos">Lo que te puedo enseñar:</h3>
-                {store?.habilidadesUsuarioMatch?.habilidades.map((habilidad, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    className="btn btn-primary btn-sm m-1"
-                    style={{ backgroundColor: "#0CD5A9" }}
-                  >
-                    {habilidad.descripcion}
-                  </button>
-                ))}
-              </div>
-              <p className="titulos">{descripcionUsuario}</p>
+            <div className="d-flex flex-wrap d-flex justify-content-center">
+              <h3 className="titulos">Lo que te puedo enseñar:</h3>
+              {store?.habilidadesUsuarioMatch?.habilidades.map((habilidad, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="btn btn-primary btn-sm m-1"
+                  style={{ backgroundColor: "#0CD5A9" }}
+                >
+                  {habilidad.descripcion}
+                </button>
+              ))}
             </div>
-          </form>
+            <p className="titulos">{store.matches.usuario[indice].descripcion ? store.matches.usuario[indice].descripcioncionUsuario : ""}</p>
+          </div>
           <div
             className="offcanvas offcanvas-end"
             tabIndex="-1"

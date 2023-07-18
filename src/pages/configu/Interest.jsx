@@ -198,8 +198,8 @@ const Interests = () => {
 
     //Aqui verifico, si tengo 3 errorPoints o más se termina la funcion
     if (errorPoint >= 3) {
-      console.log('No has modificado NADA')
       errorPoint = 0;
+      toast.warn('No has modificado nada');
       return;
     }
 
@@ -277,15 +277,15 @@ const Interests = () => {
                   <div className="flex-wrap custom-scrollbar" style={{ maxHeight: '200px' }}>
                     {
                       store.habilidadesCargadas.categoriasHabilidades ?
-                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
-                          <div className="" key={principal}>
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal, index) => (
+                          <div className="" key={index}>
                             <h5 className="py-1 bg-warning rounded">
                               <b>{principal}</b>
                             </h5>
-                            {store.habilidadesCargadas.formatoHabilidades[principal].map((habilidad) => (
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((habilidad, index) => (
                               <div className="flex-wrap d-inline p-1">
                                 <button
-                                  key={habilidad}
+                                  key={index}
                                   type="button"
                                   className={`btn btn-md mb-2 ${modificarHabilidades.includes(habilidad) ? 'btn-secondary' : 'btn-primary'
                                     }`}
@@ -311,9 +311,9 @@ const Interests = () => {
                   <div className="d-flex flex-wrap justify-content-center">
                     {
                       modificarHabilidades ?
-                        modificarHabilidades.map((habilidad) => (
+                        modificarHabilidades.map((habilidad, index) => (
                           <button
-                            key={habilidad}
+                            key={index}
                             type="button"
                             className="btn btn-primary btn-md m-1"
                             style={{ backgroundColor: '#F745AE' }}
@@ -339,15 +339,15 @@ const Interests = () => {
                   <div className="flex-wrap custom-scrollbar" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                     {
                       store.habilidadesCargadas.categoriasHabilidades ?
-                        store.habilidadesCargadas.categoriasHabilidades.map((principal) => (
-                          <div key={principal}>
+                        store.habilidadesCargadas.categoriasHabilidades.map((principal, index) => (
+                          <div key={index}>
                             <h5 className="py-1 bg-warning rounded">
                               <b>{principal}</b>
                             </h5>
-                            {store.habilidadesCargadas.formatoHabilidades[principal].map((interes) => (
+                            {store.habilidadesCargadas.formatoHabilidades[principal].map((interes, index) => (
                               <div className="flex-wrap d-inline p-1">
                                 <button
-                                  key={interes}
+                                  key={index}
                                   type="button"
                                   className={`btn btn-md mb-2 ${modificarIntereses.includes(interes) ? 'btn-secondary' : 'btn-primary'
                                     }`}
@@ -374,9 +374,9 @@ const Interests = () => {
                   <div className="d-flex flex-wrap justify-content-center">
                     {
                       modificarIntereses ?
-                        modificarIntereses.map((interes) => (
+                        modificarIntereses.map((interes, index) => (
                           <button
-                            key={interes}
+                            key={index}
                             type="button"
                             className="btn btn-primary btn-md m-1"
                             style={{ backgroundColor: '#F745AE' }}
@@ -403,7 +403,7 @@ const Interests = () => {
                 className="form-control"
                 maxLength="500"
                 onChange={(e) => setDescripcion(e.target.value)}
-                value={descripcion}
+                value={descripcion ? descripcion : ""}
                 rows="4"
               ></textarea>
             </div>

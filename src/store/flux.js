@@ -26,6 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             role: null,
             matches: null,
             receptor_id: null,
+            notificaciones: null,
             settings: {
                 actualPass: "",
                 newPass: "",
@@ -233,6 +234,28 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data)
+                    })
+                    .catch((error) => console.log(error));
+            },
+            obtenerNotificacionesUsuario: () => {
+                const { apiURL, access_token } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/api/notificaciones/recibir/notificacion`,
+                    options: {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        }
+                    }
+                }
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setStore({
+                            notificaciones: data.notificaciones
+                        })
                     })
                     .catch((error) => console.log(error));
             },

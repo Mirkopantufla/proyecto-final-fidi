@@ -30,6 +30,7 @@ const injectContext = PassedComponent => {
                 state.actions.obtenerDatosUsuario(state.store.access_token)
                 state.actions.obtenerHabilidadesUsuario(state.store.access_token)
                 state.actions.getMatches(state.store.access_token)
+                state.actions.obtenerNotificacionesUsuario(state.store.access_token)
                 // state.actions.likeUser(state.store.access_token)
 
             }

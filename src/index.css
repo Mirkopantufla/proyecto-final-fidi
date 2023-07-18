@@ -1,6 +1,6 @@
 body {
-  background-image: url("fondo1.png");
-  background-size: cover;
+  background-image: url("fondo9.png");
+  background-size:cover;
 }
 
 .custom-bg {
@@ -8,9 +8,8 @@ body {
   /* Fondo semitransparente claro, el numero con decimal va modificando la transparencia */
 }
 
-.container {
-  position: relative;
-}
+/* .container {
+  /* position: relative; */
 
 .footer-logo {
   position: absolute;

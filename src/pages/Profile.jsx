@@ -11,18 +11,18 @@ const Profile = () => {
 
   return (
     <div className="container">
-      <div className="row justify-content-center p-4 custom-bg rounded-2">
-        <div className="col-md-6 text-center">
-          <div className="row">
-            <div className="offset-md-2 col-md-8">
-              <div className="profile-container">
-                <div className="profile-image d-flex justify-content-center">
-                  <img src={store.currentUser ? store.currentUser.data.user.src_imagen : ""} alt="Foto de perfil" style={{ width: '400px' }} />
-                </div>
-                <div className="profile-info">
-                  <h2>{store.currentUser && store.currentUser.data.user.nombre != null ? store.currentUser.data.user.nombre : ""}</h2>
-                  <p>Edad:  años</p>
-                  <h3>Habilidades</h3>
+      <div className="p-4 custom-bg rounded-2">
+      <div className="row justify-content-center">
+          <div className="col-5 mt-5">
+          <img src={store.currentUser ? store.currentUser.data.user.src_imagen : ""} alt="Foto de perfil"
+              className="image-overlay img-fluid max-100 rounded-5"
+              style={{ top: 0, left: 0, width: "100%", height: "auto" }}
+            />
+      </div>
+          <div className="col-5 mt-5">
+            <div className="container text-center ">
+            <h2 className="titulos">{store.currentUser && store.currentUser.data.user.nombre != null ? store.currentUser.data.user.nombre : ""}</h2>
+                  <h3 className="titulos">Habilidades</h3>
                   {
                     store.habilidades && store.habilidades.length >= 1 ?
                       store.habilidades.map((habilidad, id) => {
@@ -35,7 +35,7 @@ const Profile = () => {
                       :
                       null
                   }
-                  <h3>Intereses</h3>
+                  <h3 className="titulos">Intereses</h3>
                   {
                     store.intereses && store.intereses.length >= 1 ?
                       store.intereses.map((interes, id) => {
@@ -48,15 +48,16 @@ const Profile = () => {
                       :
                       null
                   }
-                  <h3>Descripcion</h3>
-                  <p>{store.currentUser ? store.currentUser.data.user.descripcion : ""}</p>
-                </div>
-              </div>
+                  <br />
+                  <br />
+                  <h3 className="titulos">Descripcion</h3>
+                  <h4 className="titulos">{store.currentUser ? store.currentUser.data.user.descripcion : ""}</h4>
             </div>
           </div>
-        </div>
       </div>
-    </div>
+      <div className="col-2 mt-5"></div>
+      </div>
+      </div>
   );
 };
 

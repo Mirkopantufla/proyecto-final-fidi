@@ -22,7 +22,7 @@ import MostrarNavBar from './componentes/MostrarNavBar';
 
 const App = () => {
 
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
 
   return (
     <Router>
@@ -32,7 +32,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
-        <Route path="/" element={<PrivateRoute user={store.currentUser} replace />}>
+        <Route element={<PrivateRoute />}>
           <Route path="/chat/*" element={<Chat />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/matches" element={<Matches />} />

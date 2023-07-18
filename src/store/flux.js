@@ -42,14 +42,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                 categoriasHabilidades: [],
                 formatoHabilidades: null
             }
-
         },
         actions: {
             handleChange: e => {
                 const { name, value } = e.target;
-
-                setStore({ [name]: value })
-
                 const { settings, new_user } = getStore();
 
 
@@ -318,6 +314,35 @@ const getState = ({ getStore, getActions, setStore }) => {
                         });
                     })
                     .catch((error) => console.log(error));
+            },
+            obtenerHabilidadesUsuarioMatch: (id_receptor) => {
+                const { apiURL, access_token } = getStore();
+
+                const data = {
+                    apiURL: `${apiURL}/api/match/habilidades/usuario/${id_receptor}`,
+                    options: {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${access_token}`
+                        }
+                    }
+                }
+
+                fetch(data.apiURL, data.options)
+                    .then((response) => response.json())
+                    .then((respJson) => {
+                        console.log('Esta es la data con las habilidades', respJson)
+                        console.log('Esta es el id del receptor', id_receptor)
+                        setStore({
+                            habilidadesUsuarioMatch: {
+                                id_usuario_receptor: id_receptor,
+                                habilidades: respJson.data.habilidades,
+                                intereses: respJson.data.intereses
+                            }
+                        });
+                    })
+                    .catch((error) => console.log(error));
+
             },
             getMatches: () => {
                 const { apiURL, access_token } = getStore();

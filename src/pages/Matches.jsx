@@ -53,7 +53,6 @@ const Matches = () => {
   };
 
   function tarjetaUsuario(indice) {
-    console.log("indice actualizado " + indice);
     const usuarioActual = data.usuario[indice];
     setIdUsuario(usuarioActual.id);
     setNombreUsuario(usuarioActual.nombre);
@@ -61,8 +60,6 @@ const Matches = () => {
     setHabilidadUsuario(usuarioActual.habilidad);
     setInteresUsuario(usuarioActual.interes);
     setDescripcionUsuario(usuarioActual.descripcion);
-
-    console.log("nombreeeeeeeeeeeeeee " + usuarioActual.nombre);
   }
 
   // Perfil de la persona rescatada (ejemplo)
@@ -86,10 +83,6 @@ const Matches = () => {
     const habilidades = store.habilidades;
     const intereses = store.intereses;
 
-    // if (state.store.access_token) {
-    //   state.actions.likeUser(id_usuario, receptor_id);
-    // }
-
     const options = {
       method: "POST",
       body: form,
@@ -101,15 +94,8 @@ const Matches = () => {
       .fetchData(`${store.apiURL}/api/match/like`, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log("llego la respuesta aca??????????????'");
         toast.success(data.success);
-        // Manejar la respuesta del servidor si es necesario
-        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + indice);
-
         var i = indice + 1;
-
-        console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 2  " + i);
-
         setIndice(i);
         tarjetaUsuario(i);
       })
@@ -118,20 +104,19 @@ const Matches = () => {
         console.log(error);
       });
   };
+  const handleReject = (e) => {
+    e.preventDefault();
+    setLiked(false);
 
-  const handleReject = () => {
-    setRejected(true);
-    // Enviar solicitud al servidor para registrar el rechazo
-    fetch(`/api/profiles/${profileId}/reject`, {
-      method: "POST",
-      // Puedes incluir encabezados o datos adicionales si es necesario
-    })
-      .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-      })
-      .catch((error) => {
-        // Manejar el error si ocurre
-      });
+    // Obtener los datos del emisor y receptor
+    const form = new FormData();
+    form.append("emisor_id", store.id_usuario);
+    form.append("receptor_id", store.matches.usuario[0].id);
+
+    var i = indice + 1;
+    setIndice(i);
+    tarjetaUsuario(i);
+
   };
 
   // Lista de personas con las que ha habido match (ejemplo)
@@ -142,20 +127,21 @@ const Matches = () => {
   ];
 
   return (
-  <div className="container">
-    <div className="text-center custom-bg rounded-2">
-      <div className="row">
-        <form>
-          <div className="col-6">
-            <img
+    <div className="container text-center">
+    <div className="custom-bg rounded-2">
+      <form>
+      <div className="row justify-content-md-center">
+          <div className="col-6 mt-5">
+          <img
               //src={store.matches.usuario[0].src_imagen}
               src={imagenUsuario}
               alt="Foto de perfil"
-              className="image-overlay img-fluid max-100"
-              style={{ top: 0, left: 0, width: "50%", height: "auto" }}
+              className="image-overlay img-fluid max-100 rounded-5"
+              style={{ top: 0, left: 0, width: "60%", height: "auto" }}
             />
+            <br/>
             <div
-              className="btn-toolbar d-flex  mt-3"
+              className="btn-toolbar d-flex justify-content-center m-3"
               role="toolbar"
               aria-label="Toolbar with button groups"
             >
@@ -176,7 +162,7 @@ const Matches = () => {
               <div className="btn-group" role="group" aria-label="Second group">
                 <button
                   className="btn btn-secondary btn-reject"
-                  onClick={handleReject}
+                  onClick={(e) => handleReject(e)}
                 >
                   <span className="reject-icon">
                     <FaTimes />
@@ -186,9 +172,10 @@ const Matches = () => {
             </div>
             {liked && <p>¡Has dado like a este perfil!</p>}
             {rejected && <p>Has rechazado este perfil.</p>}
+           
           </div>
-          <div className="col-6">
-            <div>
+          <div className="col-6 mt-5">
+            <div className="container text-center">
               <h1 className="titulos">{nombreUsuario}</h1>
               <div className="">
                 <h3 className="titulos">Lo que quiero aprender:</h3>
@@ -219,48 +206,50 @@ const Matches = () => {
               <p className="titulos">{descripcionUsuario}</p>
             </div>
           </div>
-        </form>
       </div>
-    </div>
-        
-      <div className="col-md-6">
-        <button
-          className="btn btn-dark custom-button"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasRight"
-          aria-controls="offcanvasRight"
-        >
-          Revisar tus Matches
-        </button>
-        <div
-          className="offcanvas offcanvas-end"
-          tabIndex="-1"
-          id="offcanvasRight"
-          aria-labelledby="offcanvasRightLabel"
-        >
-          <div className="offcanvas-header text-center">
-            <h2 id="offcanvasRightLabel">Mis Matches</h2>
-            <button
-              type="button"
-              className="btn-close text-reset"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div className="offcanvas-body">
-            <ul className="list-group">
-              {matches.map((match) => (
-                <li className="list-group-item" key={match.id}>
-                  <Link to={`/chat/${match.id}`}>{match.nombre}</Link>
-                </li>
-              ))}
-            </ul>
+      </form>
+      <div className="row">
+          <div className="col-12 mb-5"><div className="col-md-6">
+          <button
+            className="btn btn-dark custom-button"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight"
+          >
+            Revisar tus Matches
+          </button>
+          <div
+            className="offcanvas offcanvas-end"
+            tabIndex="-1"
+            id="offcanvasRight"
+            aria-labelledby="offcanvasRightLabel"
+          >
+            <div className="offcanvas-header text-center">
+              <h2 id="offcanvasRightLabel">Mis Matches</h2>
+              <button
+                type="button"
+                className="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="offcanvas-body">
+              <ul className="list-group">
+                {matches.map((match) => (
+                  <li className="list-group-item" key={match.id}>
+                    <Link to={`/chat/${match.id}`}>{match.nombre}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      
+      </div>
+    </div> 
   </div>
+
   );
 };
 

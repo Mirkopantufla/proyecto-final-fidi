@@ -264,9 +264,9 @@ const Interests = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-sm-12 mx-auto">
+        <div className="col-sm-12 mx-auto jus">
           <form onSubmit={handleSubmit}>
-            <div className="row">
+            <div className="row justify-content-center">
               <div className="col-8 col-lg-12">
                 <h2>Modificar Habilidades</h2>
                 <div className="form-group p-3 border border-1 rounded border-dark">

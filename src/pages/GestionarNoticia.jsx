@@ -18,8 +18,9 @@ const GestionarNoticia = () => {
     }
 
     return (
-        <div className='container-fluid'>
-            <h1 className='text-center mt-5'>Gestion de noticias</h1>
+        <div className='container custom-bg rounded pb-5'>
+            <h1 className='text-center mt-5 py-3'>Gestion de administradores</h1>
+            <hr />
             <div className="row d-flex justify-content-around">
                 {/* <Link to={"/administrar/agregarNoticia"} className="col-3 text-center border border-3 border-dark rounded-4 mt-5 p-3 botonNoticia">
                     <h2>Agregar Noticia</h2>
@@ -33,7 +34,7 @@ const GestionarNoticia = () => {
                     <h2 className='text-center'>Eliminar Noticia</h2>
                     <p className='fs-4'>Podras <b>buscar</b> y <b>eliminar</b> la noticia</p>
                 </Link> */}
-                <Link to={"/administrar/eliminarUsuario"} className="col-3 text-center border border-3 border-dark rounded-4 mt-5 p-3 botonNoticia">
+                <Link to={"/administrar/eliminarUsuario"} className="col-3 text-center border border-3 border-dark rounded-4 mt-5 p-3 botonNoticia ">
                     <h2 className='text-center'>Eliminar Usuario</h2>
                     <p className='fs-4'>Podras <b>buscar</b> y <b>eliminar</b> un Usuario</p>
                 </Link>

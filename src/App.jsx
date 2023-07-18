@@ -16,7 +16,7 @@ import ModificarNoticia from './pages/gestionAdmin/ModificarNoticia';
 import EliminarNoticia from './pages/gestionAdmin/EliminarNoticia';
 import Dashboardv from './pages/Dashboardv';
 import LoginForm from './componentes/LoginForm';
-// import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';
 import Settings from './pages/Settings';
 import MostrarNavBar from './componentes/MostrarNavBar';
@@ -34,29 +34,31 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/formulario/*" element={<Formulario />} />
+        <Route path="/loginform" element={<LoginForm />} />
+        <Route path="/auth" component={Auth} />
         <Route element={<PrivateRoute />}>
           <Route path="/chat/*" element={<Chat />} />
-          <Route path="/explore" element={<Explore />} />
           <Route path="/matches" element={<Matches />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings/*" element={<Settings />} />
         </Route>
-        <Route path="/auth" component={Auth} />
-        <Route path="/loginform" element={<LoginForm />} />
+        <Route path='*' element={<NotFound />} />
+
+
 
         <Route path="/administrar">
           <Route index element={<GestionarNoticia />} />
-          <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
-          <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />
-          <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} />
+          {/* <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} /> */}
+          {/* <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} /> */}
+          {/* <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} /> */}
           <Route path="/administrar/eliminarUsuario" element={<EliminarUsuario />} />
-
         </Route>
         {/* <Route path='' element={<NotFound />} />
         <Route path='/administrar' element={<GestionarNoticia />} />
         <Route path="/administrar/agregarNoticia" element={<AgregarNoticia />} />
         <Route path="/administrar/modificarNoticia" element={<ModificarNoticia />} />
-        <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} /> */}
+        <Route path="/administrar/eliminarNoticia" element={<EliminarNoticia />} />
+        <Route path="/explore" element={<Explore />} /> */}
       </Routes >
     </Router >
   );

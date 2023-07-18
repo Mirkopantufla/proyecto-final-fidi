@@ -1,6 +1,6 @@
 body {
-  background-image: url("fondo9.png");
-  background-size:cover;
+  background-image: url("fondo3.png");
+  background-size: cover;
 }
 
 .custom-bg {
@@ -22,4 +22,3 @@ body {
 
   font-family: 'Staatliches', cursive;
 }
-

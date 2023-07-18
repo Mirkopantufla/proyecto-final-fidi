@@ -60,11 +60,10 @@ const Matches = () => {
       method: "POST",
       body: form,
       headers: {
-        Authorization: `Bearer ${store.access_token}`,
+        "Authorization": `Bearer ${store.access_token}`,
       },
     };
-    actions
-      .fetchData(`${store.apiURL}/api/match/like`, options)
+    actions.fetchData(`${store.apiURL}/api/match/like`, options)
       .then((response) => response.json())
       .then((data) => {
         toast.success(data.success);
@@ -159,27 +158,27 @@ const Matches = () => {
                       <button
                         key={index}
                         type="button"
-                        className="btn btn-primary btn-sm m-1"
+                        className="btn btn-primary btn-md m-1"
                         style={{ backgroundColor: "#0CD5A9" }}
                       >
                         {interes.descripcion}
                       </button>
                     ))}
                   </div>
-                  <div className="d-flex flex-wrap d-flex justify-content-center">
+                  <div className="">
                     <h3 className="titulos">Lo que te puedo enseñar:</h3>
                     {store?.habilidadesUsuarioMatch?.habilidades.map((habilidad, index) => (
                       <button
                         key={index}
                         type="button"
-                        className="btn btn-primary btn-sm m-1"
-                        style={{ backgroundColor: "#0CD5A9" }}
+                        className="btn btn-primary btn-md m-1"
+                        style={{ backgroundColor: "#089677" }}
                       >
                         {habilidad.descripcion}
                       </button>
                     ))}
                   </div>
-                  <h4 className="titulos">{store.matches.usuario[indice].descripcion ? store.matches.usuario[indice].descripcion : ""}</h4>
+                  <h4 className="titulos mt-3">{store.matches.usuario[indice].descripcion ? store.matches.usuario[indice].descripcion : "No tiene descripcion"}</h4>
                 </div>
               </div>
             </div>
@@ -225,6 +224,18 @@ const Matches = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
 
   );

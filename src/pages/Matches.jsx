@@ -4,7 +4,7 @@ import "../estilos/Matches.css";
 import "../estilos/Profile.css";
 import { FaHeart, FaTimes } from "react-icons/fa";
 import { Context } from "../store/AppContext";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 const Matches = () => {
   const [rejected, setRejected] = useState(false);
@@ -35,12 +35,11 @@ const Matches = () => {
       .fetchData(`${store.apiURL}/api/listarUsuarios`, options)
       .then((response) => response.json())
       .then((data) => {
-
-        setData(data)
+        setData(data);
 
         //muestra primer usuario
         if (data.usuario.length > 0) {
-          setIndice(0)
+          setIndice(0);
           const primerUsuario = data.usuario[indice];
           setIdUsuario(primerUsuario.id);
           setNombreUsuario(primerUsuario.nombre);
@@ -54,7 +53,6 @@ const Matches = () => {
   };
 
   function tarjetaUsuario(indice) {
-
     console.log("indice actualizado " + indice);
     const usuarioActual = data.usuario[indice];
     setIdUsuario(usuarioActual.id);
@@ -64,7 +62,7 @@ const Matches = () => {
     setInteresUsuario(usuarioActual.interes);
     setDescripcionUsuario(usuarioActual.descripcion);
 
-    console.log("nombreeeeeeeeeeeeeee " + usuarioActual.nombre)
+    console.log("nombreeeeeeeeeeeeeee " + usuarioActual.nombre);
   }
 
   // Perfil de la persona rescatada (ejemplo)
@@ -77,31 +75,33 @@ const Matches = () => {
     foto: "ruta-a-la-foto-de-perfil.jpg",
   };
 
-
   const handleLike = (e) => {
     e.preventDefault();
     setLiked(true);
 
     // Obtener los datos del emisor y receptor
     const form = new FormData();
-    form.append('emisor_id', store.id_usuario);
-    form.append('receptor_id', store.matches.usuario[0].id);
+    form.append("emisor_id", store.id_usuario);
+    form.append("receptor_id", store.matches.usuario[0].id);
+    const habilidades = store.habilidades;
+    const intereses = store.intereses;
 
     // if (state.store.access_token) {
     //   state.actions.likeUser(id_usuario, receptor_id);
     // }
 
     const options = {
-      method: 'POST',
+      method: "POST",
       body: form,
       headers: {
-        'Authorization': `Bearer ${store.access_token}`
-      }
-    }
-    actions.fetchData(`${store.apiURL}/api/match/like`, options)
+        Authorization: `Bearer ${store.access_token}`,
+      },
+    };
+    actions
+      .fetchData(`${store.apiURL}/api/match/like`, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log("llego la respuesta aca??????????????'")
+        console.log("llego la respuesta aca??????????????'");
         toast.success(data.success);
         // Manejar la respuesta del servidor si es necesario
         console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + indice);
@@ -110,10 +110,8 @@ const Matches = () => {
 
         console.log("indiceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 2  " + i);
 
-
         setIndice(i);
         tarjetaUsuario(i);
-
       })
       .catch((error) => {
         // Manejar el error si ocurre
@@ -144,20 +142,53 @@ const Matches = () => {
   ];
 
   return (
-    <div className="container">
-      <div className="container-fluid justify-content-around">
-        <div className="row custom-bg rounded-2 ">
-          <form>
-            <div className="col-md-8 justify-content-center">
-              <img
-                //src={store.matches.usuario[0].src_imagen}
-                src={imagenUsuario}
-                alt="Foto de perfil"
-                className="image-overlay img-fluid max-100"
-                style={{ top: 0, left: 0, width: '30%', height: 'auto', }}
-              />
+  <div className="container">
+    <div className="text-center custom-bg rounded-2">
+      <div className="row">
+        <form>
+          <div className="col-6">
+            <img
+              //src={store.matches.usuario[0].src_imagen}
+              src={imagenUsuario}
+              alt="Foto de perfil"
+              className="image-overlay img-fluid max-100"
+              style={{ top: 0, left: 0, width: "50%", height: "auto" }}
+            />
+            <div
+              className="btn-toolbar d-flex  mt-3"
+              role="toolbar"
+              aria-label="Toolbar with button groups"
+            >
+              <div
+                className="btn-group me-2"
+                role="group"
+                aria-label="First group"
+              >
+                <button
+                  className="btn btn-secondary btn-like me-1"
+                  onClick={(e) => handleLike(e)}
+                >
+                  <span className="like-icon">
+                    <FaHeart />
+                  </span>
+                </button>
+              </div>
+              <div className="btn-group" role="group" aria-label="Second group">
+                <button
+                  className="btn btn-secondary btn-reject"
+                  onClick={handleReject}
+                >
+                  <span className="reject-icon">
+                    <FaTimes />
+                  </span>
+                </button>
+              </div>
             </div>
-            <div className="col-md-4 order-md-last ">
+            {liked && <p>¡Has dado like a este perfil!</p>}
+            {rejected && <p>Has rechazado este perfil.</p>}
+          </div>
+          <div className="col-6">
+            <div>
               <h1 className="titulos">{nombreUsuario}</h1>
               <div className="">
                 <h3 className="titulos">Lo que quiero aprender:</h3>
@@ -187,70 +218,11 @@ const Matches = () => {
               </div>
               <p className="titulos">{descripcionUsuario}</p>
             </div>
-          </form>
-          <div
-            className="offcanvas offcanvas-end"
-            tabIndex="-1"
-            id="offcanvasRight"
-            aria-labelledby="offcanvasRightLabel"
-          >
-            <div className="offcanvas-header text-center">
-              <h2 id="offcanvasRightLabel">Mis Matches</h2>
-              <button
-                type="button"
-                className="btn-close text-reset"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="offcanvas-body">
-              <ul className="list-group">
-                {matches.map((match) => (
-                  <li className="list-group-item" key={match.id}>
-                    <Link to={`/chat/${match.id}`}>{match.nombre}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
-          <div
-            className="btn-toolbar d-flex justify-content-left "
-            role="toolbar"
-            aria-label="Toolbar with button groups"
-          >
-            <div
-              className="btn-group mr-2"
-              role="group"
-              aria-label="First group"
-            >
-              <button
-                className="btn btn-secondary btn-like me-1"
-                onClick={(e) => handleLike(e)}
-              >
-                <span className="like-icon">
-                  <FaHeart />
-                </span>
-              </button>
-            </div>
-            <div
-              className="btn-group mr-2"
-              role="group"
-              aria-label="Second group"
-            >
-              <button
-                className="btn btn-secondary btn-reject"
-                onClick={handleReject}
-              >
-                <span className="reject-icon">
-                  <FaTimes />
-                </span>
-              </button>
-            </div>
-          </div>
-          {liked && <p>¡Has dado like a este perfil!</p>}
-          {rejected && <p>Has rechazado este perfil.</p>}
-        </div>
+        </form>
       </div>
+    </div>
+        
       <div className="col-md-6">
         <button
           className="btn btn-dark custom-button"
@@ -261,11 +233,35 @@ const Matches = () => {
         >
           Revisar tus Matches
         </button>
+        <div
+          className="offcanvas offcanvas-end"
+          tabIndex="-1"
+          id="offcanvasRight"
+          aria-labelledby="offcanvasRightLabel"
+        >
+          <div className="offcanvas-header text-center">
+            <h2 id="offcanvasRightLabel">Mis Matches</h2>
+            <button
+              type="button"
+              className="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="offcanvas-body">
+            <ul className="list-group">
+              {matches.map((match) => (
+                <li className="list-group-item" key={match.id}>
+                  <Link to={`/chat/${match.id}`}>{match.nombre}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-
+      
+  </div>
   );
-
 };
 
 export default Matches;
